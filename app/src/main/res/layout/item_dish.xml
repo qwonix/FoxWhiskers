@@ -12,27 +12,25 @@
 
 
     <RelativeLayout
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:background="@color/gray_300"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/card_dish_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:contentDescription="dish image"
             android:elevation="20dp"
             android:minWidth="100dp"
             android:minHeight="100dp"
             android:scaleType="centerCrop"
             app:imageUrl="@{dish.imageUrl}"
-            tools:background="@drawable/ic_launcher_background"
-            android:contentDescription="dish image" />
+            tools:background="@drawable/ic_launcher_background" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/card_dish_image"
             android:layout_marginTop="-45dp"
             android:backgroundTint="@color/white"
@@ -57,14 +55,14 @@
                     android:text="@{dish.title}"
                     android:textColor="@color/gray_900"
                     android:textSize="14sp"
-                    tools:text="Кусочки куры су-вид в томатном соусе с гречей" />
+                    tools:text="Кусочки " />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="3dp"
                     android:ellipsize="end"
-                    android:fontFamily="@font/rubik_regular"
+                    android:fontFamily="@font/rubik_light"
                     android:gravity="center"
                     android:maxLines="1"
                     android:scrollHorizontally="false"
@@ -73,7 +71,7 @@
                     android:textSize="10sp"
                     tools:text="целая, 42 см, 1350 гр" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -81,19 +79,20 @@
                     android:layout_marginBottom="10dp"
                     android:backgroundTint="@color/gray_100"
                     android:elevation="10dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:gravity="center"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="@{dish.currencyPrice}"
-                    android:textColor="@color/gray_900"
-                    app:cornerRadius="15dp"
-                    tools:text="69 $" />
+                    app:cardCornerRadius="15dp">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="3dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:gravity="center"
+                        android:text="@{dish.currencyPrice}"
+                        android:textColor="@color/gray_900"
+                        tools:text="69 $" />
+
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
-
-
     </RelativeLayout>
 </layout>
