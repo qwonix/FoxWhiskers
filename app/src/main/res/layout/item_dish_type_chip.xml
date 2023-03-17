@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isChecked"
+            type="Boolean" />
+
+        <variable
+            name="dishType"
+            type="ru.qwonix.android.foxwhiskers.DishType" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        app:cardBackgroundColor="@{isChecked ? @color/yellow_300 : @color/gray_300}"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:contentPaddingBottom="5dp"
+        app:contentPaddingLeft="20dp"
+        app:contentPaddingRight="20dp"
+        app:contentPaddingTop="5dp"
+        app:strokeColor="@color/yellow_300"
+        app:strokeWidth="1dp"
+        tools:cardBackgroundColor="@color/yellow_300">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="3dp"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="center"
+            android:text="@{dishType.title}"
+            android:textColor="@color/gray_900"
+            android:textSize="12sp"
+            tools:text="Пицца 42см" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

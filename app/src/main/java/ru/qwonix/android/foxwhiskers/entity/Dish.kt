@@ -1,4 +1,4 @@
-package ru.qwonix.android.foxwhiskers
+package ru.qwonix.android.foxwhiskers.entity
 
 class Dish(
     var title: String,
