@@ -7,7 +7,7 @@
 
         <variable
             name="dish"
-            type="ru.qwonix.android.foxwhiskers.entity.Dish" />
+            type="ru.qwonix.android.foxwhiskers.entity.DataModel.Dish" />
     </data>
 
     <RelativeLayout

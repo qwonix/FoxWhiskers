@@ -6,17 +6,16 @@
 
         <variable
             name="dishType"
-            type="ru.qwonix.android.foxwhiskers.DishType" />
+            type="ru.qwonix.android.foxwhiskers.entity.DataModel.DishType" />
     </data>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoSizeTextType="uniform"
         android:fontFamily="@font/rubik_medium"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="@{dishType.title}"
         android:textColor="@color/gray_900"
-        android:textSize="24sp"
+        android:textSize="26sp"
         tools:text="Пицца" />
 </layout>

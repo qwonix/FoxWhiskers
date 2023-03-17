@@ -4,14 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemDishTypeChipBinding
+import ru.qwonix.android.foxwhiskers.entity.DataModel
 
-class DishType(
-    var title: String
-)
 
 class DishTypeChipAdapter : RecyclerView.Adapter<DishTypeChipAdapter.ViewHolder>() {
 
-    var dishTypes = listOf<DishType>()
+    var dishTypes = listOf<DataModel.DishType>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -34,8 +32,9 @@ class DishTypeChipAdapter : RecyclerView.Adapter<DishTypeChipAdapter.ViewHolder>
     class ViewHolder(
         private val binding: ItemDishTypeChipBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(dishType: DishType) {
+        fun bind(dishType: DataModel.DishType) {
             binding.dishType = dishType
+            binding.isChecked = true
         }
     }
 }

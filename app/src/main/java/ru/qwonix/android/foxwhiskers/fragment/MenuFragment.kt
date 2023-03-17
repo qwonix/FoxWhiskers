@@ -9,15 +9,16 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ru.qwonix.android.foxwhiskers.DishAdapter
-import ru.qwonix.android.foxwhiskers.DishType
 import ru.qwonix.android.foxwhiskers.DishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
-import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.entity.DataModel
+
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
     companion object {
@@ -30,7 +31,6 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         fun loadImage(view: ImageView, imageUrl: String?) {
             if (imageUrl != null) {
                 if (imageUrl.isNotBlank()) {
-                    println("test")
                     Picasso.get()
                         .load(imageUrl)
 //                        .placeholder(R.drawable.placeholder)
@@ -56,22 +56,47 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         super.onViewCreated(view, savedInstanceState)
 
         val dishAdapter = DishAdapter()
-        dishAdapter.dishes = listOf(
-            Dish("Пицца", "https://i.imgur.com/dNpAg7f.jpg", "целая, 42 см, 1350 гр", "2131.32 ₽", "Пицца"),
-            Dish("Пицца", "https://i.imgur.com/H1ieAcE.png", "целая, 42 см, 1350 гр", "123 ₽", "Пицца"),
-            Dish("Пицца", "https://i.imgur.com/H1ieAcE.png", "целая, 42 см, 1350 гр", "669 ₽", "Пицца"),
-            Dish("Пицца", "https://i.imgur.com/kzUwGbe.jpg", "целая, 42 см, 1350 гр", "842 ₽", "Пицца")
+        dishAdapter.setData(
+            listOf(
+                DataModel.DishType("Пицца"),
+                DataModel.Dish(
+                    "Пицца",
+                    "https://i.imgur.com/dNpAg7f.jpg",
+                    "целая, 42 см, 1350 гр",
+                    "2131.32 ₽",
+                    "Пицца"
+                ),
+                DataModel.Dish(
+                    "Пицца",
+                    "https://i.imgur.com/H1ieAcE.png",
+                    "целая, 42 см, 1350 гр",
+                    "123 ₽",
+                    "Пицца"
+                ),
+                DataModel.Dish(
+                    "Пицца",
+                    "https://i.imgur.com/H1ieAcE.png",
+                    "целая, 42 см, 1350 гр",
+                    "669 ₽",
+                    "Пицца"
+                ),
+                DataModel.Dish(
+                    "Пицца",
+                    "https://i.imgur.com/kzUwGbe.jpg",
+                    "целая, 42 см, 1350 гр",
+                    "842 ₽",
+                    "Пицца"
+                ),
+                DataModel.DishType("Суп")
+            )
         )
         val dishTypeAdapter = DishTypeChipAdapter()
         dishTypeAdapter.dishTypes = listOf(
-            DishType("Пицца"),
-            DishType("суп"),
-            DishType("каша"),
-            DishType("морс"),
+            DataModel.DishType("Пицца"),
+            DataModel.DishType("суп"),
+            DataModel.DishType("каша"),
+            DataModel.DishType("морс"),
         )
-//        sharedSearchSettingsViewModel.apartments.observe(viewLifecycleOwner) {
-//            apartmentsAdapter.apartments = it
-//        }
 
         binding.recyclerDishTypeChip.apply {
             adapter = dishTypeAdapter
@@ -94,6 +119,16 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
             adapter = dishAdapter
             val manager = GridLayoutManager(context, 2)
             layoutManager = manager
+
+            manager.spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (dishAdapter.getItemViewType(position)) {
+                        DishAdapter.TYPE_DISH -> 1
+                        DishAdapter.TYPE_DISH_TYPE -> manager.spanCount
+                        else -> 0
+                    }
+                }
+            }
 
             addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(

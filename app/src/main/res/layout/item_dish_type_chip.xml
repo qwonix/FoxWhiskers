@@ -11,7 +11,7 @@
 
         <variable
             name="dishType"
-            type="ru.qwonix.android.foxwhiskers.DishType" />
+            type="ru.qwonix.android.foxwhiskers.entity.DataModel.DishType" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
