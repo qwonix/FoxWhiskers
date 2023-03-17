@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomNavigationGraph"
+    app:startDestination="@id/menuFragment">
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="ru.qwonix.android.foxwhiskers.fragment.MenuFragment"
+        android:label="MenuFragment" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="ru.qwonix.android.foxwhiskers.fragment.OrderFragment"
+        android:label="OrderFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ru.qwonix.android.foxwhiskers.fragment.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>
