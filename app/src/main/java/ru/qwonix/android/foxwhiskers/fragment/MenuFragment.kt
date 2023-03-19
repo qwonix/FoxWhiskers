@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import ru.qwonix.android.foxwhiskers.DishAdapter
-import ru.qwonix.android.foxwhiskers.DishTypeChipAdapter
+import ru.qwonix.android.foxwhiskers.fragment.adapter.DishAdapter
+import ru.qwonix.android.foxwhiskers.fragment.adapter.DishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
 import ru.qwonix.android.foxwhiskers.entity.DataModel

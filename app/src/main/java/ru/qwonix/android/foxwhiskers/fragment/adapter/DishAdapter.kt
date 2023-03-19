@@ -1,4 +1,4 @@
-package ru.qwonix.android.foxwhiskers
+package ru.qwonix.android.foxwhiskers.fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,6 +17,7 @@ class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
             addAll(data)
         }
     }
+
     companion object {
         const val TYPE_DISH = 0
         const val TYPE_DISH_TYPE = 1

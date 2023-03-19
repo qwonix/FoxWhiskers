@@ -1,4 +1,4 @@
-package ru.qwonix.android.foxwhiskers
+package ru.qwonix.android.foxwhiskers.fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
