@@ -6,15 +6,20 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemDishTypeBinding
-import ru.qwonix.android.foxwhiskers.entity.DataModel
+import ru.qwonix.android.foxwhiskers.dto.DishMenuSortedByTypeResponseDTO
 
 
 class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
     private val adapterData = mutableListOf<DataModel>()
-    fun setData(data: List<DataModel>) {
+    fun setData(data: List<DishMenuSortedByTypeResponseDTO>) {
         adapterData.apply {
             clear()
-            addAll(data)
+            for (menuResponseDTO in data) {
+                add(DataModel.DishType(menuResponseDTO.dishType))
+                for (dish in menuResponseDTO.dishes) {
+                    add(DataModel.Dish(dish))
+                }
+            }
         }
     }
 
@@ -56,11 +61,11 @@ class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         private fun bindDish(dish: DataModel.Dish) {
-            (binding as ItemDishBinding).dish = dish
+            (binding as ItemDishBinding).dish = dish.value
         }
 
         private fun bindDishType(dishType: DataModel.DishType) {
-            (binding as ItemDishTypeBinding).dishType = dishType
+            (binding as ItemDishTypeBinding).dishType = dishType.value
         }
 
         fun bind(dataModel: DataModel) {
@@ -69,5 +74,15 @@ class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
                 is DataModel.DishType -> bindDishType(dataModel)
             }
         }
+    }
+
+    sealed class DataModel {
+        data class Dish(
+            var value: ru.qwonix.android.foxwhiskers.entity.Dish
+        ) : DataModel()
+
+        data class DishType(
+            val value: ru.qwonix.android.foxwhiskers.entity.DishType
+        ) : DataModel()
     }
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="dishType"
-            type="ru.qwonix.android.foxwhiskers.entity.DataModel.DishType" />
+            type="ru.qwonix.android.foxwhiskers.entity.DishType" />
     </data>
 
     <TextView

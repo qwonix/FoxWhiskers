@@ -17,7 +17,9 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.DishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.DishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
-import ru.qwonix.android.foxwhiskers.entity.DataModel
+import ru.qwonix.android.foxwhiskers.dto.DishMenuSortedByTypeResponseDTO
+import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
@@ -58,38 +60,75 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         val dishAdapter = DishAdapter()
         dishAdapter.setData(
             listOf(
-                DataModel.DishType("Пицца"),
-                DataModel.Dish(
-                    "Пицца",
-                    "https://i.imgur.com/dNpAg7f.jpg",
-                    "целая, 42 см, 1350 гр",
-                    "2131.32 ₽",
-                    "Пицца"
+                DishMenuSortedByTypeResponseDTO(
+                    DishType("Пицца"),
+                    listOf(
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/dNpAg7f.jpg",
+                            "целая, 42 см, 1350 гр",
+                            "2131.32 ₽",
+                            DishType("Пицца")
+                        ),
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/H1ieAcE.png",
+                            "целая, 42 см, 1350 гр",
+                            "123 ₽",
+                            DishType("Пицца")
+                        ),
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/H1ieAcE.png",
+                            "целая, 42 см, 1350 гр",
+                            "669 ₽",
+                            DishType("Пицца")
+                        ),
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/kzUwGbe.jpg",
+                            "целая, 42 см, 1350 гр",
+                            "842 ₽",
+                            DishType("Пицца")
+                        )
+                    )
                 ),
-                DataModel.Dish(
-                    "Пицца",
-                    "https://i.imgur.com/H1ieAcE.png",
-                    "целая, 42 см, 1350 гр",
-                    "123 ₽",
-                    "Пицца"
-                ),
-                DataModel.Dish(
-                    "Пицца",
-                    "https://i.imgur.com/H1ieAcE.png",
-                    "целая, 42 см, 1350 гр",
-                    "669 ₽",
-                    "Пицца"
-                ),
-                DataModel.Dish(
-                    "Пицца",
-                    "https://i.imgur.com/kzUwGbe.jpg",
-                    "целая, 42 см, 1350 гр",
-                    "842 ₽",
-                    "Пицца"
-                ),
-                DataModel.DishType("Суп")
+                DishMenuSortedByTypeResponseDTO(
+                    DishType("Суп"),
+                    listOf(
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/dNpAg7f.jpg",
+                            "целая, 42 см, 1350 гр",
+                            "2131.32 ₽",
+                            DishType("Пицца")
+                        ),
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/H1ieAcE.png",
+                            "целая, 42 см, 1350 гр",
+                            "123 ₽",
+                            DishType("Пицца")
+                        ),
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/H1ieAcE.png",
+                            "целая, 42 см, 1350 гр",
+                            "669 ₽",
+                            DishType("Пицца")
+                        ),
+                        Dish(
+                            "Пицца",
+                            "https://i.imgur.com/kzUwGbe.jpg",
+                            "целая, 42 см, 1350 гр",
+                            "842 ₽",
+                            DishType("Пицца")
+                        )
+                    )
+                )
             )
-        )
+        );
+
         val dishTypeAdapter = DishTypeChipAdapter()
         dishTypeAdapter.dishTypes = listOf(
             DataModel.DishType("Пицца"),

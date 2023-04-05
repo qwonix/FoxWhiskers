@@ -13,9 +13,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray_300"
             android:clipChildren="false"
+            android:elevation="1dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:shadowColor="@android:color/transparent">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
