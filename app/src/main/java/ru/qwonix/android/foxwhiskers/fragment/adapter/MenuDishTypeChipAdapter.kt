@@ -3,11 +3,11 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.qwonix.android.foxwhiskers.databinding.ItemDishTypeChipBinding
+import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeChipBinding
 import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
-class DishTypeChipAdapter : RecyclerView.Adapter<DishTypeChipAdapter.ViewHolder>() {
+class MenuDishTypeChipAdapter : RecyclerView.Adapter<MenuDishTypeChipAdapter.ViewHolder>() {
 
     var dishTypes = listOf<DishType>()
         set(value) {
@@ -15,11 +15,11 @@ class DishTypeChipAdapter : RecyclerView.Adapter<DishTypeChipAdapter.ViewHolder>
             notifyDataSetChanged()
         }
 
-    private lateinit var binding: ItemDishTypeChipBinding
+    private lateinit var binding: ItemMenuDishTypeChipBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding =
-            ItemDishTypeChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemMenuDishTypeChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -29,8 +29,8 @@ class DishTypeChipAdapter : RecyclerView.Adapter<DishTypeChipAdapter.ViewHolder>
 
     override fun getItemCount(): Int = dishTypes.size
 
-    class ViewHolder(
-        private val binding: ItemDishTypeChipBinding
+    inner class ViewHolder(
+        private val binding: ItemMenuDishTypeChipBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dishType: DishType) {
             binding.dishType = dishType

@@ -8,18 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import ru.qwonix.android.foxwhiskers.fragment.adapter.DishAdapter
-import ru.qwonix.android.foxwhiskers.fragment.adapter.DishTypeChipAdapter
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
+import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
-import ru.qwonix.android.foxwhiskers.dto.DishMenuSortedByTypeResponseDTO
-import ru.qwonix.android.foxwhiskers.entity.Dish
-import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
@@ -46,6 +45,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     }
 
     private lateinit var binding: FragmentMenuBinding
+    private val menuViewModel: MenuViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,88 +57,22 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dishAdapter = DishAdapter()
-        dishAdapter.setData(
-            listOf(
-                DishMenuSortedByTypeResponseDTO(
-                    DishType("Пицца"),
-                    listOf(
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/dNpAg7f.jpg",
-                            "целая, 42 см, 1350 гр",
-                            "2131.32 ₽",
-                            DishType("Пицца")
-                        ),
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/H1ieAcE.png",
-                            "целая, 42 см, 1350 гр",
-                            "123 ₽",
-                            DishType("Пицца")
-                        ),
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/H1ieAcE.png",
-                            "целая, 42 см, 1350 гр",
-                            "669 ₽",
-                            DishType("Пицца")
-                        ),
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/kzUwGbe.jpg",
-                            "целая, 42 см, 1350 гр",
-                            "842 ₽",
-                            DishType("Пицца")
-                        )
-                    )
-                ),
-                DishMenuSortedByTypeResponseDTO(
-                    DishType("Суп"),
-                    listOf(
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/dNpAg7f.jpg",
-                            "целая, 42 см, 1350 гр",
-                            "2131.32 ₽",
-                            DishType("Пицца")
-                        ),
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/H1ieAcE.png",
-                            "целая, 42 см, 1350 гр",
-                            "123 ₽",
-                            DishType("Пицца")
-                        ),
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/H1ieAcE.png",
-                            "целая, 42 см, 1350 гр",
-                            "669 ₽",
-                            DishType("Пицца")
-                        ),
-                        Dish(
-                            "Пицца",
-                            "https://i.imgur.com/kzUwGbe.jpg",
-                            "целая, 42 см, 1350 гр",
-                            "842 ₽",
-                            DishType("Пицца")
-                        )
-                    )
-                )
-            )
-        );
-
-        val dishTypeAdapter = DishTypeChipAdapter()
-        dishTypeAdapter.dishTypes = listOf(
-            DataModel.DishType("Пицца"),
-            DataModel.DishType("суп"),
-            DataModel.DishType("каша"),
-            DataModel.DishType("морс"),
-        )
+        val menuDishAdapter = MenuDishAdapter(viewLifecycleOwner)
+        val menuDishTypeChipAdapter = MenuDishTypeChipAdapter()
+        menuViewModel.dishTypeDishMap.observe(viewLifecycleOwner) {
+            val recyclerDishesAdapterDataModels = ArrayList<MenuDishAdapter.DataModel>()
+            for ((dishType, dishes) in it) {
+                recyclerDishesAdapterDataModels.add(MenuDishAdapter.DataModel.DishType(dishType))
+                for (dish in dishes) {
+                    recyclerDishesAdapterDataModels.add(MenuDishAdapter.DataModel.Dish(dish))
+                }
+            }
+            menuDishAdapter.dishes = recyclerDishesAdapterDataModels
+            menuDishTypeChipAdapter.dishTypes = it.keys.toList()
+        }
 
         binding.recyclerDishTypeChip.apply {
-            adapter = dishTypeAdapter
+            adapter = menuDishTypeChipAdapter
             val manager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             layoutManager = manager
 
@@ -155,15 +89,15 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         }
 
         binding.recyclerDishes.apply {
-            adapter = dishAdapter
+            adapter = menuDishAdapter
             val manager = GridLayoutManager(context, 2)
             layoutManager = manager
 
             manager.spanSizeLookup = object : SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    return when (dishAdapter.getItemViewType(position)) {
-                        DishAdapter.TYPE_DISH -> 1
-                        DishAdapter.TYPE_DISH_TYPE -> manager.spanCount
+                    return when (menuDishAdapter.getItemViewType(position)) {
+                        MenuDishAdapter.TYPE_DISH -> 1
+                        MenuDishAdapter.TYPE_DISH_TYPE -> manager.spanCount
                         else -> 0
                     }
                 }
@@ -181,5 +115,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                 }
             })
         }
+
+        menuViewModel.loadDishesMapByType()
     }
 }

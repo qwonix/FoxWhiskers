@@ -3,25 +3,18 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import ru.qwonix.android.foxwhiskers.databinding.ItemDishBinding
-import ru.qwonix.android.foxwhiskers.databinding.ItemDishTypeBinding
-import ru.qwonix.android.foxwhiskers.dto.DishMenuSortedByTypeResponseDTO
+import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishBinding
+import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeBinding
 
 
-class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
-    private val adapterData = mutableListOf<DataModel>()
-    fun setData(data: List<DishMenuSortedByTypeResponseDTO>) {
-        adapterData.apply {
-            clear()
-            for (menuResponseDTO in data) {
-                add(DataModel.DishType(menuResponseDTO.dishType))
-                for (dish in menuResponseDTO.dishes) {
-                    add(DataModel.Dish(dish))
-                }
-            }
+class MenuDishAdapter(private val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
+    var dishes = mutableListOf<DataModel>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
-    }
 
     companion object {
         const val TYPE_DISH = 0
@@ -30,30 +23,31 @@ class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = when (viewType) {
-            TYPE_DISH -> ItemDishBinding.inflate(
+            TYPE_DISH -> ItemMenuDishBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-            TYPE_DISH_TYPE -> ItemDishTypeBinding.inflate(
+            TYPE_DISH_TYPE -> ItemMenuDishTypeBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
             else -> throw IllegalArgumentException("Invalid view type")
         }
+        binding.lifecycleOwner = this@MenuDishAdapter.lifecycleOwner
 
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(adapterData[position])
+        holder.bind(dishes[position])
     }
 
-    override fun getItemCount(): Int = adapterData.size
+    override fun getItemCount(): Int = dishes.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
+        return when (dishes[position]) {
             is DataModel.Dish -> TYPE_DISH
             is DataModel.DishType -> TYPE_DISH_TYPE
         }
@@ -61,11 +55,11 @@ class DishAdapter : RecyclerView.Adapter<DishAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         private fun bindDish(dish: DataModel.Dish) {
-            (binding as ItemDishBinding).dish = dish.value
+            (binding as ItemMenuDishBinding).dish = dish.value
         }
 
         private fun bindDishType(dishType: DataModel.DishType) {
-            (binding as ItemDishTypeBinding).dishType = dishType.value
+            (binding as ItemMenuDishTypeBinding).dishType = dishType.value
         }
 
         fun bind(dataModel: DataModel) {
