@@ -1,16 +1,21 @@
 package ru.qwonix.android.foxwhiskers.entity
 
-import androidx.lifecycle.MutableLiveData
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import ru.qwonix.android.foxwhiskers.BR
 
-data class Dish(
+class Dish(
     var id: Long,
     var title: String,
     var imageUrl: String,
     var shortDescription: String,
     var currencyPrice: String,
-    var count: MutableLiveData<Int> = MutableLiveData(0)
-) {
-    fun setCount(value: Int) {
-        count.postValue(value)
-    }
+) : BaseObservable() {
+
+    @Bindable
+    var count: Int = 0
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.count)
+        }
 }

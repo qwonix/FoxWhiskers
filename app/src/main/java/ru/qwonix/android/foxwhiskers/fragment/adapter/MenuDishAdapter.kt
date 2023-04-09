@@ -9,7 +9,8 @@ import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeBinding
 
 
-class MenuDishAdapter(private val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
+class MenuDishAdapter(private val lifecycleOwner: LifecycleOwner) :
+    RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     var dishes = mutableListOf<DataModel>()
         set(value) {
             field = value
