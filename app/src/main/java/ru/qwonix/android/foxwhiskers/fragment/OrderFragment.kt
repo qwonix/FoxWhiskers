@@ -1,10 +1,10 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,43 +29,12 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orderDishAdapter = OrderDishAdapter(viewLifecycleOwner)
-//        orderDishAdapter.setData(
-//            listOf(
-//                Dish(
-//                    1,
-//                    "Пицца",
-//                    "https://i.imgur.com/dNpAg7f.jpg",
-//                    "целая, 42 см, 1350 гр",
-//                    "2131.32 ₽",
-//                    2
-//                ),
-//                Dish(
-//                    1,
-//                    "Пицца",
-//                    "https://i.imgur.com/H1ieAcE.png",
-//                    "целая, 42 см, 1350 гр",
-//                    "123 ₽"
-//                ),
-//                Dish(
-//                    1,
-//                    "Пицца",
-//                    "https://i.imgur.com/H1ieAcE.png",
-//                    "целая, 42 см, 1350 гр",
-//                    "669 ₽"
-//                ),
-//                Dish(
-//                    1,
-//                    "Пицца",
-//                    "https://i.imgur.com/kzUwGbe.jpg",
-//                    "целая, 42 см, 1350 гр",
-//                    "842 ₽"
-//                )
-//            )
-//        )
-        menuViewModel.dishTypeDishMap.observe(viewLifecycleOwner) {
-            orderDishAdapter.setData(it.values.flatten().filter { dish -> dish.count > 0 })
-        }
+        val orderDishAdapter = OrderDishAdapter()
+
+        val value = menuViewModel.dishTypeDishMap.value ?: emptyMap()
+
+        val data = value.values.flatten().filter { dish -> dish.count > 0 }.toMutableList()
+        orderDishAdapter.setData(data)
 
         binding.recyclerOrderedDishes.apply {
             adapter = orderDishAdapter

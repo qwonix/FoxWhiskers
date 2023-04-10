@@ -57,7 +57,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuDishAdapter = MenuDishAdapter(viewLifecycleOwner)
+        val menuDishAdapter = MenuDishAdapter()
         val menuDishTypeChipAdapter = MenuDishTypeChipAdapter()
         menuViewModel.dishTypeDishMap.observe(viewLifecycleOwner) {
             val recyclerDishesAdapterDataModels = ArrayList<MenuDishAdapter.DataModel>()
@@ -116,6 +116,5 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
             })
         }
 
-        menuViewModel.loadDishesMapByType()
     }
 }

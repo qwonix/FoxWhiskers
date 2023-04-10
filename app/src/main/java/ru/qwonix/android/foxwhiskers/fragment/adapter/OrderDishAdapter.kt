@@ -8,7 +8,7 @@ import ru.qwonix.android.foxwhiskers.databinding.ItemOrderDishBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
 
 
-class OrderDishAdapter(private val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
+class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
     private val data = mutableListOf<Dish>()
 
     fun setData(data: List<Dish>) {
@@ -23,7 +23,6 @@ class OrderDishAdapter(private val lifecycleOwner: LifecycleOwner) : RecyclerVie
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding =
             ItemOrderDishBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.lifecycleOwner = this@OrderDishAdapter.lifecycleOwner
         return ViewHolder(binding)
     }
 

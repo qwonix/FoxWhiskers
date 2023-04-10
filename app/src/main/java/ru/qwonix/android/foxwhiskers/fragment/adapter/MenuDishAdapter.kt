@@ -3,14 +3,12 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeBinding
 
 
-class MenuDishAdapter(private val lifecycleOwner: LifecycleOwner) :
-    RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
+class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     var dishes = mutableListOf<DataModel>()
         set(value) {
             field = value
@@ -36,7 +34,6 @@ class MenuDishAdapter(private val lifecycleOwner: LifecycleOwner) :
             )
             else -> throw IllegalArgumentException("Invalid view type")
         }
-        binding.lifecycleOwner = this@MenuDishAdapter.lifecycleOwner
 
         return ViewHolder(binding)
     }
