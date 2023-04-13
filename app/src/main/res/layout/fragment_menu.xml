@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -19,29 +18,6 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:shadowColor="@android:color/transparent">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="20dp"
-                android:clipChildren="false"
-                app:cardBackgroundColor="@color/gray_300"
-                app:cardCornerRadius="15dp"
-                app:contentPaddingBottom="10dp"
-                app:contentPaddingLeft="10dp"
-                app:contentPaddingRight="10dp"
-                app:contentPaddingTop="10dp"
-                app:strokeColor="@color/gray_500"
-                app:strokeWidth="2dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:text="Поиск" />
-
-            </com.google.android.material.card.MaterialCardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_dish_type_chip"

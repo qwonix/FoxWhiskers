@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -49,15 +48,14 @@
             android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
+            <FrameLayout
                 android:id="@+id/checkout_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:backgroundTint="@color/yellow_300"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="0dp"
-                app:contentPadding="6dp">
+                android:background="@drawable/rectangle_yellow300_background"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,9 +82,7 @@
                     android:textSize="16sp"
                     tools:text="669.28 $" />
 
-            </com.google.android.material.card.MaterialCardView>
-
+            </FrameLayout>
         </LinearLayout>
-
     </LinearLayout>
 </layout>
