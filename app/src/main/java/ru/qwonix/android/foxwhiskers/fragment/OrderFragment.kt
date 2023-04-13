@@ -23,17 +23,20 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOrderBinding.inflate(inflater, container, false)
+        binding.apply {
+            viewModel = menuViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val value = menuViewModel.dishes.value ?: emptyList()
+        val data = value.filter { dish -> dish.count > 0 }.toMutableList()
+
         val orderDishAdapter = OrderDishAdapter()
-
-        val value = menuViewModel.dishTypeDishMap.value ?: emptyMap()
-
-        val data = value.values.flatten().filter { dish -> dish.count > 0 }.toMutableList()
         orderDishAdapter.setData(data)
 
         binding.recyclerOrderedDishes.apply {

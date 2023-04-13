@@ -6,14 +6,32 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeBinding
+import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
 class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
-    var dishes = mutableListOf<DataModel>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+
+    private val dishes: MutableList<DataModel> = mutableListOf()
+
+    private fun parseData(data: Map<DishType, List<Dish>>): ArrayList<DataModel> {
+        val recyclerDishesAdapterDataModels = ArrayList<DataModel>()
+        for ((dishType, dishes) in data) {
+            recyclerDishesAdapterDataModels.add(DataModel.DishType(dishType))
+            for (dish in dishes) {
+                recyclerDishesAdapterDataModels.add(DataModel.Dish(dish))
+            }
         }
+        return recyclerDishesAdapterDataModels
+    }
+
+    fun setDishes(dishes: Map<DishType, List<Dish>>) {
+        this.dishes.apply {
+            clear()
+            addAll(parseData(dishes))
+        }
+    }
+
 
     companion object {
         const val TYPE_DISH = 0

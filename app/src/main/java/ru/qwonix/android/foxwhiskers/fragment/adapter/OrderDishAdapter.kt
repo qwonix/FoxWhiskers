@@ -2,20 +2,29 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
+import androidx.databinding.Observable
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemOrderDishBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
 
 
 class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
-    private val data = mutableListOf<Dish>()
+    private var data = mutableListOf<Dish>()
 
-    fun setData(data: List<Dish>) {
-        this.data.apply {
-            clear()
-            addAll(data)
+    private val onDishCountChanged = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            if (((sender as Dish).count == 0)) {
+                notifyItemRemoved(data.indexOf(sender))
+                this@OrderDishAdapter.data.remove(sender)
+            }
         }
+    }
+
+    fun setData(data: MutableList<Dish>) {
+        data.map {
+            it.addOnPropertyChangedCallback(onDishCountChanged)
+        }
+        this.data = data
     }
 
     private lateinit var binding: ItemOrderDishBinding

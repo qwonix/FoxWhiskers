@@ -19,6 +19,7 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
+import ru.qwonix.android.foxwhiskers.entity.Dish
 
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
@@ -59,16 +60,10 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 
         val menuDishAdapter = MenuDishAdapter()
         val menuDishTypeChipAdapter = MenuDishTypeChipAdapter()
-        menuViewModel.dishTypeDishMap.observe(viewLifecycleOwner) {
-            val recyclerDishesAdapterDataModels = ArrayList<MenuDishAdapter.DataModel>()
-            for ((dishType, dishes) in it) {
-                recyclerDishesAdapterDataModels.add(MenuDishAdapter.DataModel.DishType(dishType))
-                for (dish in dishes) {
-                    recyclerDishesAdapterDataModels.add(MenuDishAdapter.DataModel.Dish(dish))
-                }
-            }
-            menuDishAdapter.dishes = recyclerDishesAdapterDataModels
-            menuDishTypeChipAdapter.dishTypes = it.keys.toList()
+        menuViewModel.dishes.observe(viewLifecycleOwner) {
+            val dishes = it.groupBy { dish: Dish -> dish.type }
+            menuDishAdapter.setDishes(dishes)
+            menuDishTypeChipAdapter.dishTypes = dishes.keys.toList()
         }
 
         binding.recyclerDishTypeChip.apply {
