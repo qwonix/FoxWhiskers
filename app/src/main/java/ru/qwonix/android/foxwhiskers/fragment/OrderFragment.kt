@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderDishAdapter
+import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
@@ -52,5 +53,11 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
 //                binding.progressDialog.visibility = View.GONE
 //            }
 //        })
+
+
+        binding.checkoutButton.setOnClickListener {
+            DemoBottomSheetDialogFragment().show(parentFragmentManager, "tag")
+        }
+
     }
 }

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="15dp"
+        tools:background="@color/gray_300">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/rubik_regular"
+            android:gravity="start"
+            android:text="Оформление заказа"
+            android:textColor="@color/gray_900"
+            android:textSize="24sp"
+            tools:text="Оформление заказа" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_white_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="Заберу здесь"
+                                android:textColor="@color/gray_900"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/rubik_light"
+                                android:text="ТРК Лиговъ\nСанкт-Петербург, Лиговский проспект, 153"
+                                android:textColor="@color/gray_700"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+
+                        <ImageView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="map point icon"
+                            android:elevation="1dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/map_point" />
+
+                    </FrameLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray_300" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="Приготовить как можно скорее"
+                            android:textColor="@color/gray_900"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/card_dish_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="map point icon"
+                            android:elevation="1dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/map_point" />
+
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_white_background"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|top"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Способ оплаты"
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|bottom"
+                        android:fontFamily="@font/rubik_light"
+                        android:text="Картой в приложении"
+                        android:textColor="@color/gray_700"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/payment_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="map point icon"
+                    android:elevation="1dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/map_point" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_yellow300_background"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="Оформить заказ"
+                    android:textColor="@color/gray_900"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:fontFamily="@font/rubik_light"
+                    android:text="@{String.valueOf(viewModel.orderPrice)}"
+                    android:textColor="@color/gray_900"
+                    android:textSize="16sp"
+                    tools:text="669.28 $" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>
