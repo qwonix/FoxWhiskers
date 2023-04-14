@@ -9,17 +9,17 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.squareup.picasso.Picasso
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
-import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
-import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.entity.DishType
+import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
+import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
@@ -59,11 +59,34 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         super.onViewCreated(view, savedInstanceState)
 
         val menuDishAdapter = MenuDishAdapter()
-        val menuDishTypeChipAdapter = MenuDishTypeChipAdapter()
+        val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
         menuViewModel.dishes.observe(viewLifecycleOwner) {
             val dishes = it.groupBy { dish: Dish -> dish.type }
             menuDishAdapter.setDishes(dishes)
-            menuDishTypeChipAdapter.dishTypes = dishes.keys.toList()
+
+            val chips: MutableMap<DishType, Int> =
+                mutableMapOf()
+            var i = 0
+            for ((k, v) in dishes) {
+                chips.put(k, i)
+                i += v.count() + 1
+            }
+
+            menuDishTypeChipAdapter.onItemClickListener =
+                object : MenuDishTypeChipAdapter.OnItemClickListener {
+                    override fun onItemClick(recyclerView: RecyclerView, position: Int) {
+                        val smoothScroller: SmoothScroller =
+                            object : LinearSmoothScroller(context) {
+                                override fun getVerticalSnapPreference(): Int {
+                                    return SNAP_TO_START
+                                }
+                            }
+                        smoothScroller.targetPosition = position
+                        recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
+                    }
+                }
+
+            menuDishTypeChipAdapter.setDishTypes(chips)
         }
 
         binding.recyclerDishTypeChip.apply {
