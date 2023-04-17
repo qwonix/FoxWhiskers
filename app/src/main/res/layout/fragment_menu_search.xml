@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/rectangle_gray500_background"
+                android:background="@drawable/rectangle_corners15_gray500_background"
                 android:clipToPadding="true"
                 android:paddingVertical="8dp"
                 android:paddingStart="20dp">

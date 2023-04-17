@@ -90,7 +90,7 @@
                     android:layout_width="40dp"
                     android:layout_height="30dp"
                     android:layout_marginHorizontal="5dp"
-                    android:background="@drawable/rectangle_yellow300_background"
+                    android:background="@drawable/rectangle_corners15_yellow300_background"
                     android:fontFamily="@font/rubik_regular"
                     android:gravity="center"
                     android:text="@{String.valueOf(dish.count)}"

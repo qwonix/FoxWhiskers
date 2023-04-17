@@ -37,7 +37,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_white_background">
+                android:background="@drawable/rectangle_corners15_white_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle_white_background"
+                android:background="@drawable/rectangle_corners15_white_background"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="10dp">
 
@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle_yellow300_background"
+                android:background="@drawable/rectangle_corners15_yellow300_background"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="15dp">
 
