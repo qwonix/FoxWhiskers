@@ -34,11 +34,10 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val value = menuViewModel.dishes.value ?: emptyList()
-        val data = value.filter { dish -> dish.count > 0 }.toMutableList()
-
         val orderDishAdapter = OrderDishAdapter()
-        orderDishAdapter.setData(data)
+        menuViewModel.dishes.observe(viewLifecycleOwner) {
+            orderDishAdapter.data = it.filter { dish -> dish.count > 0 }
+        }
 
         binding.recyclerOrderedDishes.apply {
             adapter = orderDishAdapter

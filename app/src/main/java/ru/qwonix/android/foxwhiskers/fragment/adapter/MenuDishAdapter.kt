@@ -12,23 +12,21 @@ import ru.qwonix.android.foxwhiskers.entity.DishType
 
 class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
 
-    private val dishes: MutableList<DataModel> = mutableListOf()
+    private val data: MutableList<DataModel> = mutableListOf()
 
-    private fun parseData(data: Map<DishType, List<Dish>>): ArrayList<DataModel> {
-        val recyclerDishesAdapterDataModels = ArrayList<DataModel>()
-        for ((dishType, dishes) in data) {
-            recyclerDishesAdapterDataModels.add(DataModel.DishType(dishType))
-            for (dish in dishes) {
-                recyclerDishesAdapterDataModels.add(DataModel.Dish(dish))
-            }
+    fun setDishes(dishes: List<Dish>) {
+        val data: Map<DishType, List<Dish>> = dishes.groupBy { dish: Dish -> dish.type }
+        val recyclerDishesAdapterDataModels =
+            ArrayList<DataModel>(data.size * 5) // pre-allocate capacity
+
+        for ((dishType, dishesByType) in data) {
+            recyclerDishesAdapterDataModels += DataModel.DishType(dishType)
+            recyclerDishesAdapterDataModels += dishesByType.map { DataModel.Dish(it) }
         }
-        return recyclerDishesAdapterDataModels
-    }
 
-    fun setDishes(dishes: Map<DishType, List<Dish>>) {
-        this.dishes.apply {
+        this.data.apply {
             clear()
-            addAll(parseData(dishes))
+            addAll(recyclerDishesAdapterDataModels)
         }
     }
 
@@ -45,11 +43,13 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
                 parent,
                 false
             )
+
             TYPE_DISH_TYPE -> ItemMenuDishTypeBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
@@ -57,13 +57,13 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dishes[position])
+        holder.bind(data[position])
     }
 
-    override fun getItemCount(): Int = dishes.size
+    override fun getItemCount(): Int = data.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (dishes[position]) {
+        return when (data[position]) {
             is DataModel.Dish -> TYPE_DISH
             is DataModel.DishType -> TYPE_DISH_TYPE
         }

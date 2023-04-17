@@ -40,8 +40,16 @@ class MenuViewModel : ViewModel() {
                     if (propertyId == BR.count) {
                         val sumOf =
                             _dishes.value!!.sumOf { dish -> dish.count * dish.currencyPrice }
-                        println("fuck $sumOf")
                         orderPrice.value = sumOf
+                    }
+                }
+            })
+
+            it.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                    if (((sender as Dish).count == 0)) {
+                        val dishes = _dishes.value!!.toMutableList()
+                        _dishes.postValue(dishes)
                     }
                 }
             })

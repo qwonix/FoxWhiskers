@@ -2,30 +2,21 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.Observable
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemOrderDishBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
 
 
 class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
-    private var data = mutableListOf<Dish>()
+    var data = emptyList<Dish>()
+        set(value) {
+            val orderDishesDiffUtil = OrderDishesDiffUtil(field, value)
+            val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
+            diffResult.dispatchUpdatesTo(this)
 
-    private val onDishCountChanged = object : Observable.OnPropertyChangedCallback() {
-        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            if (((sender as Dish).count == 0)) {
-                notifyItemRemoved(data.indexOf(sender))
-                this@OrderDishAdapter.data.remove(sender)
-            }
+            field = value
         }
-    }
-
-    fun setData(data: MutableList<Dish>) {
-        data.map {
-            it.addOnPropertyChangedCallback(onDishCountChanged)
-        }
-        this.data = data
-    }
 
     private lateinit var binding: ItemOrderDishBinding
 
@@ -47,5 +38,43 @@ class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
         fun bind(dish: Dish) {
             binding.dish = dish
         }
+    }
+
+    private class OrderDishesDiffUtil(
+        private val oldList: List<Dish>,
+        private val newList: List<Dish>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return when {
+                oldList[oldItemPosition].id != newList[newItemPosition].id -> {
+                    false
+                }
+
+                oldList[oldItemPosition].title != newList[newItemPosition].title -> {
+                    false
+                }
+
+                oldList[oldItemPosition].count != newList[newItemPosition].count -> {
+                    false
+                }
+
+                else -> {
+                    true
+                }
+            }
+        }
+
     }
 }

@@ -60,9 +60,13 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 
         val menuDishAdapter = MenuDishAdapter()
         val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
+
         menuViewModel.dishes.observe(viewLifecycleOwner) {
-            val dishes = it.groupBy { dish: Dish -> dish.type }
-            menuDishAdapter.setDishes(dishes)
+            menuDishAdapter.setDishes(it)
+        }
+
+        menuViewModel.dishes.observe(viewLifecycleOwner) {
+            val dishes: Map<DishType, List<Dish>> = it.groupBy { dish: Dish -> dish.type }
 
             val chips: MutableMap<DishType, Int> =
                 mutableMapOf()
@@ -88,6 +92,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 
             menuDishTypeChipAdapter.setDishTypes(chips)
         }
+
 
         binding.recyclerDishTypeChip.apply {
             adapter = menuDishTypeChipAdapter
