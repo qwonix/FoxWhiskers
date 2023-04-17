@@ -4,6 +4,14 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="java.math.BigDecimal"/>
+
+        <variable
+            name="priceFormat"
+            type="java.text.DecimalFormat" />
+
         <variable
             name="viewModel"
             type="ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel" />
@@ -21,11 +29,49 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/rubik_medium"
             android:gravity="center"
-            android:maxLines="1"
             android:text="Заказ"
             android:textColor="@color/gray_900"
             android:textSize="26sp"
             tools:text="Заказ" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.orderPrice.signum() == 0 ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="center"
+                android:text="Ваша корзина пуста, откройте Меню\nи выберите понравившийся товар"
+                android:textColor="@color/gray_700"
+                android:textSize="14sp" />
+
+            <FrameLayout
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginVertical="6dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="В меню"
+                    android:textColor="@color/gray_900"
+                    android:textSize="14sp" />
+
+            </FrameLayout>
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_ordered_dishes"
@@ -37,48 +83,49 @@
             tools:itemCount="3"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_order_dish"
-            tools:orientation="vertical"
-            tools:spanCount="2" />
+            tools:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/checkout_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
-                android:paddingHorizontal="5dp"
-                android:paddingVertical="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginVertical="6dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="Оформить заказ"
-                    android:textColor="@color/gray_900"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginHorizontal="12dp"
-                    android:layout_marginVertical="6dp"
-                    android:fontFamily="@font/rubik_medium"
-                    android:text="@{String.valueOf(viewModel.orderPrice)}"
-                    android:textColor="@color/gray_900"
-                    android:textSize="16sp"
-                    tools:text="669.28 $" />
-
-            </FrameLayout>
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/checkout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rectangle_corners15_yellow300_background"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="5dp"
+            android:visibility="@{viewModel.orderPrice.signum() != 0 ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp"
+                android:fontFamily="@font/rubik_regular"
+                android:text="Оформить заказ"
+                android:textColor="@color/gray_900"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="@{priceFormat.format(viewModel.orderPrice)}"
+                android:textColor="@color/gray_900"
+                android:textSize="16sp"
+                tools:text="669.28 ₽" />
+
+        </FrameLayout>
     </LinearLayout>
 </layout>

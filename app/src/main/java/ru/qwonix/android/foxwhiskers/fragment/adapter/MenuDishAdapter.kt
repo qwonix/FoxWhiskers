@@ -8,6 +8,7 @@ import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.DishType
+import ru.qwonix.android.foxwhiskers.util.Utils
 
 
 class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
@@ -72,6 +73,7 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         private fun bindDish(dish: DataModel.Dish) {
             (binding as ItemMenuDishBinding).dish = dish.value
+            (binding as ItemMenuDishBinding).priceFormat = Utils.DECIMAL_FORMAT
         }
 
         private fun bindDishType(dishType: DataModel.DishType) {

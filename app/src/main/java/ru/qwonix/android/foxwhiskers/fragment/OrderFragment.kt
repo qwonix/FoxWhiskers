@@ -1,5 +1,6 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderDishAdapter
 import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
+import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
@@ -27,6 +29,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         binding.apply {
             viewModel = menuViewModel
             lifecycleOwner = viewLifecycleOwner
+            priceFormat = Utils.DECIMAL_FORMAT
         }
         return binding.root
     }
@@ -43,19 +46,25 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
             adapter = orderDishAdapter
             val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             layoutManager = manager
+
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    outRect.bottom = 25
+                }
+            })
         }
-        // TODO: loading progress dialog
-//        viewModel.loading.observe(this, Observer {
-//            if (it) {
-//                binding.progressDialog.visibility = View.VISIBLE
-//            } else {
-//                binding.progressDialog.visibility = View.GONE
-//            }
-//        })
 
 
         binding.checkoutButton.setOnClickListener {
-            DemoBottomSheetDialogFragment().show(parentFragmentManager, "tag")
+            DemoBottomSheetDialogFragment(OrderConfirmationFragment.newInstance()).show(
+                parentFragmentManager,
+                "tag"
+            )
         }
 
     }

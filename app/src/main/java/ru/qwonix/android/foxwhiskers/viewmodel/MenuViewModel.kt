@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import ru.qwonix.android.foxwhiskers.BR
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.DishType
+import java.math.BigDecimal
+import java.math.BigInteger
 
 class MenuViewModel : ViewModel() {
 
@@ -16,7 +18,7 @@ class MenuViewModel : ViewModel() {
     private val _dishes = MutableLiveData<List<Dish>>(emptyList())
     val dishes: LiveData<List<Dish>> = _dishes
 
-    val orderPrice = MutableLiveData(0.0)
+    val orderPrice = MutableLiveData(BigDecimal(BigInteger.ZERO))
 
 //    var job: Job? = null
 
@@ -40,7 +42,7 @@ class MenuViewModel : ViewModel() {
                     if (propertyId == BR.count) {
                         val sumOf =
                             _dishes.value!!.sumOf { dish -> dish.count * dish.currencyPrice }
-                        orderPrice.value = sumOf
+                        orderPrice.value = BigDecimal(sumOf)
                     }
                 }
             })

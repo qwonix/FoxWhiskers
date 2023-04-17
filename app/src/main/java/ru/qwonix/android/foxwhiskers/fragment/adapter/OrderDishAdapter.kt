@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemOrderDishBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.util.Utils
 
 
 class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
@@ -37,6 +38,7 @@ class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dish: Dish) {
             binding.dish = dish
+            binding.priceFormat = Utils.DECIMAL_FORMAT
         }
     }
 
