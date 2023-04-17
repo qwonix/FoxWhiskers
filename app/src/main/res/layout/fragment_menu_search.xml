@@ -23,7 +23,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="12dp"
                 android:contentDescription="back arrow"
-                android:src="@drawable/back_arrow" />
+                android:src="@drawable/back_arrow_sign" />
 
             <FrameLayout
                 android:id="@+id/search_bar"
@@ -40,11 +40,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="14dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="back arrow"
+                        android:src="@drawable/search_sign" />
+
                     <EditText
                         android:id="@+id/search_bar_text_view"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@null"
                         android:fontFamily="@font/rubik_light"
@@ -62,18 +70,14 @@
                         android:layout_height="20dp"
                         android:layout_marginEnd="15dp"
                         android:adjustViewBounds="true"
-                        android:contentDescription="back arrow"
+                        android:contentDescription="clear text"
                         android:onClick="@{() -> searchBarTextView.getText().clear()}"
-                        android:src="@drawable/clear_cross"
+                        android:src="@drawable/clear_cross_sign"
                         android:visibility="invisible"
                         tools:visibility="visible" />
 
                 </LinearLayout>
-
-
             </FrameLayout>
-
-
         </LinearLayout>
 
 
