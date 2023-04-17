@@ -14,19 +14,40 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_gray500_background"
+                android:paddingVertical="9dp"
+                android:paddingStart="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/rubik_light"
+                    android:text="Поиск"
+                    android:textColor="@color/gray_700"
+                    android:textSize="12sp"
+                    tools:text="Поиск" />
+            </FrameLayout>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_dish_type_chip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingStart="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:clipToPadding="false"
+                android:paddingStart="15dp"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_menu_dish_type_chip"
                 tools:orientation="horizontal" />
         </LinearLayout>
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_dishes"

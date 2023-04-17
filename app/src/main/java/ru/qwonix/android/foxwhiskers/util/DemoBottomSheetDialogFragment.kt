@@ -11,9 +11,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.R
-import ru.qwonix.android.foxwhiskers.fragment.OrderConfirmationFragment
 
-class DemoBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class DemoBottomSheetDialogFragment(
+    private var startFragment: Fragment
+) : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
@@ -33,7 +34,7 @@ class DemoBottomSheetDialogFragment : BottomSheetDialogFragment() {
         childFragmentManager
             .beginTransaction()
             .add(
-                R.id.container, OrderConfirmationFragment.newInstance()
+                R.id.container, startFragment
             )
             .addToBackStack("fragment_root")
             .commit()
@@ -43,7 +44,7 @@ class DemoBottomSheetDialogFragment : BottomSheetDialogFragment() {
         return super.onCreateDialog(savedInstanceState)
             .also { dialog ->
                 dialog.setOnShowListener {
-                    val viewBehavior = BottomSheetBehavior.from<View>(
+                    val viewBehavior = BottomSheetBehavior.from(
                         dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet)
                     )
                     setupBehavior(viewBehavior)
