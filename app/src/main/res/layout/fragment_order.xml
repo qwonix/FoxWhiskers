@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="java.math.BigDecimal"/>
+        <import type="java.math.BigDecimal" />
 
         <variable
             name="priceFormat"
@@ -78,8 +78,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="15dp"
             android:layout_weight="1"
+            android:clipToPadding="true"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="5dp"
             tools:itemCount="3"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_order_dish"
