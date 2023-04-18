@@ -90,11 +90,18 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
         })
 
         binding.searchBarTextView.focusAndShowKeyboard()
+        binding.searchBarTextView.onSearch {  }
     }
 }
 
 private fun EditText.onSearch(callback: () -> Unit) {
     setOnEditorActionListener { _, actionId, _ ->
+        // hide keyboard
+        post {
+            val imm =
+                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(windowToken, 0)
+        }
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             callback.invoke()
             return@setOnEditorActionListener true
