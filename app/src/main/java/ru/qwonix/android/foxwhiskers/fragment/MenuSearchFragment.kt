@@ -1,6 +1,7 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,9 +13,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuSearchBinding
+import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
 
@@ -23,6 +29,8 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
     }
 
     private lateinit var binding: FragmentMenuSearchBinding
+    private val menuViewModel: MenuViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +47,25 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
             withDemoBottomSheet { dismiss() }
         }
 
+        val orderDishAdapter = MenuSearchDishAdapter()
+
+        binding.recyclerSearchedDishes.apply {
+            adapter = orderDishAdapter
+            val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            layoutManager = manager
+
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    outRect.bottom = 15
+                }
+            })
+        }
+
         binding.searchBarTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 //                TODO("Not yet implemented")
@@ -49,6 +76,9 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
             }
 
             override fun afterTextChanged(s: Editable) {
+                orderDishAdapter.data =
+                    menuViewModel.dishes.value!!.filter { dish -> dish.title.contains(s) }
+
                 if (s.isNotEmpty()) {
                     binding.clearText.visibility = View.VISIBLE
                 } else {

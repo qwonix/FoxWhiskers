@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:background="@drawable/rectangle_top_corners15_gray_300_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,12 +83,20 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_searched_dishes"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clipToPadding="true"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            tools:itemCount="4"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_menu_search_dish"
+            tools:orientation="vertical" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </LinearLayout>
 </layout>
