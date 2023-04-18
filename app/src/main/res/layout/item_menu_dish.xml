@@ -119,17 +119,15 @@
                         android:src="@drawable/plus_sign" />
                 </LinearLayout>
 
-                <com.google.android.material.card.MaterialCardView
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="10dp"
-                    android:backgroundTint="@color/gray_100"
+                    android:background="@drawable/rectangle_corners15_gray100_background"
                     android:onClick="@{() -> dish.setCount(dish.count + 1)}"
-                    android:visibility="@{dish.count == 0 ? View.VISIBLE : View.GONE}"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="0dp">
+                    android:visibility="@{dish.count == 0 ? View.VISIBLE : View.GONE}">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -141,7 +139,7 @@
                         android:textColor="@color/gray_900"
                         tools:text="669 ₽" />
 
-                </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
             </LinearLayout>
         </FrameLayout>
     </RelativeLayout>
