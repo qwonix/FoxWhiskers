@@ -22,6 +22,7 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
+
 class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
 
     companion object {
@@ -76,13 +77,14 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
             }
 
             override fun afterTextChanged(s: Editable) {
-                orderDishAdapter.data =
-                    menuViewModel.dishes.value!!.filter { dish -> dish.title.contains(s) }
-
-                if (s.isNotEmpty()) {
-                    binding.clearText.visibility = View.VISIBLE
-                } else {
+                if (s.isBlank()) {
+                    orderDishAdapter.data = emptyList()
                     binding.clearText.visibility = View.INVISIBLE
+                } else {
+                    orderDishAdapter.data =
+                        menuViewModel.dishes.value!!.filter { dish -> dish.title.contains(s, true) }
+                    binding.clearText.visibility = View.VISIBLE
+
                 }
             }
         })
