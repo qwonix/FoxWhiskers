@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="priceFormat"
+            type="java.text.DecimalFormat" />
+
+        <variable
             name="viewModel"
             type="ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel" />
     </data>
@@ -196,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:fontFamily="@font/rubik_light"
-                    android:text="@{String.valueOf(viewModel.orderPrice)}"
+                    android:text="@{priceFormat.format(viewModel.orderPrice)}"
                     android:textColor="@color/gray_900"
                     android:textSize="16sp"
                     tools:text="669.28 $" />

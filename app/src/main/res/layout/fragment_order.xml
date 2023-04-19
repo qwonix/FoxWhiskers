@@ -6,8 +6,6 @@
 
         <import type="android.view.View" />
 
-        <import type="java.math.BigDecimal" />
-
         <variable
             name="priceFormat"
             type="java.text.DecimalFormat" />

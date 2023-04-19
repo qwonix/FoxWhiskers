@@ -27,8 +27,8 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
     ): View {
         binding = FragmentOrderBinding.inflate(inflater, container, false)
         binding.apply {
-            viewModel = menuViewModel
             lifecycleOwner = viewLifecycleOwner
+            viewModel = menuViewModel
             priceFormat = Utils.DECIMAL_FORMAT
         }
         return binding.root
