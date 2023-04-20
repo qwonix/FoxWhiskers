@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="location"
+            type="ru.qwonix.android.foxwhiskers.entity.Location" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.yandex.mapkit.mapview.MapView
+            android:id="@+id/mapview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:background="@drawable/ic_launcher_background" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/rectangle_top_corners15_white_background"
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="3dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@color/gray_500" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="@{location.title}"
+                    android:textColor="@color/gray_900"
+                    android:textSize="20sp"
+                    tools:text="ТРК «Лиговъ»" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text='@{location.streetName + ", " + location.houseData}'
+                        android:textColor="@color/gray_900"
+                        android:textSize="16sp"
+                        tools:text="Лиговский проспект, 153" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/rubik_light"
+                        android:text='@{", " + location.cityName}'
+                        android:textColor="@color/gray_700"
+                        android:textSize="16sp"
+                        tools:text=", Санкт-Петербург" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/rubik_light"
+                        android:text="@{location.additionalInformation}"
+                        android:textColor="@color/gray_700"
+                        android:textSize="14sp"
+                        tools:text="Ежедневно: 10:30 – 21:30\nТелефон: +7 (999) 203–88–30" />
+
+                    <FrameLayout
+                        android:id="@+id/plan_route"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center"
+                        android:background="@drawable/rectangle_corners13_yellow300_background"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik_light"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="Маршрут"
+                            android:textColor="@color/gray_900" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/select_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/rectangle_corners15_yellow300_background"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_medium"
+                        android:gravity="center"
+                        android:text="Заберу отсюда"
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </FrameLayout>
+</layout>

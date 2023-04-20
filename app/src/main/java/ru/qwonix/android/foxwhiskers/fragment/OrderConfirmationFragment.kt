@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationBinding
 import ru.qwonix.android.foxwhiskers.util.Utils
+import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation) {
@@ -35,5 +36,8 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.optionPickupLocation.setOnClickListener {
+            withDemoBottomSheet { goToFullScreenFragment() }
+        }
     }
 }
