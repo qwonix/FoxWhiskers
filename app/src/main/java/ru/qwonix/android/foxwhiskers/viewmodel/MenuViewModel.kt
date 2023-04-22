@@ -4,15 +4,26 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.BR
 import ru.qwonix.android.foxwhiskers.entity.Dish
-import ru.qwonix.android.foxwhiskers.entity.DishType
+import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
+import ru.qwonix.android.foxwhiskers.repository.InMemoryRepository
 import java.math.BigDecimal
 import java.math.BigInteger
 
 class MenuViewModel : ViewModel() {
 
-//    val errorMessage = MutableLiveData<String>()
+    private var foxWhiskersRepository = InMemoryRepository.getInstance()
+
+    var job: Job? = null
+    val errorMessage = MutableLiveData<String>()
+    val loading = MutableLiveData<Boolean>()
 
     val selectedPickUpLocation: MutableLiveData<PickUpLocation> = MutableLiveData()
 
@@ -24,12 +35,9 @@ class MenuViewModel : ViewModel() {
 
     val orderPrice = MutableLiveData(BigDecimal(BigInteger.ZERO))
 
-//    var job: Job? = null
-
-    //    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-//        onError("Exception handled: ${throwable.localizedMessage}")
-//    }
-//    val loading = MutableLiveData<Boolean>()
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        onError("Exception handled: ${throwable.localizedMessage}")
+    }
 
     init {
         _locations.observeForever { selectedPickUpLocation.postValue(it.maxBy { location -> location.priority }) }
@@ -42,94 +50,70 @@ class MenuViewModel : ViewModel() {
         this.selectedPickUpLocation.postValue(pickUpLocation)
     }
 
-    fun loadDishesMapByType() {
-        val data = getData()
-        _dishes.postValue(data)
+    fun loadDishes() {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = foxWhiskersRepository.findAllDishes()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    val data = response.data
+                    _dishes.postValue(data)
 
-        data.map {
-            it.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                    if (propertyId == BR.count) {
-                        val sumOf =
-                            _dishes.value!!.sumOf { dish -> dish.count * dish.currencyPrice }
-                        orderPrice.value = BigDecimal(sumOf)
-                    }
-                }
-            })
 
-            it.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
-                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                    if (((sender as Dish).count == 0)) {
-                        val dishes = _dishes.value!!.toMutableList()
-                        _dishes.postValue(dishes)
+                    data.map {
+                        it.addOnPropertyChangedCallback(object :
+                            Observable.OnPropertyChangedCallback() {
+                            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                                if (propertyId == BR.count) {
+                                    val sumOf =
+                                        _dishes.value!!.sumOf { dish -> dish.count * dish.currencyPrice }
+                                    orderPrice.value = BigDecimal(sumOf)
+                                }
+                            }
+                        })
+
+                        it.addOnPropertyChangedCallback(object :
+                            Observable.OnPropertyChangedCallback() {
+                            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                                if (((sender as Dish).count == 0)) {
+                                    val dishes = _dishes.value!!.toMutableList()
+                                    _dishes.postValue(dishes)
+                                }
+                            }
+                        })
                     }
+                    loading.value = false
+                } else {
+                    onError("Error ${response.code} : ${response.message} ")
                 }
-            })
+            }
         }
-
-
-//        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-//            val response = mainRepository.getAllMovies()
-//            withContext(Dispatchers.Main) {
-//                if (response.isSuccessful) {
-//                    dishTypeDishMap.postValue(response.body())
-//                    loading.value = false
-//                } else {
-//                    onError("Error ${response.code()} : ${response.message()} ")
-//                }
-//            }
-//        }
     }
 
-    private fun getData(): List<Dish> {
-        return listOf(
-            Dish(
-                1,
-                "Пицца",
-                "https://i.imgur.com/dNpAg7f.jpg",
-                "целая, 42 см, 1350 гр",
-                "2131.32 ₽",
-                2131.32,
-                DishType("Пицца")
-            ),
-            Dish(
-                1,
-                "Пицца",
-                "https://i.imgur.com/H1ieAcE.png",
-                "целая, 42 см, 1350 гр",
-                "123 ₽",
-                123.0,
-                DishType("Пицца")
-            ),
-            Dish(
-                1,
-                "Пицца",
-                "https://i.imgur.com/H1ieAcE.png",
-                "целая, 42 см, 1350 гр",
-                "669 ₽",
-                669.0,
-                DishType("Пицца")
-            ),
-            Dish(
-                1,
-                "Пицца",
-                "https://i.imgur.com/kzUwGbe.jpg",
-                "целая, 42 см, 1350 гр",
-                "842 ₽",
-                842.0,
-                DishType("Пицца")
-            )
-        )
+    fun loadLocations() {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = foxWhiskersRepository.findAllLocations()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    val data = response.data
+                    _locations.postValue(data)
+
+                    loading.value = false
+                } else {
+                    onError("Error ${response.code} : ${response.message} ")
+                }
+            }
+        }
     }
 
-//    private fun onError(message: String) {
-//        errorMessage.value = message
-//        loading.value = false
-//    }
-//
-//    override fun onCleared() {
-//        super.onCleared()
-//        job?.cancel()
-//    }
+    private fun onError(message: String) {
+        errorMessage.value = message
+        loading.value = false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
+    }
+
 
 }
