@@ -29,6 +29,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             lifecycleOwner = viewLifecycleOwner
             viewModel = menuViewModel
             priceFormat = Utils.DECIMAL_FORMAT
+            pickupLocation = menuViewModel.selectedPickUpLocation.value
         }
         return binding.root
     }
@@ -37,7 +38,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         super.onViewCreated(view, savedInstanceState)
 
         binding.optionPickupLocation.setOnClickListener {
-            withDemoBottomSheet { goToFullScreenFragment() }
+            withDemoBottomSheet { goToOrderPickUpLocationFragment() }
         }
     }
 }

@@ -14,8 +14,12 @@ class MenuViewModel : ViewModel() {
 
 //    val errorMessage = MutableLiveData<String>()
 
+    val selectedPickUpLocation: MutableLiveData<PickUpLocation> = MutableLiveData()
 
-    private val _dishes = MutableLiveData<List<Dish>>(emptyList())
+    private val _locations: MutableLiveData<List<PickUpLocation>> = MutableLiveData()
+    val locations: LiveData<List<PickUpLocation>> = _locations
+
+    private val _dishes: MutableLiveData<List<Dish>> = MutableLiveData()
     val dishes: LiveData<List<Dish>> = _dishes
 
     val orderPrice = MutableLiveData(BigDecimal(BigInteger.ZERO))
@@ -28,9 +32,15 @@ class MenuViewModel : ViewModel() {
 //    val loading = MutableLiveData<Boolean>()
 
     init {
-        loadDishesMapByType()
+        _locations.observeForever { selectedPickUpLocation.postValue(it.maxBy { location -> location.priority }) }
+
+        loadDishes()
+        loadLocations()
     }
 
+    fun setSelectedLocation(pickUpLocation: PickUpLocation) {
+        this.selectedPickUpLocation.postValue(pickUpLocation)
+    }
 
     fun loadDishesMapByType() {
         val data = getData()

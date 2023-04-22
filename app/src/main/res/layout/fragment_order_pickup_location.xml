@@ -6,12 +6,13 @@
     <data>
 
         <variable
-            name="location"
-            type="ru.qwonix.android.foxwhiskers.entity.Location" />
+            name="pickupLocation"
+            type="ru.qwonix.android.foxwhiskers.entity.PickUpLocation" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:transitionName="FragmentOrderPickUpLocationTransition"
         android:layout_height="match_parent">
 
         <com.yandex.mapkit.mapview.MapView
@@ -38,6 +39,7 @@
                 android:background="@color/gray_500" />
 
             <LinearLayout
+                android:id="@+id/location_description_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -48,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/rubik_regular"
-                    android:text="@{location.title}"
+                    android:text="@{pickupLocation.title}"
                     android:textColor="@color/gray_900"
                     android:textSize="20sp"
                     tools:text="ТРК «Лиговъ»" />
@@ -62,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
-                        android:text='@{location.streetName + ", " + location.houseData}'
+                        android:text='@{pickupLocation.streetName + ", " + pickupLocation.houseData}'
                         android:textColor="@color/gray_900"
                         android:textSize="16sp"
                         tools:text="Лиговский проспект, 153" />
@@ -72,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/rubik_light"
-                        android:text='@{", " + location.cityName}'
+                        android:text='@{", " + pickupLocation.cityName}'
                         android:textColor="@color/gray_700"
                         android:textSize="16sp"
                         tools:text=", Санкт-Петербург" />
@@ -82,16 +84,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
+                    android:layout_marginVertical="10dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:fontFamily="@font/rubik_light"
-                        android:text="@{location.additionalInformation}"
+                        android:text="@{pickupLocation.additionalInformation}"
                         android:textColor="@color/gray_700"
                         android:textSize="14sp"
                         tools:text="Ежедневно: 10:30 – 21:30\nТелефон: +7 (999) 203–88–30" />
@@ -108,8 +110,8 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/rubik_light"
                             android:layout_gravity="center"
+                            android:fontFamily="@font/rubik_light"
                             android:gravity="center"
                             android:text="Маршрут"
                             android:textColor="@color/gray_900" />

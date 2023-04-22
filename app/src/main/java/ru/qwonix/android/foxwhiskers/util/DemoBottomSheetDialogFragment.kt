@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.R
+import ru.qwonix.android.foxwhiskers.fragment.OderPickUpLocationFragment
 
 class DemoBottomSheetDialogFragment(
     private var startFragment: Fragment
@@ -56,15 +57,10 @@ class DemoBottomSheetDialogFragment(
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.skipCollapsed = true
+        bottomSheetBehavior.isDraggable = false
     }
 
-//    fun goToHigherFragment() = transitToFragment(HighFragment.newInstance())
-//
-//    fun goToSmallerFragment() = transitToFragment(SmallFragment.newInstance())
-//
-//    fun goToFullScreenFragment() = transitToFragment(FullScreenFragment.newInstance())
-//
-//    fun goToLongLoadingFragment() = transitToFragment(LongLoadingFragment.newInstance())
+    fun goToOrderPickUpLocationFragment() = transitToFragment(OderPickUpLocationFragment.newInstance())
 
     private fun transitToFragment(newFragment: Fragment) {
         val currentFragmentRoot = childFragmentManager.fragments[0].requireView()

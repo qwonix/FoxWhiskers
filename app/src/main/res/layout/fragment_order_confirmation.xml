@@ -11,6 +11,10 @@
         <variable
             name="viewModel"
             type="ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel" />
+
+        <variable
+            name="pickupLocation"
+            type="ru.qwonix.android.foxwhiskers.entity.PickUpLocation" />
     </data>
 
     <LinearLayout
@@ -20,6 +24,7 @@
         android:layout_marginBottom="10dp"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
+        android:transitionName="FragmentOrderConfirmationTransition"
         tools:background="@color/gray_300">
 
         <TextView
@@ -75,9 +80,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:fontFamily="@font/rubik_light"
-                                android:text="ТРК Лиговъ\nСанкт-Петербург, Лиговский проспект, 153"
+                                android:text='@{pickupLocation.title + "\n" + pickupLocation.streetName + ", " + pickupLocation.houseData + ", " + pickupLocation.cityName}'
                                 android:textColor="@color/gray_700"
-                                android:textSize="10sp" />
+                                android:textSize="10sp"
+                                tools:text="ТРК Лиговъ\nСанкт-Петербург, Лиговский проспект, 153" />
 
                         </LinearLayout>
 
