@@ -13,23 +13,17 @@
             type="ru.qwonix.android.foxwhiskers.entity.DishType" />
     </data>
 
-    <FrameLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@{isChecked ? @drawable/rectangle_corners15_yellow300_background : @drawable/rectangle_stroke1_corners15_yellow300_background}"
+        android:fontFamily="@font/rubik_regular"
         android:paddingHorizontal="20dp"
-        android:paddingVertical="5dp"
-        tools:background="@drawable/rectangle_corners15_yellow300_background">
+        android:paddingVertical="8dp"
+        android:text="@{dishType.title}"
+        android:textColor="@color/gray_900"
+        android:textSize="14sp"
+        tools:background="@drawable/rectangle_corners15_yellow300_background"
+        tools:text="Пицца 42см" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="3dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="@{dishType.title}"
-            android:textColor="@color/gray_900"
-            android:textSize="12sp"
-            tools:text="Пицца 42см" />
-
-    </FrameLayout>
 </layout>
