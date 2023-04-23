@@ -130,8 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
-                            android:src="@{PaymentMethod.INAPP_ONLINE_CARD.drawableId}"
+                                            android:src="@{PaymentMethod.INAPP_ONLINE_CARD.drawableId}"
                             tools:src="@drawable/inapp_online_card_payment" />
 
                         <TextView
@@ -186,8 +185,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
-                            android:src="@{PaymentMethod.OFFLINE_CARD.drawableId}"
+                                            android:src="@{PaymentMethod.OFFLINE_CARD.drawableId}"
                             tools:src="@drawable/offline_card_payment" />
 
                         <TextView
@@ -235,8 +233,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
-                            android:src="@{PaymentMethod.CASH.drawableId}"
+                                            android:src="@{PaymentMethod.CASH.drawableId}"
                             tools:src="@drawable/cash_payment" />
 
                         <TextView
@@ -296,8 +293,7 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="map point icon"
                 android:elevation="1dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ic_launcher_background" />
         </FrameLayout>
     </LinearLayout>
 </layout>

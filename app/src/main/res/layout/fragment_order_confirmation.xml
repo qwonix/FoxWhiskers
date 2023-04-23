@@ -98,8 +98,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="map point icon"
                             android:elevation="1dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/map_point" />
+                                            android:src="@drawable/map_point" />
 
                     </FrameLayout>
 
@@ -131,8 +130,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="map point icon"
                             android:elevation="1dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/map_point" />
+                                            android:src="@drawable/map_point" />
 
                     </FrameLayout>
 

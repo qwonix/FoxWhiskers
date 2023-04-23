@@ -31,7 +31,6 @@
             android:layout_height="80dp"
             android:adjustViewBounds="true"
             android:contentDescription="dish image"
-            android:scaleType="fitCenter"
             android:src="@drawable/dish_example"
             app:imageUrl="@{dish.imageUrl}" />
 
@@ -92,8 +91,7 @@
                     android:contentDescription="map point icon"
                     android:elevation="1dp"
                     android:onClick="@{() -> dish.setCount(dish.count - 1)}"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/minus_sign" />
+                            android:src="@drawable/minus_sign" />
 
                 <TextView
                     android:layout_width="40dp"
@@ -114,8 +112,7 @@
                     android:contentDescription="map point icon"
                     android:elevation="1dp"
                     android:onClick="@{() -> dish.setCount(dish.count + 1)}"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/plus_sign" />
+                            android:src="@drawable/plus_sign" />
             </LinearLayout>
 
             <FrameLayout
