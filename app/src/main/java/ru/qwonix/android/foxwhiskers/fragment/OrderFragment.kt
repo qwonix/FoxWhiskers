@@ -38,8 +38,8 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         super.onViewCreated(view, savedInstanceState)
 
         val orderDishAdapter = OrderDishAdapter()
-        menuViewModel.dishes.observe(viewLifecycleOwner) {
-            orderDishAdapter.data = it.filter { dish -> dish.count > 0 }
+        menuViewModel.orderCart.observe(viewLifecycleOwner) {
+            orderDishAdapter.data = it
         }
 
         binding.recyclerOrderedDishes.apply {

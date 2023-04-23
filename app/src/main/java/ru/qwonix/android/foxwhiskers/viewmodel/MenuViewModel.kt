@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.qwonix.android.foxwhiskers.BR
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
@@ -37,6 +36,9 @@ class MenuViewModel : ViewModel() {
     private val _dishes: MutableLiveData<List<Dish>> = MutableLiveData()
     val dishes: LiveData<List<Dish>> = _dishes
 
+    private val _orderCart: MutableLiveData<List<Dish>> = MutableLiveData(emptyList())
+    val orderCart: LiveData<List<Dish>> = _orderCart
+
     val orderPrice = MutableLiveData(BigDecimal(BigInteger.ZERO))
 
     val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -45,6 +47,12 @@ class MenuViewModel : ViewModel() {
 
     init {
         _locations.observeForever { selectedPickUpLocation.postValue(it.maxBy { location -> location.priority }) }
+
+        _orderCart.observeForever { it ->
+            orderPrice.postValue(it.sumOf {
+                BigDecimal(it.currencyPrice).multiply((BigDecimal(it.count)))
+            })
+        }
 
         loadDishes()
         loadLocations()
@@ -66,26 +74,20 @@ class MenuViewModel : ViewModel() {
                     val data = response.data
                     _dishes.postValue(data)
 
-
-                    data.map {
-                        it.addOnPropertyChangedCallback(object :
+                    data.map { data ->
+                        data.addOnPropertyChangedCallback(object :
                             Observable.OnPropertyChangedCallback() {
                             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                                if (propertyId == BR.count) {
-                                    val sumOf =
-                                        _dishes.value!!.sumOf { dish -> dish.count * dish.currencyPrice }
-                                    orderPrice.value = BigDecimal(sumOf)
-                                }
-                            }
-                        })
+                                var newCart: List<Dish> = _orderCart.value!!
+                                val dish = sender as Dish
 
-                        it.addOnPropertyChangedCallback(object :
-                            Observable.OnPropertyChangedCallback() {
-                            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                                if (((sender as Dish).count == 0)) {
-                                    val dishes = _dishes.value!!.toMutableList()
-                                    _dishes.postValue(dishes)
+                                if (dish.count == 1 && dish !in newCart) {
+                                    newCart = newCart.plus(sender)
+                                } else if ((sender.count == 0)) {
+                                    newCart = newCart.minus(sender)
                                 }
+
+                                _orderCart.postValue(newCart)
                             }
                         })
                     }

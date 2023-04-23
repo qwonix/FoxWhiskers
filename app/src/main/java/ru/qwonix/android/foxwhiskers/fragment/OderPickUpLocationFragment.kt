@@ -68,6 +68,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
             FragmentOrderPickupLocationBinding.inflate(inflater, container, false)
 
         binding.apply {
+            // FIXME: pass directly menuViewModel
             pickupLocation = menuViewModel.selectedPickUpLocation.value
         }
 
