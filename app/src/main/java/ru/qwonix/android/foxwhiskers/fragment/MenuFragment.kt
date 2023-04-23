@@ -19,6 +19,7 @@ import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.DishType
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
+import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
@@ -137,6 +138,13 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                     outRect.right = 30
                 }
             })
+        }
+
+        binding.searchBar.setOnClickListener {
+            DemoBottomSheetDialogFragment(MenuSearchFragment.newInstance()).show(
+                parentFragmentManager,
+                "tag"
+            )
         }
 
     }
