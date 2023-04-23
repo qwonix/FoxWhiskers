@@ -101,6 +101,10 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
             withDemoBottomSheet { goBack() }
         }
 
+        binding.backArrow.setOnClickListener {
+            withDemoBottomSheet { goBack() }
+        }
+
         // smooth move camera to current selected
         menuViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
             binding.apply {
