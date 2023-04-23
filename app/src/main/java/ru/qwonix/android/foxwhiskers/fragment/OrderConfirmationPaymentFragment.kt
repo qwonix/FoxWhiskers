@@ -4,44 +4,49 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ru.qwonix.android.foxwhiskers.R
-import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationBinding
-import ru.qwonix.android.foxwhiskers.util.Utils
+import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationPaymentBinding
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
-class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation) {
+
+class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confirmation_payment) {
 
     companion object {
-        fun newInstance() = OrderConfirmationFragment()
+        fun newInstance() = OrderConfirmationPaymentFragment()
+
+        @JvmStatic
+        @BindingAdapter("android:src")
+        fun setImageViewResource(imageView: ImageView, resource: Int) {
+            imageView.setImageResource(resource)
+        }
     }
 
-    private lateinit var binding: FragmentOrderConfirmationBinding
     private val menuViewModel: MenuViewModel by activityViewModels()
+    private lateinit var binding: FragmentOrderConfirmationPaymentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOrderConfirmationBinding.inflate(inflater, container, false)
+        binding = FragmentOrderConfirmationPaymentBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = menuViewModel
-            priceFormat = Utils.DECIMAL_FORMAT
+
         }
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.optionPickupLocation.setOnClickListener {
-            withDemoBottomSheet { goToOrderPickUpLocationFragment() }
-        }
-
-        binding.optionPaymentMethod.setOnClickListener {
-            withDemoBottomSheet { goToOrderConfirmationPaymentFragment() }
+        binding.backArrow.setOnClickListener {
+            withDemoBottomSheet { goBack() }
         }
     }
 }

@@ -13,7 +13,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:transitionName="FragmentOrderPickUpLocationTransition">
+        android:transitionName="@string/transition_name">
 
         <com.yandex.mapkit.mapview.MapView
             android:id="@+id/mapview"
@@ -39,12 +39,12 @@
             android:orientation="vertical"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <FrameLayout
-                android:layout_width="30dp"
-                android:layout_height="3dp"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:background="@color/gray_500" />
+                android:src="@drawable/peek_drag" />
 
             <LinearLayout
                 android:id="@+id/location_description_view"

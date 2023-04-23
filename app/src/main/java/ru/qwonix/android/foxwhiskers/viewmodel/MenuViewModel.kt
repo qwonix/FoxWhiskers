@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.BR
 import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.repository.InMemoryRepository
 import java.math.BigDecimal
@@ -24,6 +25,9 @@ class MenuViewModel : ViewModel() {
     var job: Job? = null
     val errorMessage = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>()
+
+    val selectedPaymentMethod: MutableLiveData<PaymentMethod> =
+        MutableLiveData(PaymentMethod.INAPP_ONLINE_CARD)
 
     val selectedPickUpLocation: MutableLiveData<PickUpLocation> = MutableLiveData()
 
@@ -48,6 +52,10 @@ class MenuViewModel : ViewModel() {
 
     fun setSelectedLocation(pickUpLocation: PickUpLocation) {
         this.selectedPickUpLocation.postValue(pickUpLocation)
+    }
+
+    fun setSelectedPaymentMethod(paymentMethod: PaymentMethod) {
+        this.selectedPaymentMethod.postValue(paymentMethod)
     }
 
     fun loadDishes() {

@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.fragment.OderPickUpLocationFragment
+import ru.qwonix.android.foxwhiskers.fragment.OrderConfirmationPaymentFragment
 
 class DemoBottomSheetDialogFragment(
     private var startFragment: Fragment
@@ -61,6 +62,7 @@ class DemoBottomSheetDialogFragment(
     }
 
     fun goToOrderPickUpLocationFragment() = transitToFragment(OderPickUpLocationFragment.newInstance())
+    fun goToOrderConfirmationPaymentFragment() = transitToFragment(OrderConfirmationPaymentFragment.newInstance())
 
     private fun transitToFragment(newFragment: Fragment) {
         val currentFragmentRoot = childFragmentManager.fragments[0].requireView()
