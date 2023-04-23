@@ -1,7 +1,6 @@
 package ru.qwonix.android.foxwhiskers.util
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -70,12 +69,10 @@ class DemoBottomSheetDialogFragment(
         childFragmentManager
             .beginTransaction()
             .apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    addSharedElement(currentFragmentRoot, currentFragmentRoot.transitionName)
-                    setReorderingAllowed(true)
+                addSharedElement(currentFragmentRoot, currentFragmentRoot.transitionName)
+                setReorderingAllowed(true)
 
-                    newFragment.sharedElementEnterTransition = BottomSheetSharedTransition()
-                }
+                newFragment.sharedElementEnterTransition = BottomSheetSharedTransition()
             }
             .replace(R.id.container, newFragment)
             .addToBackStack(newFragment.javaClass.name)
