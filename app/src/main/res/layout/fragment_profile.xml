@@ -1,14 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.ProfileFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="userProfile"
+            type="ru.qwonix.android.foxwhiskers.entity.UserProfile" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ProfileFragment" />
+        android:background="@color/gray_300"
+        tools:context=".fragment.ProfileFragment">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:fontFamily="@font/rubik_medium"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="5dp"
+                android:text="Профиль"
+                android:textColor="@color/gray_900"
+                android:textSize="20sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_launcher_background" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:gravity="center"
+                        android:text='@{userProfile.firstName + " " + userProfile.lastName}'
+                        android:textColor="@color/gray_900"
+                        android:textSize="20dp"
+                        tools:text="Имя Фамилия" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/rectangle_top_corners15_white_background"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="2dp"
+                        android:text="Электронная почта"
+                        android:textColor="@color/gray_700"
+                        android:textSize="12dp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_corners15_gray500_background"
+                        android:fontFamily="@font/rubik_regular"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="8dp"
+                        android:text='@{userProfile.firstName + " " + userProfile.lastName}'
+                        android:textColor="@color/gray_700"
+                        android:textSize="16dp"
+                        tools:text="qwonix@yandex.ru" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/rectangle_top_corners15_white_background"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="2dp"
+                        android:text="Телефон"
+                        android:textColor="@color/gray_700"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_corners15_gray500_background"
+                        android:fontFamily="@font/rubik_regular"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="8dp"
+                        android:text='@{userProfile.firstName + " " + userProfile.lastName}'
+                        android:textColor="@color/gray_700"
+                        android:textSize="16dp"
+                        tools:text="+7 (981) 951-75-51" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</layout>
