@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
+import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.tinkoff.decoro.FormattedTextChangeListener
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -35,7 +36,6 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: replace 
         binding.phoneNumberTextView.focusAndShowKeyboard()
 
         val mask = MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)

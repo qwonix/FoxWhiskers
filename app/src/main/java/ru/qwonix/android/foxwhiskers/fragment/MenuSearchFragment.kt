@@ -1,6 +1,5 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
-import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -8,10 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuSearchBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
+import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
+import ru.qwonix.android.foxwhiskers.util.onSearch
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
@@ -91,58 +88,5 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
 
         binding.searchBarTextView.focusAndShowKeyboard()
         binding.searchBarTextView.onSearch {  }
-    }
-}
-
-private fun EditText.onSearch(callback: () -> Unit) {
-    setOnEditorActionListener { _, actionId, _ ->
-        // hide keyboard
-        post {
-            val imm =
-                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(windowToken, 0)
-        }
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            callback.invoke()
-            return@setOnEditorActionListener true
-        }
-        false
-    }
-}
-
-// https://stackoverflow.com/a/71587766
-fun View.focusAndShowKeyboard() {
-    /**
-     * This is to be called when the window already has focus.
-     */
-    fun View.showTheKeyboardNow() {
-        if (isFocused) {
-            post {
-                // We still post the call, just in case we are being notified of the windows focus
-                // but InputMethodManager didn't get properly setup yet.
-                val imm =
-                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-            }
-        }
-    }
-
-    requestFocus()
-    if (hasWindowFocus()) {
-        // No need to wait for the window to get focus.
-        showTheKeyboardNow()
-    } else {
-        // We need to wait until the window gets focus.
-        viewTreeObserver.addOnWindowFocusChangeListener(
-            object : ViewTreeObserver.OnWindowFocusChangeListener {
-                override fun onWindowFocusChanged(hasFocus: Boolean) {
-                    // This notification will arrive just before the InputMethodManager gets set up.
-                    if (hasFocus) {
-                        this@focusAndShowKeyboard.showTheKeyboardNow()
-                        // It’s very important to remove this listener once we are done.
-                        viewTreeObserver.removeOnWindowFocusChangeListener(this)
-                    }
-                }
-            })
     }
 }

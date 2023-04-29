@@ -15,13 +15,9 @@
             type="Boolean" />
     </data>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -144,7 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
-                        android:text="Повторить отправку кода ещё раз можно"
+                        android:text="Повторить отправку кода можно"
                         android:textColor="@color/gray_700"
                         android:textSize="12sp" />
 
@@ -192,5 +188,4 @@
                     android:visibility="@{isTimerExpired ? View.VISIBLE : View.GONE}" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
 </layout>

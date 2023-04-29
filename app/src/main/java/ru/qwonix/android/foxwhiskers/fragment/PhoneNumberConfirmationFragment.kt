@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
+import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import java.util.concurrent.TimeUnit
 
 
