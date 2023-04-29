@@ -25,6 +25,15 @@ class Utils {
 }
 
 fun EditText.onSearch(callback: () -> Unit) {
+    onImeAction(callback, EditorInfo.IME_ACTION_SEARCH)
+}
+
+fun EditText.onSend(callback: () -> Unit) {
+    onImeAction(callback, EditorInfo.IME_ACTION_SEND)
+}
+
+
+fun EditText.onImeAction(callback: () -> Unit, imeAction: Int) {
     setOnEditorActionListener { _, actionId, _ ->
         // hide keyboard
         post {
@@ -32,7 +41,7 @@ fun EditText.onSearch(callback: () -> Unit) {
                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(windowToken, 0)
         }
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        if (actionId == imeAction) {
             callback.invoke()
             return@setOnEditorActionListener true
         }

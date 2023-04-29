@@ -96,7 +96,7 @@
                     android:fontFamily="@font/rubik_medium"
                     android:gravity="center"
                     android:hint="×"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionSend"
                     android:inputType="number"
                     android:maxLength="1"
                     android:paddingHorizontal="15dp"

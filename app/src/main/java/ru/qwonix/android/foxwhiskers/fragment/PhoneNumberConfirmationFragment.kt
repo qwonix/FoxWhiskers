@@ -12,6 +12,7 @@ import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import java.util.concurrent.TimeUnit
+import ru.qwonix.android.foxwhiskers.util.onSend
 
 
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
@@ -108,6 +109,10 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
                     binding.checkCodeButton.callOnClick()
                 }
             }
+        }
+
+        binding.pinCodeDigit4.onSend {
+            binding.checkCodeButton.callOnClick()
         }
     }
 
