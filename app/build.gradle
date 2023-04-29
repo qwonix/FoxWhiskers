@@ -52,6 +52,8 @@ android {
 dependencies {
     implementation 'com.google.zxing:core:3.4.1'
 
+    implementation 'ru.tinkoff.decoro:decoro:1.5.1'
+
     // Yandex MapKit
     implementation 'com.yandex.android:maps.mobile:4.3.1-lite'
 
