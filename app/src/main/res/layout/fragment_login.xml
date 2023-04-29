@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container_login"
-    android:name="androidx.navigation.fragment.NavHostFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:defaultNavHost="true"
-    app:navGraph="@navigation/login_navigation_graph"
-    tools:layout="@layout/fragment_phone_number_input" />
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_corners15_yellow300_background"
+        android:fontFamily="@font/rubik_medium"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="5dp"
+        android:text="Вход"
+        android:textColor="@color/gray_900"
+        android:textSize="20sp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_login"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/login_navigation_graph"
+        tools:layout="@layout/fragment_phone_number_input" />
+
+</LinearLayout>

@@ -105,6 +105,7 @@
                 android:paddingVertical="2dp"
                 android:text='@{String.valueOf(viewModel.orderCart.size()) + " товаров"}'
                 android:textColor="@color/gray_700"
+                tools:text="3 товара"
                 android:textSize="12dp" />
 
             <FrameLayout

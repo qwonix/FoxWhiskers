@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/phoneNumberInputFragment"
         android:name="ru.qwonix.android.foxwhiskers.fragment.PhoneNumberInputFragment"
-        android:label="PhoneNumberInputFragment" />
+        android:label="PhoneNumberInputFragment" >
+        <action
+            android:id="@+id/action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment"
+            app:destination="@id/phoneNumberConfirmationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/phoneNumberConfirmationFragment"
+        android:name="ru.qwonix.android.foxwhiskers.fragment.PhoneNumberConfirmationFragment"
+        android:label="PhoneNumberConfirmationFragment" />
 </navigation>
