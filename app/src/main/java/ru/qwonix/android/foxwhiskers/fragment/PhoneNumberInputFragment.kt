@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
+import ru.qwonix.android.foxwhiskers.viewmodel.LoginViewModel
 import ru.tinkoff.decoro.FormattedTextChangeListener
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -19,6 +21,7 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) {
 
     private lateinit var binding: FragmentPhoneNumberInputBinding
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,8 +30,8 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
         binding = FragmentPhoneNumberInputBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            isMaskFilled = false
             hasError = false
+            isMaskFilled = false
         }
         return binding.root
     }
@@ -48,16 +51,26 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
             }
 
             override fun onTextFormatted(formatter: FormatWatcher, newFormattedText: String?) {
-                if (formatter.mask.filled()) {
-                    binding.hasError = false
-                    binding.isMaskFilled = true
+                val isMaskFilled = formatter.mask.filled()
+                val hasError = binding.hasError ?: false
+
+                binding.hasError = when {
+                    hasError == true && isMaskFilled == false -> false
+                    hasError == false && isMaskFilled == false -> false
+                    hasError == true && isMaskFilled == true -> false
+                    hasError == false && isMaskFilled == false -> true
+                    else -> false
                 }
+                binding.isMaskFilled = isMaskFilled
             }
         })
 
 
         binding.sendCodeButton.setOnClickListener {
-            if (binding.isMaskFilled == true) {
+            if (binding.hasError == false && binding.isMaskFilled == true) {
+                loginViewModel.phoneNumber = binding.phoneNumberTextView.text.toString()
+                loginViewModel.sendCode()
+
                 findNavController().navigate(R.id.action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment)
             } else {
                 binding.hasError = true
