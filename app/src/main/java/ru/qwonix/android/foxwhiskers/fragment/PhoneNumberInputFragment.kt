@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
-import ru.qwonix.android.foxwhiskers.viewmodel.LoginViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
 import ru.tinkoff.decoro.FormattedTextChangeListener
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -21,7 +21,7 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) {
 
     private lateinit var binding: FragmentPhoneNumberInputBinding
-    private val loginViewModel: LoginViewModel by activityViewModels()
+    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,8 +68,8 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
 
         binding.sendCodeButton.setOnClickListener {
             if (binding.hasError == false && binding.isMaskFilled == true) {
-                loginViewModel.phoneNumber = binding.phoneNumberTextView.text.toString()
-                loginViewModel.sendCode()
+                userProfileViewModel.phoneNumber = binding.phoneNumberTextView.text.toString()
+                userProfileViewModel.sendCode()
 
                 findNavController().navigate(R.id.action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment)
             } else {

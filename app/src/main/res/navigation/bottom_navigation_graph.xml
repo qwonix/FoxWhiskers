@@ -11,16 +11,36 @@
         android:id="@+id/orderFragment"
         android:name="ru.qwonix.android.foxwhiskers.fragment.OrderFragment"
         android:label="OrderFragment" />
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="ru.qwonix.android.foxwhiskers.fragment.ProfileFragment"
-        android:label="ProfileFragment">
-        <action
-            android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="ru.qwonix.android.foxwhiskers.fragment.LoginFragment"
-        android:label="LoginFragment" />
+
+    <navigation
+        android:id="@+id/profileNavigation"
+        app:startDestination="@id/profileFragment">
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="ru.qwonix.android.foxwhiskers.fragment.ProfileFragment"
+            android:label="ProfileFragment">
+            <action
+                android:id="@+id/action_profileFragment_to_phoneNumberInputFragment"
+                app:destination="@id/phoneNumberInputFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/phoneNumberConfirmationFragment"
+            android:name="ru.qwonix.android.foxwhiskers.fragment.PhoneNumberConfirmationFragment"
+            android:label="PhoneNumberConfirmationFragment">
+            <action
+                android:id="@+id/action_phoneNumberConfirmationFragment_to_profileFragment"
+                app:destination="@id/profileFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/phoneNumberInputFragment"
+            android:name="ru.qwonix.android.foxwhiskers.fragment.PhoneNumberInputFragment"
+            android:label="PhoneNumberInputFragment">
+
+            <action
+                android:id="@+id/action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment"
+                app:destination="@id/phoneNumberConfirmationFragment" />
+        </fragment>
+    </navigation>
+
 </navigation>

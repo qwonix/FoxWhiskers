@@ -1,5 +1,6 @@
 package ru.qwonix.android.foxwhiskers.viewmodel
 
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,21 +14,17 @@ import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
-import ru.qwonix.android.foxwhiskers.repository.InMemoryRepository
+import ru.qwonix.android.foxwhiskers.repository.impl.InMemoryRepository
 import java.math.BigDecimal
 import java.math.BigInteger
 
 class MenuViewModel : ViewModel() {
 
-    private var foxWhiskersRepository = InMemoryRepository.getInstance()
+    private var menuRepository = InMemoryRepository.getInstance()
 
     var job: Job? = null
     val errorMessage = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>()
-
-    var userProfile: UserProfile? = null
-    fun isUserLogged(): Boolean = userProfile != null
 
     val selectedPaymentMethod: MutableLiveData<PaymentMethod> =
         MutableLiveData(PaymentMethod.INAPP_ONLINE_CARD)
@@ -70,23 +67,9 @@ class MenuViewModel : ViewModel() {
         this.selectedPaymentMethod.postValue(paymentMethod)
     }
 
-    fun loadProfile() {
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = foxWhiskersRepository.findUserProfile()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val data = response.data
-                    userProfile = data
-                } else {
-                    onError("Error ${response.code} : ${response.message} ")
-                }
-            }
-        }
-    }
-
     fun loadDishes() {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = foxWhiskersRepository.findAllDishes()
+            val response = menuRepository.findAllDishes()
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val data = response.data
@@ -119,7 +102,7 @@ class MenuViewModel : ViewModel() {
 
     fun loadLocations() {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = foxWhiskersRepository.findAllLocations()
+            val response = menuRepository.findAllLocations()
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val data = response.data
@@ -134,6 +117,7 @@ class MenuViewModel : ViewModel() {
     }
 
     private fun onError(message: String) {
+        Log.e("tag", message)
         errorMessage.value = message
         loading.value = false
     }

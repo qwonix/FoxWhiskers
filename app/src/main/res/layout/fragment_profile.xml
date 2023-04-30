@@ -87,7 +87,7 @@
                         android:fontFamily="@font/rubik_regular"
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="8dp"
-                        android:text='@{userProfile.firstName + " " + userProfile.lastName}'
+                        android:text='@{userProfile.email}'
                         android:textColor="@color/gray_700"
                         android:textSize="16dp"
                         tools:text="qwonix@yandex.ru" />
@@ -119,7 +119,7 @@
                         android:fontFamily="@font/rubik_regular"
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="8dp"
-                        android:text='@{userProfile.firstName + " " + userProfile.lastName}'
+                        android:text='@{userProfile.phoneNumber}'
                         android:textColor="@color/gray_700"
                         android:textSize="16dp"
                         tools:text="+7 (981) 951-75-51" />

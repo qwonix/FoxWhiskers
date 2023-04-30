@@ -9,18 +9,19 @@ import androidx.core.text.isDigitsOnly
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
-import ru.qwonix.android.foxwhiskers.viewmodel.LoginViewModel
-import java.util.concurrent.TimeUnit
 import ru.qwonix.android.foxwhiskers.util.onSend
+import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
+import java.util.concurrent.TimeUnit
 
 
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
 
     private lateinit var binding: FragmentPhoneNumberConfirmationBinding
-    private val loginViewModel: LoginViewModel by activityViewModels()
+    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
 
     private var countDownTimer: CountDownTimer =
         object : CountDownTimer(((3 * 2 * 1000).toLong()), 1000) {
@@ -49,10 +50,6 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
             hasError = false
         }
 
-        loginViewModel.authenticationIsSuccessful.observe(viewLifecycleOwner) {
-            binding.hasError = !it
-        }
-
         countDownTimer.start()
         return binding.root
     }
@@ -61,20 +58,27 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
         super.onViewCreated(view, savedInstanceState)
 
         binding.checkCodeButton.setOnClickListener {
-            binding.apply {
-                val pinCode =
-                    "${pinCodeDigit1.text}${pinCodeDigit2.text}${pinCodeDigit3.text}${pinCodeDigit4.text}"
-                if (pinCode.length == 4 && pinCode.isDigitsOnly()) {
-                    loginViewModel.checkCode(pinCode)
-                } else {
+            userProfileViewModel.userProfile.observe(viewLifecycleOwner) {
+                if (it == null) {
                     binding.hasError = true
+                } else {
+                    findNavController().navigate(R.id.action_phoneNumberConfirmationFragment_to_profileFragment)
                 }
             }
+
+            val pinCode =
+                "${binding.pinCodeDigit1.text}${binding.pinCodeDigit2.text}${binding.pinCodeDigit3.text}${binding.pinCodeDigit4.text}"
+            if (pinCode.length == 4 && pinCode.isDigitsOnly()) {
+                userProfileViewModel.authenticateWithPinCode(pinCode.toInt())
+            } else {
+                binding.hasError = true
+            }
+
         }
 
         binding.sendAgainButton.setOnClickListener {
             binding.isTimerExpired = false
-            loginViewModel.sendCode()
+            userProfileViewModel.sendCode()
             countDownTimer.start()
         }
 

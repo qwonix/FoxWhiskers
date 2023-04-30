@@ -9,12 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding: FragmentProfileBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,8 +26,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!menuViewModel.isUserLogged()) {
-            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        userProfileViewModel.userProfile.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.userProfile = it
+            } else {
+                findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
+            }
         }
     }
 }
