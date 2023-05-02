@@ -1,4 +1,4 @@
-package ru.qwonix.android.foxwhiskers.service.impl
+package ru.qwonix.android.foxwhiskers.retrofit
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
@@ -6,12 +6,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.firstOrNull
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
-import ru.qwonix.android.foxwhiskers.repository.ResponseDao
-import ru.qwonix.android.foxwhiskers.service.LocalStorageService
 
-class LocalStorageServiceImpl(
-    private val context: Context
-) : LocalStorageService {
+
+class LocalStorageRepository (private val context: Context) {
 
     private val Context.dataStore by preferencesDataStore(name = "UserProfile")
 
@@ -25,25 +22,23 @@ class LocalStorageServiceImpl(
     }
 
 
-    override suspend fun loadUserProfile(): ResponseDao<UserProfile?> {
+    suspend fun loadUserProfile(): UserProfile? {
         val preferences = context.dataStore.data.firstOrNull()
         return if (preferences == null || !preferences.contains(FIRST_NAME)) {
-            ResponseDao.ofNullable(null)
+            null
         } else {
-            ResponseDao.ofSuccess(
-                UserProfile(
-                    firstName = preferences[FIRST_NAME],
-                    lastName = preferences[LAST_NAME],
-                    email = preferences[EMAIL],
-                    phoneNumber = preferences[PHONE_NUMBER] ?: "",
-                    jwtAccessToken = preferences[JWT_ACCESS_TOKEN] ?: "",
-                    jwtRefreshToken = preferences[JWT_REFRESH_TOKEN] ?: ""
-                )
+            UserProfile(
+                firstName = preferences[FIRST_NAME],
+                lastName = preferences[LAST_NAME],
+                email = preferences[EMAIL],
+                phoneNumber = preferences[PHONE_NUMBER] ?: "",
+                jwtAccessToken = preferences[JWT_ACCESS_TOKEN] ?: "",
+                jwtRefreshToken = preferences[JWT_REFRESH_TOKEN] ?: ""
             )
         }
     }
 
-    override suspend fun saveUserProfile(userProfile: UserProfile) {
+    suspend fun saveUserProfile(userProfile: UserProfile) {
         context.dataStore.edit { preferences ->
             preferences[FIRST_NAME] = userProfile.firstName ?: ""
             preferences[LAST_NAME] = userProfile.lastName ?: ""
@@ -54,7 +49,7 @@ class LocalStorageServiceImpl(
         }
     }
 
-    override suspend fun clearUserProfile() {
+    suspend fun clearUserProfile() {
         context.dataStore.edit { preferences ->
             preferences.clear()
         }

@@ -9,7 +9,6 @@ class Dish(
     var title: String,
     var imageUrl: String,
     var shortDescription: String,
-    var currencyPriceText: String,
     var currencyPrice: Double,
     var type : DishType
 ) : BaseObservable() {

@@ -6,33 +6,40 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
-import ru.qwonix.android.foxwhiskers.repository.impl.AuthenticationRepositoryImpl
-import ru.qwonix.android.foxwhiskers.service.AuthenticationService
-import ru.qwonix.android.foxwhiskers.service.LocalStorageService
-import ru.qwonix.android.foxwhiskers.service.impl.AuthenticationServiceImpl
-import ru.qwonix.android.foxwhiskers.service.impl.LocalStorageServiceImpl
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import ru.qwonix.android.foxwhiskers.retrofit.AuthenticationRepository
+import ru.qwonix.android.foxwhiskers.retrofit.LocalStorageRepository
+import ru.qwonix.android.foxwhiskers.retrofit.MenuRepository
+import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
-class NetworkModule {
+object NetworkModule {
 
     @Provides
-    fun provideAuthenticationService(
-        authenticationRepository: AuthenticationRepository
-    ): AuthenticationService {
-        return AuthenticationServiceImpl(authenticationRepository)
-    }
+    fun provideBaseUrl(): String = BuildConfig.FOX_WHISKERS_API_URL
 
     @Provides
-    fun provideLocalStorageService(
+    @Singleton
+    fun provideRetrofit(BASE_URL: String): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(BASE_URL)
+        .build()
+
+    @Provides
+    @Singleton
+    fun provideMenuRepository(retrofit: Retrofit): MenuRepository =
+        retrofit.create(MenuRepository::class.java)
+
+    @Provides
+    fun provideAuthenticationRepository(retrofit: Retrofit): AuthenticationRepository =
+        retrofit.create(AuthenticationRepository::class.java)
+
+    @Provides
+    fun provideLocalStorageRepository(
         @ApplicationContext context: Context
-    ): LocalStorageService {
-        return LocalStorageServiceImpl(context)
-    }
-
-    @Provides
-    fun provideAuthenticationRepository(): AuthenticationRepository {
-        return AuthenticationRepositoryImpl()
+    ): LocalStorageRepository {
+        return LocalStorageRepository(context)
     }
 }
 

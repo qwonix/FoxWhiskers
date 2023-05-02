@@ -5,6 +5,7 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,13 +15,15 @@ import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
-import ru.qwonix.android.foxwhiskers.repository.impl.InMemoryRepository
+import ru.qwonix.android.foxwhiskers.retrofit.MenuRepository
 import java.math.BigDecimal
 import java.math.BigInteger
+import javax.inject.Inject
 
-class MenuViewModel : ViewModel() {
-
-    private var menuRepository = InMemoryRepository.getInstance()
+@HiltViewModel
+class MenuViewModel @Inject constructor(
+    private val menuRepository: MenuRepository
+) : ViewModel() {
 
     var job: Job? = null
     val errorMessage = MutableLiveData<String>()
@@ -71,10 +74,9 @@ class MenuViewModel : ViewModel() {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = menuRepository.findAllDishes()
             withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val data = response.data
-                    _dishes.postValue(data)
-
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
+                    _dishes.postValue(data!!)
                     data.map { data ->
                         data.addOnPropertyChangedCallback(object :
                             Observable.OnPropertyChangedCallback() {
@@ -94,7 +96,7 @@ class MenuViewModel : ViewModel() {
                     }
                     loading.value = false
                 } else {
-                    onError("Error ${response.code} : ${response.message} ")
+                    onError("Error ${response.code()} : ${response.errorBody()} ")
                 }
             }
         }
@@ -104,13 +106,12 @@ class MenuViewModel : ViewModel() {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = menuRepository.findAllLocations()
             withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val data = response.data
-                    _locations.postValue(data)
-
+                val data = response.body()
+                if (response.isSuccessful && data != null) {
+                    _locations.postValue(data!!)
                     loading.value = false
                 } else {
-                    onError("Error ${response.code} : ${response.message} ")
+                    onError("Error ${response.errorBody()} : ${response.code()} ")
                 }
             }
         }
@@ -118,7 +119,7 @@ class MenuViewModel : ViewModel() {
 
     private fun onError(message: String) {
         Log.e("tag", message)
-        errorMessage.value = message
+        errorMessage.postValue(message)
         loading.value = false
     }
 

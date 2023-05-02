@@ -12,15 +12,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
-import ru.qwonix.android.foxwhiskers.service.AuthenticationService
-import ru.qwonix.android.foxwhiskers.service.LocalStorageService
+import ru.qwonix.android.foxwhiskers.retrofit.AuthenticationRepository
+import ru.qwonix.android.foxwhiskers.retrofit.LocalStorageRepository
 import ru.qwonix.android.foxwhiskers.util.Utils
 import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-    private val localStorageService: LocalStorageService,
-    private val authenticationService: AuthenticationService,
+    private val localStorageRepository: LocalStorageRepository,
+    private val authenticationRepository: AuthenticationRepository,
 ) : ViewModel() {
 
     private var job: Job? = null
@@ -32,53 +32,54 @@ class UserProfileViewModel @Inject constructor(
     val loggedUserProfile: LiveData<UserProfile?> = _loggedUserProfile
 
     init {
-        tryLoadProfile()
+//        tryLoadProfile()
     }
 
     fun tryLoadProfile() {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = localStorageService.loadUserProfile()
+            val response = localStorageRepository.loadUserProfile()
             withContext(Dispatchers.Main) {
-                _loggedUserProfile.postValue(response.data)
+                _loggedUserProfile.postValue(response)
             }
         }
     }
 
     fun authenticateWithPinCode(phoneNumber: String, code: Int) {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val authenticationResponse = authenticationService.authenticate(phoneNumber, code)
+            val authenticationResponse = authenticationRepository.authenticate(phoneNumber, code)
             withContext(Dispatchers.Main) {
-                if (authenticationResponse.isSuccessful && authenticationResponse.data != null) {
-                    val authenticationResponseDTO = authenticationResponse.data
-                    val loadedUserProfile = authenticationService.findUserProfile(
+                val authenticationResponseDTO = authenticationResponse.body()
+                if (authenticationResponse.isSuccessful && authenticationResponseDTO != null) {
+                    val loadedUserProfile = authenticationRepository.findUserProfile(
                         phoneNumber,
                         authenticationResponseDTO.jwtAccessToken
                     )
 
-                    if (loadedUserProfile.isSuccessful && loadedUserProfile.data != null) {
-                        _loggedUserProfile.postValue(loadedUserProfile.data)
+                    val userProfile = loadedUserProfile.body()
+                    if (loadedUserProfile.isSuccessful && userProfile != null) {
+                        _loggedUserProfile.postValue(userProfile)
 
-                        localStorageService.clearUserProfile()
-                        localStorageService.saveUserProfile(loadedUserProfile.data)
+                        localStorageRepository.clearUserProfile()
+                        localStorageRepository.saveUserProfile(userProfile)
                     } else {
-                        onError("Error ${loadedUserProfile.code} : ${loadedUserProfile.message} ")
+                        onError("Error $userProfile : ${loadedUserProfile.code()} ")
                     }
                 } else {
-                    onError("Error ${authenticationResponse.code} : ${authenticationResponse.message} ")
+                    onError("Error ${authenticationResponse.code()} : ${authenticationResponse.errorBody()} ")
                 }
             }
         }
     }
 
     suspend fun updateProfile(userProfileToUpdate: UserProfile) : UserProfile? {
-        val response = authenticationService.updateProfile(userProfileToUpdate)
+        val response = authenticationRepository.updateProfile(userProfileToUpdate)
 
-        val updatedUserProfile = response.data
+        val updatedUserProfile = response.body()
         _loggedUserProfile.postValue(updatedUserProfile)
 
         if (response.isSuccessful && updatedUserProfile != null) {
-            localStorageService.clearUserProfile()
-            localStorageService.saveUserProfile(updatedUserProfile)
+            localStorageRepository.clearUserProfile()
+            localStorageRepository.saveUserProfile(updatedUserProfile)
         }
 
         return updatedUserProfile
@@ -86,12 +87,12 @@ class UserProfileViewModel @Inject constructor(
 
     fun sendCode(phoneNumber: String) {
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            authenticationService.sendAuthenticationSmsCodeToNumber(phoneNumber)
+            authenticationRepository.sendAuthenticationSmsCodeToNumber(phoneNumber)
         }
     }
 
     suspend fun logout() {
-        localStorageService.clearUserProfile()
+        localStorageRepository.clearUserProfile()
         _loggedUserProfile.postValue(null)
     }
 
