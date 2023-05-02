@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
 import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
@@ -41,6 +43,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
 
                 binding.logoutButton.setOnClickListener {
+                    lifecycleScope.launch {
+                        userProfileViewModel.logout()
+                    }
+                }
+
+                binding.editButton.setOnClickListener {
                     findNavController().navigate(
                         ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
                             userProfile

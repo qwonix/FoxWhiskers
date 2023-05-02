@@ -90,6 +90,11 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
+    suspend fun logout() {
+        localStorageService.clearUserProfile()
+        _loggedUserProfile.postValue(null)
+    }
+
     fun isValidFirstName(firstName: String): Boolean {
         return Utils.FIRSTNAME_REGEX.matches(firstName)
     }

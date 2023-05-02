@@ -42,10 +42,19 @@
                     android:id="@+id/logout_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
+                    android:gravity="center"
+                    android:layout_gravity="start|center_vertical"
                     android:layout_marginStart="10dp"
                     android:contentDescription="back arrow"
                     android:src="@drawable/logout_sign" />
+                <ImageView
+                    android:id="@+id/edit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="back arrow"
+                    android:src="@drawable/edit_sign" />
             </FrameLayout>
 
 
