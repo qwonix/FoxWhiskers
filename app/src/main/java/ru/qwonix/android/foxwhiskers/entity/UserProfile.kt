@@ -11,4 +11,8 @@ data class UserProfile(
     val phoneNumber: String,
     val jwtAccessToken: String,
     val jwtRefreshToken: String
-) : Parcelable
+) : Parcelable {
+    fun isRequiredForEdit(): Boolean {
+        return firstName.isNullOrBlank() || lastName.isNullOrBlank() || email.isNullOrBlank()
+    }
+}

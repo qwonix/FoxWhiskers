@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
@@ -20,8 +21,12 @@ import java.util.concurrent.TimeUnit
 
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
 
-    private lateinit var binding: FragmentPhoneNumberConfirmationBinding
     private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+
+    private val args: PhoneNumberConfirmationFragmentArgs by navArgs()
+    private lateinit var phoneNumber: String
+
+    private lateinit var binding: FragmentPhoneNumberConfirmationBinding
 
     private var countDownTimer: CountDownTimer =
         object : CountDownTimer(((3 * 2 * 1000).toLong()), 1000) {
@@ -50,6 +55,8 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
             hasError = false
         }
 
+        this.phoneNumber = args.phoneNumber
+
         countDownTimer.start()
         return binding.root
     }
@@ -57,8 +64,10 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.pinCodeDigit1.focusAndShowKeyboard()
+
         binding.checkCodeButton.setOnClickListener {
-            userProfileViewModel.userProfile.observe(viewLifecycleOwner) {
+            userProfileViewModel.loggedUserProfile.observe(viewLifecycleOwner) {
                 if (it == null) {
                     binding.hasError = true
                 } else {
@@ -69,20 +78,18 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
             val pinCode =
                 "${binding.pinCodeDigit1.text}${binding.pinCodeDigit2.text}${binding.pinCodeDigit3.text}${binding.pinCodeDigit4.text}"
             if (pinCode.length == 4 && pinCode.isDigitsOnly()) {
-                userProfileViewModel.authenticateWithPinCode(pinCode.toInt())
+                userProfileViewModel.authenticateWithPinCode(phoneNumber, pinCode.toInt())
             } else {
                 binding.hasError = true
             }
-
         }
 
         binding.sendAgainButton.setOnClickListener {
             binding.isTimerExpired = false
-            userProfileViewModel.sendCode()
+            userProfileViewModel.sendCode(phoneNumber)
             countDownTimer.start()
         }
 
-        binding.pinCodeDigit1.focusAndShowKeyboard()
 
         binding.pinCodeDigit1.addTextChangedListener {
             binding.hasError = false

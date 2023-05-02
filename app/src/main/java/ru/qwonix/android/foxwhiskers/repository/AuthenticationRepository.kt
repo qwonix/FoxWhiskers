@@ -4,7 +4,6 @@ import ru.qwonix.android.foxwhiskers.AuthenticationResponseDTO
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
 
 interface AuthenticationRepository {
-    suspend fun loadUserProfile(jwtAccessToken: String): ResponseDao<UserProfile?>
     suspend fun loadUserProfile(
         phoneNumber: String,
         jwtAccessToken: String

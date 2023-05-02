@@ -9,8 +9,10 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.coroutines.launch
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileEditingBinding
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
@@ -19,11 +21,12 @@ import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
 
 class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
-    private val args: ProfileEditingFragmentArgs by navArgs()
-    private lateinit var binding: FragmentProfileEditingBinding
-
-    private lateinit var changedUserProfile: UserProfile
     private val profileViewModel: UserProfileViewModel by activityViewModels()
+
+    private val args: ProfileEditingFragmentArgs by navArgs()
+    private lateinit var changedUserProfile: UserProfile
+
+    private lateinit var binding: FragmentProfileEditingBinding
 
     companion object {
 
@@ -105,17 +108,24 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 && binding.lastnameFieldState?.isCorrect() == true
                 && binding.emailFieldState?.isCorrect() == true
             ) {
-                profileViewModel.updateProfile(
-                    UserProfile(
-                        firstName,
-                        lastName,
-                        email,
-                        changedUserProfile.phoneNumber,
-                        changedUserProfile.jwtAccessToken,
-                        changedUserProfile.jwtRefreshToken
+                lifecycleScope.launch {
+                    val result = profileViewModel.updateProfile(
+                        UserProfile(
+                            firstName,
+                            lastName,
+                            email,
+                            changedUserProfile.phoneNumber,
+                            changedUserProfile.jwtAccessToken,
+                            changedUserProfile.jwtRefreshToken
+                        )
                     )
-                )
-                findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
+                    if (result != null) {
+                        findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
+                    }
+                    else {
+                        TODO("Not yet implemented")
+                    }
+                }
             }
         }
     }

@@ -5,9 +5,8 @@ import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.repository.ResponseDao
 
 interface AuthenticationService {
-    suspend fun loadUserProfile(): UserProfile?
 
-    suspend fun loadUserProfile(
+    suspend fun findUserProfile(
         phoneNumber: String,
         jwtAccessToken: String
     ): ResponseDao<UserProfile?>
@@ -18,9 +17,5 @@ interface AuthenticationService {
     ): ResponseDao<AuthenticationResponseDTO?>
 
     suspend fun sendAuthenticationSmsCodeToNumber(phoneNumber: String)
-
-    suspend fun saveUserProfile(userProfile: UserProfile)
-
-    suspend fun clearUserProfile()
     suspend fun updateProfile(userProfile: UserProfile): ResponseDao<UserProfile?>
 }

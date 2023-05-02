@@ -68,10 +68,14 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
 
         binding.sendCodeButton.setOnClickListener {
             if (binding.hasError == false && binding.isMaskFilled == true) {
-                userProfileViewModel.phoneNumber = binding.phoneNumberTextView.text.toString()
-                userProfileViewModel.sendCode()
+                val phoneNumber = binding.phoneNumberTextView.text.toString()
+                userProfileViewModel.sendCode(phoneNumber)
 
-                findNavController().navigate(R.id.action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment)
+                findNavController().navigate(
+                    PhoneNumberInputFragmentDirections.actionPhoneNumberInputFragmentToPhoneNumberConfirmationFragment(
+                        phoneNumber
+                    )
+                )
             } else {
                 binding.hasError = true
             }

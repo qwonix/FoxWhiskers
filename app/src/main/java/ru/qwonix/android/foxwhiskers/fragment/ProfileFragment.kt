@@ -26,16 +26,27 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userProfileViewModel.userProfile.observe(viewLifecycleOwner) { userProfile ->
-            if (userProfile != null) {
+        userProfileViewModel.loggedUserProfile.observe(viewLifecycleOwner) { userProfile ->
+            if (userProfile == null) {
+                findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
+            } else {
                 binding.userProfile = userProfile
-                binding.logoutButton.setOnClickListener {
+
+                if (userProfile.isRequiredForEdit()) {
                     findNavController().navigate(
-                        ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(userProfile)
+                        ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
+                            userProfile
+                        )
                     )
                 }
-            } else {
-                findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
+
+                binding.logoutButton.setOnClickListener {
+                    findNavController().navigate(
+                        ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
+                            userProfile
+                        )
+                    )
+                }
             }
         }
     }
