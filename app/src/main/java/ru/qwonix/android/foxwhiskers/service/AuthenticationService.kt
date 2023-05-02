@@ -22,4 +22,5 @@ interface AuthenticationService {
     suspend fun saveUserProfile(userProfile: UserProfile)
 
     suspend fun clearUserProfile()
+    suspend fun updateProfile(userProfile: UserProfile): ResponseDao<UserProfile?>
 }

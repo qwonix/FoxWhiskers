@@ -62,6 +62,10 @@ class AuthenticationServiceImpl(
         }
     }
 
+    override suspend fun updateProfile(userProfile: UserProfile): ResponseDao<UserProfile?> {
+        return authenticationRepository.updateProfile(userProfile)
+    }
+
     override suspend fun loadUserProfile(
         phoneNumber: String,
         jwtAccessToken: String

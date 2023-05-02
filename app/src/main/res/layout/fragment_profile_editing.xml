@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.ProfileEditingFragment">
+
+    <data>
+
+        <import type="ru.qwonix.android.foxwhiskers.util.EditTextState" />
+
+        <variable
+            name="firstnameFieldState"
+            type="ru.qwonix.android.foxwhiskers.util.EditTextState" />
+
+        <variable
+            name="lastnameFieldState"
+            type="ru.qwonix.android.foxwhiskers.util.EditTextState" />
+
+        <variable
+            name="emailFieldState"
+            type="ru.qwonix.android.foxwhiskers.util.EditTextState" />
+
+        <variable
+            name="userProfile"
+            type="ru.qwonix.android.foxwhiskers.entity.UserProfile" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_300">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".fragment.ProfileFragment">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_corners15_yellow300_background"
+                    android:fontFamily="@font/rubik_medium"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="5dp"
+                    android:text="Редактирование профиля"
+                    android:textColor="@color/gray_900"
+                    android:textSize="20sp" />
+
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_launcher_background" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProfileInfoField.FieldPrompt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="Имя" />
+
+                        <EditText
+                            android:id="@+id/firstname_edit_text"
+                            style="@style/ProfileInfoField.EditText"
+                            state="@{firstnameFieldState}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="name"
+                            android:hint="Не указано"
+                            android:inputType="textPersonName"
+                            android:text='@{userProfile.firstName}'
+                            tools:style="@style/ProfileInfoField.EditText" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProfileInfoField.FieldPrompt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="Фамилия" />
+
+                        <EditText
+                            android:id="@+id/lastname_edit_text"
+                            style="@style/ProfileInfoField.EditText"
+                            state="@{lastnameFieldState}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="username"
+                            android:hint="Не указана"
+                            android:inputType="textPersonName"
+                            android:text='@{userProfile.lastName}'/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProfileInfoField.FieldPrompt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="Электронная почта" />
+
+                        <EditText
+                            android:id="@+id/email_edit_text"
+                            style="@style/ProfileInfoField.EditText"
+                            state="@{emailFieldState}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="emailAddress"
+                            android:hint="Не указана"
+                            android:inputType="textEmailAddress"
+                            android:text='@{userProfile.email}' />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ProfileInfoField.FieldPrompt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:text="Телефон" />
+
+                        <TextView
+                            style="@style/ProfileInfoField"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{userProfile.phoneNumber}'
+                            tools:text="+7 (981) 951-75-51" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/confirm_editing_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingHorizontal="60dp"
+                android:paddingVertical="15dp"
+                android:text="Подтвердить"
+                android:textColor="@color/gray_900"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

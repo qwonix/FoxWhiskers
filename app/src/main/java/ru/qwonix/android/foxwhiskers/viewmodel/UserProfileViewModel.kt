@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.InvalidPhoneNumberException
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
+import ru.qwonix.android.foxwhiskers.util.Utils
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,25 +31,35 @@ class UserProfileViewModel @Inject constructor(
 
     val userProfile: LiveData<UserProfile?> = _userProfile
 
-
     private val _phoneNumber: MutableLiveData<String?> = MutableLiveData()
 //    val phoneNumber: LiveData<String?> = _phoneNumber
 
     init {
         userProfile.observeForever {
-                job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                    withContext(Dispatchers.Main) {
-                        if (it != null) {
-                            authenticationService.saveUserProfile(it)
-                        }
-                        else {
-                            authenticationService.clearUserProfile()
-                        }
+            job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+                withContext(Dispatchers.Main) {
+                    if (it != null) {
+                        authenticationService.saveUserProfile(it)
+                    } else {
+                        authenticationService.clearUserProfile()
+                    }
                 }
             }
         }
 
         loadProfile()
+    }
+
+    fun isValidFirstName(firstName: String): Boolean {
+        return Utils.FIRSTNAME_REGEX.matches(firstName)
+    }
+
+    fun isValidLastName(lastName: String): Boolean {
+        return Utils.LASTNAME_REGEX.matches(lastName)
+    }
+
+    fun isValidEmail(email: String): Boolean {
+        return Utils.EMAIL_REGEX.matches(email)
     }
 
     var phoneNumber: String = ""
@@ -91,6 +102,17 @@ class UserProfileViewModel @Inject constructor(
                     }
                 } else {
                     onError("Error ${authenticationResponse.code} : ${authenticationResponse.message} ")
+                }
+            }
+        }
+    }
+
+    fun updateProfile(userProfile: UserProfile) {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = authenticationService.updateProfile(userProfile)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _userProfile.postValue(response.data)
                 }
             }
         }

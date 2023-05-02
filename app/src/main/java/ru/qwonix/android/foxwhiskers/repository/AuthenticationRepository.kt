@@ -15,4 +15,6 @@ interface AuthenticationRepository {
         phoneNumber: String,
         code: Int
     ): ResponseDao<AuthenticationResponseDTO?>
+
+    suspend fun updateProfile(userProfile: UserProfile): ResponseDao<UserProfile?>
 }

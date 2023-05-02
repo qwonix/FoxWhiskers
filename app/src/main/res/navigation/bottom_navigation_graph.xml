@@ -22,6 +22,9 @@
             <action
                 android:id="@+id/action_profileFragment_to_phoneNumberInputFragment"
                 app:destination="@id/phoneNumberInputFragment" />
+            <action
+                android:id="@+id/action_profileFragment_to_profileEditingFragment"
+                app:destination="@id/profileEditingFragment"/>
         </fragment>
 
         <fragment
@@ -40,6 +43,19 @@
             <action
                 android:id="@+id/action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment"
                 app:destination="@id/phoneNumberConfirmationFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/profileEditingFragment"
+            android:name="ru.qwonix.android.foxwhiskers.fragment.ProfileEditingFragment"
+            android:label="ProfileEditingFragment">
+            <argument
+                android:name="userProfile"
+                app:argType="ru.qwonix.android.foxwhiskers.entity.UserProfile"
+                app:nullable="false" />
+            <action
+                android:id="@+id/action_profileEditingFragment_to_profileFragment"
+                app:destination="@id/profileFragment" />
+
         </fragment>
     </navigation>
 

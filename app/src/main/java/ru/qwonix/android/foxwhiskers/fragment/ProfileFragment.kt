@@ -26,9 +26,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userProfileViewModel.userProfile.observe(viewLifecycleOwner) {
-            if (it != null) {
-                binding.userProfile = it
+        userProfileViewModel.userProfile.observe(viewLifecycleOwner) { userProfile ->
+            if (userProfile != null) {
+                binding.userProfile = userProfile
+                binding.logoutButton.setOnClickListener {
+                    findNavController().navigate(
+                        ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(userProfile)
+                    )
+                }
             } else {
                 findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
             }
