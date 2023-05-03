@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationPaymentBinding
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
 
 class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confirmation_payment) {
@@ -26,7 +26,7 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
         }
     }
 
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val appViewModel: AppViewModel by activityViewModels()
     private lateinit var binding: FragmentOrderConfirmationPaymentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +35,7 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
         binding = FragmentOrderConfirmationPaymentBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = menuViewModel
+            viewModel = appViewModel
 
         }
         return binding.root

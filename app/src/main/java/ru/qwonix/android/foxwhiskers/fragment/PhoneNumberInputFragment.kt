@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
-import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 import ru.tinkoff.decoro.FormattedTextChangeListener
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -21,7 +21,7 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) {
 
     private lateinit var binding: FragmentPhoneNumberInputBinding
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val userProfileViewModel: AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

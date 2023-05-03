@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel" />
+            type="ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel" />
 
     </data>
 

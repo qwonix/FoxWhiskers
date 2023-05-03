@@ -15,19 +15,26 @@ import kotlinx.coroutines.withContext
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
+import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.retrofit.AuthenticationRepository
+import ru.qwonix.android.foxwhiskers.retrofit.LocalStorageRepository
 import ru.qwonix.android.foxwhiskers.retrofit.MenuRepository
-import java.math.BigDecimal
-import java.math.BigInteger
+import ru.qwonix.android.foxwhiskers.util.Utils
 import javax.inject.Inject
 
 @HiltViewModel
-class MenuViewModel @Inject constructor(
-    private val menuRepository: MenuRepository
+class AppViewModel @Inject constructor(
+    private val menuRepository: MenuRepository,
+    private val localStorageRepository: LocalStorageRepository,
+    private val authenticationRepository: AuthenticationRepository,
 ) : ViewModel() {
 
     var job: Job? = null
     val errorMessage = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>()
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        onError("Exception handled: ${throwable.localizedMessage}")
+    }
 
     val selectedPaymentMethod: MutableLiveData<PaymentMethod> =
         MutableLiveData(PaymentMethod.INAPP_ONLINE_CARD)
@@ -43,23 +50,88 @@ class MenuViewModel @Inject constructor(
     private val _orderCart: MutableLiveData<List<Dish>> = MutableLiveData(emptyList())
     val orderCart: LiveData<List<Dish>> = _orderCart
 
-    val orderPrice = MutableLiveData(BigDecimal(BigInteger.ZERO))
-
-    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
-    }
+    private val _loggedUserProfile: MutableLiveData<UserProfile?> = MutableLiveData()
+    val loggedUserProfile: LiveData<UserProfile?> = _loggedUserProfile
 
     init {
         _locations.observeForever { selectedPickUpLocation.postValue(it.maxBy { location -> location.priority }) }
 
-        _orderCart.observeForever { it ->
-            orderPrice.postValue(it.sumOf {
-                BigDecimal(it.currencyPrice).multiply((BigDecimal(it.count)))
-            })
-        }
-
         loadDishes()
         loadLocations()
+    }
+
+
+    fun authenticateWithPinCode(phoneNumber: String, code: Int) {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val authenticationResponse = authenticationRepository.authenticate(phoneNumber, code)
+            withContext(Dispatchers.Main) {
+                val authenticationResponseDTO = authenticationResponse.body()
+                if (authenticationResponse.isSuccessful && authenticationResponseDTO != null) {
+                    val loadedUserProfile = authenticationRepository.findUserProfile(
+                        phoneNumber,
+                        authenticationResponseDTO.jwtAccessToken
+                    )
+
+                    val userProfile = loadedUserProfile.body()
+                    if (loadedUserProfile.isSuccessful && userProfile != null) {
+                        _loggedUserProfile.postValue(userProfile)
+
+                        localStorageRepository.clearUserProfile()
+                        localStorageRepository.saveUserProfile(userProfile)
+                    } else {
+                        onError("Error $userProfile : ${loadedUserProfile.code()} ")
+                    }
+                } else {
+                    onError("Error ${authenticationResponse.code()} : ${authenticationResponse.errorBody()} ")
+                }
+            }
+        }
+    }
+
+    suspend fun updateProfile(userProfileToUpdate: UserProfile): UserProfile? {
+        val response = authenticationRepository.updateProfile(userProfileToUpdate)
+
+        val updatedUserProfile = response.body()
+        _loggedUserProfile.postValue(updatedUserProfile)
+
+        if (response.isSuccessful && updatedUserProfile != null) {
+            localStorageRepository.clearUserProfile()
+            localStorageRepository.saveUserProfile(updatedUserProfile)
+        }
+
+        return updatedUserProfile
+    }
+
+    fun sendCode(phoneNumber: String) {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            authenticationRepository.sendAuthenticationSmsCodeToNumber(phoneNumber)
+        }
+    }
+
+    suspend fun logout() {
+        localStorageRepository.clearUserProfile()
+        _loggedUserProfile.postValue(null)
+    }
+
+    fun isValidFirstName(firstName: String): Boolean {
+        return Utils.FIRSTNAME_REGEX.matches(firstName)
+    }
+
+    fun isValidLastName(lastName: String): Boolean {
+        return Utils.LASTNAME_REGEX.matches(lastName)
+    }
+
+    fun isValidEmail(email: String): Boolean {
+        return Utils.EMAIL_REGEX.matches(email)
+    }
+
+    fun tryLoadProfile() {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = localStorageRepository.loadUserProfile()
+            withContext(Dispatchers.Main) {
+                _loggedUserProfile.postValue(response)
+            }
+        }
     }
 
     fun setSelectedLocation(pickUpLocation: PickUpLocation) {

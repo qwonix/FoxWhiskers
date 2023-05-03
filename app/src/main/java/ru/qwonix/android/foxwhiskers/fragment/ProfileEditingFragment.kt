@@ -17,11 +17,11 @@ import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileEditingBinding
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.util.EditTextState
-import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
 class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
-    private val profileViewModel: UserProfileViewModel by activityViewModels()
+    private val profileViewModel: AppViewModel by activityViewModels()
 
     private val args: ProfileEditingFragmentArgs by navArgs()
     private lateinit var changedUserProfile: UserProfile

@@ -15,13 +15,13 @@ import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSend
-import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 import java.util.concurrent.TimeUnit
 
 
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
 
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val userProfileViewModel: AppViewModel by activityViewModels()
 
     private val args: PhoneNumberConfirmationFragmentArgs by navArgs()
     private lateinit var phoneNumber: String

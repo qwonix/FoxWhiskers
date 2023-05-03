@@ -11,12 +11,12 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
-import ru.qwonix.android.foxwhiskers.viewmodel.UserProfileViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding: FragmentProfileBinding
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val userProfileViewModel: AppViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

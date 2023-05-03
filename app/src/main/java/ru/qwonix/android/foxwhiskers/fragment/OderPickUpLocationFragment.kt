@@ -30,7 +30,7 @@ import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderPickupLocationBind
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
 
 class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_location) {
@@ -38,7 +38,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
         fun newInstance() = OderPickUpLocationFragment()
     }
 
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val appViewModel: AppViewModel by activityViewModels()
 
     private val iconStyle = IconStyle().apply { anchor = PointF(0.5f, 1.0f) }
 
@@ -69,7 +69,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
 
         binding.apply {
             // FIXME: pass directly menuViewModel
-            pickupLocation = menuViewModel.selectedPickUpLocation.value
+            pickupLocation = appViewModel.selectedPickUpLocation.value
         }
 
         return binding.root
@@ -90,8 +90,8 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
             val mapIntent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(
-                    "geo:${menuViewModel.selectedPickUpLocation.value?.latitude ?: Utils.primaryCityPoint.latitude}," +
-                            "${menuViewModel.selectedPickUpLocation.value?.longitude ?: Utils.primaryCityPoint.longitude}?q=Усы+Лисы&z=15"
+                    "geo:${appViewModel.selectedPickUpLocation.value?.latitude ?: Utils.primaryCityPoint.latitude}," +
+                            "${appViewModel.selectedPickUpLocation.value?.longitude ?: Utils.primaryCityPoint.longitude}?q=Усы+Лисы&z=15"
                 )
             )
             // suggest selection of an application
@@ -107,7 +107,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
         }
 
         // smooth move camera to current selected
-        menuViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
+        appViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
             binding.apply {
                 mapview.map.move(
                     CameraPosition(
@@ -121,11 +121,11 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
             }
         }
 
-        menuViewModel.locations.observe(viewLifecycleOwner)
+        appViewModel.locations.observe(viewLifecycleOwner)
         {
             binding.mapview.map.mapObjects.clear()
             addLocationsToMap(it)
-            setViewByUserData(menuViewModel.selectedPickUpLocation.value!!, selectedPoint)
+            setViewByUserData(appViewModel.selectedPickUpLocation.value!!, selectedPoint)
         }
     }
 
@@ -139,16 +139,16 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
         tappedMapObject as PlacemarkMapObject
 
         // if current selected
-        if (menuViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
+        if (appViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
             return@MapObjectTapListener true
         }
 
         // set tapped object as selected
         tappedMapObject.setView(selectedPoint, iconStyle)
-        menuViewModel.setSelectedLocation(tappedMapObject.userData as PickUpLocation)
+        appViewModel.setSelectedLocation(tappedMapObject.userData as PickUpLocation)
 
         // set previous selected as default
-        setViewByUserData(menuViewModel.selectedPickUpLocation.value!!, unselectedPoint)
+        setViewByUserData(appViewModel.selectedPickUpLocation.value!!, unselectedPoint)
 
         true
     }

@@ -20,7 +20,7 @@ import ru.qwonix.android.foxwhiskers.entity.DishType
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
@@ -47,7 +47,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     }
 
     private lateinit var binding: FragmentMenuBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val appViewModel: AppViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,11 +62,11 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         val menuDishAdapter = MenuDishAdapter()
         val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
 
-        menuViewModel.dishes.observe(viewLifecycleOwner) {
+        appViewModel.dishes.observe(viewLifecycleOwner) {
             menuDishAdapter.setDishes(it)
         }
 
-        menuViewModel.dishes.observe(viewLifecycleOwner) {
+        appViewModel.dishes.observe(viewLifecycleOwner) {
             val dishes: Map<DishType, List<Dish>> = it.groupBy { dish: Dish -> dish.type }
 
             val chips: MutableMap<DishType, Int> =

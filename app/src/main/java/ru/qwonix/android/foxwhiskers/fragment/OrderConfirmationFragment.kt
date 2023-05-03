@@ -10,7 +10,8 @@ import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationBinding
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import java.math.BigDecimal
 
 class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation) {
 
@@ -19,7 +20,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
     }
 
     private lateinit var binding: FragmentOrderConfirmationBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val appViewModel: AppViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,8 +28,10 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         binding = FragmentOrderConfirmationBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = menuViewModel
             priceFormat = Utils.DECIMAL_FORMAT
+            orderPrice = appViewModel.orderCart.value!!.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }.toDouble()
+            paymentMethod = appViewModel.selectedPaymentMethod.value
+            pickUpLocation = appViewModel.selectedPickUpLocation.value
         }
         return binding.root
     }

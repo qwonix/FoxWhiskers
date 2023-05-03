@@ -17,7 +17,7 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSearch
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
 
 class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
@@ -27,7 +27,7 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
     }
 
     private lateinit var binding: FragmentMenuSearchBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val appViewModel: AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +79,7 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
                     binding.clearText.visibility = View.INVISIBLE
                 } else {
                     orderDishAdapter.data =
-                        menuViewModel.dishes.value!!.filter { dish -> dish.title.contains(s, true) }
+                        appViewModel.dishes.value!!.filter { dish -> dish.title.contains(s, true) }
                     binding.clearText.visibility = View.VISIBLE
 
                 }
