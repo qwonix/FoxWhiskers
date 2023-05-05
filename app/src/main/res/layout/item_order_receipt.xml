@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.OrderReceiptFragment">
+
+    <data>
+
+        <variable
+            name="priceFormat"
+            type="java.text.DecimalFormat" />
+
+        <variable
+            name="order"
+            type="ru.qwonix.android.foxwhiskers.entity.Order" />
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_corners15_white_background"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/white">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="Ваш заказ"
+                android:textColor="@color/gray_900"
+                android:textSize="20sp"
+                tools:text="Ваш заказ №123-4567" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    state="@{order.status.drawableId}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="5dp"
+                    android:text="@{order.status.title}"
+                    android:textColor="@color/gray_900"
+                    android:textSize="14sp"
+                    tools:background="@drawable/rectangle_corners15_yellow300_background"
+                    tools:text="Готов к получению" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@{order.status.drawableId}"
+                    android:fontFamily="@font/rubik_regular"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="5dp"
+                    android:text="@{priceFormat.format(order.totalPrice)}"
+                    android:textColor="@color/gray_900"
+                    android:textSize="14sp"
+                    tools:background="@drawable/rectangle_corners15_yellow300_background"
+                    tools:text="3 543 ₽" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:paddingHorizontal="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_qr" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/rubik_light"
+                        android:text="Открыть QR-код"
+                        android:textColor="@color/gray_700"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </FrameLayout>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_300" />
+
+        <FrameLayout
+            android:id="@+id/pickup_location_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="10dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Забирать здесь в "
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp"
+                        tools:text="Забирать здесь в" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/rectangle_corners15_yellow300_background"
+                        android:fontFamily="@font/rubik_medium"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="5dp"
+                        android:text='@{order.expectedReceiptTime.toLocalTime().hour + ":" + order.expectedReceiptTime.toLocalTime().minute}'
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp"
+                        tools:text="12:38" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_light"
+                    android:text='@{order.pickUpLocation.title + "\n" + order.pickUpLocation.streetName + ", " + order.pickUpLocation.houseData + ", " + order.pickUpLocation.cityName}'
+                    android:textColor="@color/gray_700"
+                    android:textSize="10sp"
+                    tools:text="ТРК Лиговъ\nСанкт-Петербург, Лиговский проспект, 153" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical|end"
+                android:adjustViewBounds="true"
+                android:elevation="1dp"
+                android:src="@drawable/map_point" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+</layout>
