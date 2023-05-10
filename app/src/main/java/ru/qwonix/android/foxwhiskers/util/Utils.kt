@@ -26,8 +26,22 @@ class Utils {
         val EMAIL_REGEX = Regex("^[A-z0-9._%+-]+@[A-z0-9.-]+\\.[A-z]{2,}\$")
         val FIRSTNAME_REGEX = Regex("^[А-яA-z]+([ -][А-яA-z]+)*\$")
         val LASTNAME_REGEX = Regex("^[А-яA-z]+([-'][А-яA-z]+)*\$")
+
+
+        fun isValidFirstName(firstName: String): Boolean {
+            return FIRSTNAME_REGEX.matches(firstName)
+        }
+
+        fun isValidLastName(lastName: String): Boolean {
+            return LASTNAME_REGEX.matches(lastName)
+        }
+
+        fun isValidEmail(email: String): Boolean {
+            return EMAIL_REGEX.matches(email)
+        }
     }
 }
+
 
 fun EditText.onSearch(callback: () -> Unit) {
     onImeAction(callback, EditorInfo.IME_ACTION_SEARCH)

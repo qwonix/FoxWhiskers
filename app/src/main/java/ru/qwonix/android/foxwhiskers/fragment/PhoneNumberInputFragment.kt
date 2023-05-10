@@ -1,6 +1,7 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,8 @@ import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.tinkoff.decoro.FormattedTextChangeListener
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.slots.PredefinedSlots
@@ -20,8 +22,10 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 
 class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) {
 
+    private val TAG = "PhoneNumberInputFragment"
+
     private lateinit var binding: FragmentPhoneNumberInputBinding
-    private val userProfileViewModel: AppViewModel by activityViewModels()
+    private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +73,11 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
         binding.sendCodeButton.setOnClickListener {
             if (binding.hasError == false && binding.isMaskFilled == true) {
                 val phoneNumber = binding.phoneNumberTextView.text.toString()
-                userProfileViewModel.sendCode(phoneNumber)
+                authenticationViewModel.sendCode(phoneNumber, object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        Log.e(TAG, "code cant be send to $phoneNumber – $message")
+                    }
+                })
 
                 findNavController().navigate(
                     PhoneNumberInputFragmentDirections.actionPhoneNumberInputFragmentToPhoneNumberConfirmationFragment(

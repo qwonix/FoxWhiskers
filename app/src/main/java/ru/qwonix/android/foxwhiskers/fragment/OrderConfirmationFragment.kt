@@ -29,7 +29,9 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             priceFormat = Utils.DECIMAL_FORMAT
-            orderPrice = appViewModel.orderCart.value!!.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }.toDouble()
+            orderPrice = appViewModel.orderCart.value!!.sumOf { dish ->
+                BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count)))
+            }.toDouble()
             paymentMethod = appViewModel.selectedPaymentMethod.value
             pickUpLocation = appViewModel.selectedPickUpLocation.value
         }

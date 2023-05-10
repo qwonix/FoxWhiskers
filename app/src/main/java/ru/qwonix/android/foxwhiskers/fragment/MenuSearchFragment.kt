@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuSearchBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSearch
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
@@ -78,15 +79,34 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
                     orderDishAdapter.data = emptyList()
                     binding.clearText.visibility = View.INVISIBLE
                 } else {
-                    orderDishAdapter.data =
-                        appViewModel.dishes.value!!.filter { dish -> dish.title.contains(s, true) }
-                    binding.clearText.visibility = View.VISIBLE
+                    val apiResponse = appViewModel.dishes.value
+                    when (apiResponse) {
+                        is ApiResponse.Failure -> {
+                            "Code: ${apiResponse.code}, ${apiResponse.errorMessage}"
+                        }
+
+                        ApiResponse.Loading -> "Loading"
+
+                        is ApiResponse.Success -> {
+                            orderDishAdapter.data =
+                                apiResponse.data.filter { dish ->
+                                    dish.title.contains(
+                                        s,
+                                        true
+                                    )
+                                }
+                            binding.clearText.visibility = View.VISIBLE
+                        }
+
+                        else -> {}
+                    }
+
 
                 }
             }
         })
 
         binding.searchBarTextView.focusAndShowKeyboard()
-        binding.searchBarTextView.onSearch {  }
+        binding.searchBarTextView.onSearch { }
     }
 }

@@ -2,6 +2,7 @@ package ru.qwonix.android.foxwhiskers.fragment
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
+import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSend
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
+import ru.qwonix.android.foxwhiskers.viewmodel.TokenViewModel
 import java.util.concurrent.TimeUnit
 
 
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
 
-    private val userProfileViewModel: AppViewModel by activityViewModels()
+    private val TAG = "PhoneNumberConfirmationFragment"
+
+    private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
 
     private val args: PhoneNumberConfirmationFragmentArgs by navArgs()
     private lateinit var phoneNumber: String
@@ -66,19 +73,41 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
 
         binding.pinCodeDigit1.focusAndShowKeyboard()
 
-        binding.checkCodeButton.setOnClickListener {
-            userProfileViewModel.loggedUserProfile.observe(viewLifecycleOwner) {
-                if (it == null) {
+        authenticationViewModel.authenticatedResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "cant login to $phoneNumber – ${it.code} ${it.errorMessage}")
                     binding.hasError = true
-                } else {
+                }
+
+                is ApiResponse.Loading -> {
+
+                }
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Success login $phoneNumber")
+                    authenticationViewModel.authenticate(
+                        it.data.jwtAccessToken,
+                        it.data.jwtRefreshToken,
+                        UserProfile(null, null, null, phoneNumber)
+                    )
                     findNavController().navigate(R.id.action_phoneNumberConfirmationFragment_to_profileFragment)
                 }
             }
+        }
 
+        binding.checkCodeButton.setOnClickListener {
             val pinCode =
                 "${binding.pinCodeDigit1.text}${binding.pinCodeDigit2.text}${binding.pinCodeDigit3.text}${binding.pinCodeDigit4.text}"
             if (pinCode.length == 4 && pinCode.isDigitsOnly()) {
-                userProfileViewModel.authenticateWithPinCode(phoneNumber, pinCode.toInt())
+                authenticationViewModel.authenticate(
+                    phoneNumber,
+                    pinCode.toInt(),
+                    object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            Log.e(TAG, "check code error $phoneNumber – $message")
+                        }
+                    })
             } else {
                 binding.hasError = true
             }
@@ -86,7 +115,12 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
 
         binding.sendAgainButton.setOnClickListener {
             binding.isTimerExpired = false
-            userProfileViewModel.sendCode(phoneNumber)
+            authenticationViewModel.sendCode(phoneNumber, object : CoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    Log.e(TAG, "send code error $phoneNumber – $message")
+
+                }
+            })
             countDownTimer.start()
         }
 

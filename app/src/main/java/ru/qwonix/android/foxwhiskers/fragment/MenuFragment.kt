@@ -19,6 +19,7 @@ import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.DishType
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
 
@@ -63,36 +64,58 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
 
         appViewModel.dishes.observe(viewLifecycleOwner) {
-            menuDishAdapter.setDishes(it)
+            when (it) {
+                is ApiResponse.Failure -> {
+                    "Code: ${it.code}, ${it.errorMessage}"
+                }
+
+                ApiResponse.Loading -> "Loading"
+
+                is ApiResponse.Success ->
+                    menuDishAdapter.setDishes(it.data)
+            }
         }
 
         appViewModel.dishes.observe(viewLifecycleOwner) {
-            val dishes: Map<DishType, List<Dish>> = it.groupBy { dish: Dish -> dish.type }
-
-            val chips: MutableMap<DishType, Int> =
-                mutableMapOf()
-            var i = 0
-            for ((k, v) in dishes) {
-                chips.put(k, i)
-                i += v.count() + 1
-            }
-
-            menuDishTypeChipAdapter.onItemClickListener =
-                object : MenuDishTypeChipAdapter.OnItemClickListener {
-                    override fun onItemClick(recyclerView: RecyclerView, position: Int) {
-                        val smoothScroller: SmoothScroller =
-                            object : LinearSmoothScroller(context) {
-                                override fun getVerticalSnapPreference(): Int {
-                                    return SNAP_TO_START
-                                }
-                            }
-                        smoothScroller.targetPosition = position
-                        recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
-                    }
+            when (it) {
+                is ApiResponse.Failure -> {
+                    "Code: ${it.code}, ${it.errorMessage}"
                 }
 
-            menuDishTypeChipAdapter.setDishTypes(chips)
+                ApiResponse.Loading -> "Loading"
+
+                is ApiResponse.Success -> {
+
+                    val dishes: Map<DishType, List<Dish>> =
+                        it.data.groupBy { dish: Dish -> dish.type }
+
+                    val chips: MutableMap<DishType, Int> =
+                        mutableMapOf()
+                    var i = 0
+                    for ((k, v) in dishes) {
+                        chips.put(k, i)
+                        i += v.count() + 1
+                    }
+
+                    menuDishTypeChipAdapter.onItemClickListener =
+                        object : MenuDishTypeChipAdapter.OnItemClickListener {
+                            override fun onItemClick(recyclerView: RecyclerView, position: Int) {
+                                val smoothScroller: SmoothScroller =
+                                    object : LinearSmoothScroller(context) {
+                                        override fun getVerticalSnapPreference(): Int {
+                                            return SNAP_TO_START
+                                        }
+                                    }
+                                smoothScroller.targetPosition = position
+                                recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
+                            }
+                        }
+
+                    menuDishTypeChipAdapter.setDishTypes(chips)
+                }
+            }
         }
+
 
 
         binding.recyclerDishTypeChip.apply {

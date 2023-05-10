@@ -30,6 +30,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "YANDEX_MAPKIT_KEY", apikeyProperties['YANDEX_MAPKIT_KEY'])
+        buildConfigField("String", "FOX_WHISKERS_API_URL", apikeyProperties['FOX_WHISKERS_API_URL'])
     }
 
     buildTypes {

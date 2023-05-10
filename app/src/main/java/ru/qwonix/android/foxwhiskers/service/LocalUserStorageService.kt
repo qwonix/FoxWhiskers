@@ -1,16 +1,14 @@
-package ru.qwonix.android.foxwhiskers.retrofit
+package ru.qwonix.android.foxwhiskers.service
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.firstOrNull
+import ru.qwonix.android.foxwhiskers.dataStore
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
 
 
-class LocalStorageRepository (private val context: Context) {
-
-    private val Context.dataStore by preferencesDataStore(name = "UserProfile")
+class LocalUserStorageService(private val context: Context) {
 
     private companion object {
         val FIRST_NAME = stringPreferencesKey("first_name")
@@ -31,9 +29,7 @@ class LocalStorageRepository (private val context: Context) {
                 firstName = preferences[FIRST_NAME],
                 lastName = preferences[LAST_NAME],
                 email = preferences[EMAIL],
-                phoneNumber = preferences[PHONE_NUMBER] ?: "",
-                jwtAccessToken = preferences[JWT_ACCESS_TOKEN] ?: "",
-                jwtRefreshToken = preferences[JWT_REFRESH_TOKEN] ?: ""
+                phoneNumber = preferences[PHONE_NUMBER] ?: ""
             )
         }
     }
@@ -44,8 +40,6 @@ class LocalStorageRepository (private val context: Context) {
             preferences[LAST_NAME] = userProfile.lastName ?: ""
             preferences[EMAIL] = userProfile.email ?: ""
             preferences[PHONE_NUMBER] = userProfile.phoneNumber
-            preferences[JWT_ACCESS_TOKEN] = userProfile.jwtAccessToken
-            preferences[JWT_REFRESH_TOKEN] = userProfile.jwtRefreshToken
         }
     }
 
