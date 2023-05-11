@@ -9,20 +9,25 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileEditingBinding
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.EditTextState
 import ru.qwonix.android.foxwhiskers.util.Utils
-import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
+import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
+@AndroidEntryPoint
 class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
-    private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
+    private val TAG = "ProfileEditingFragment"
+
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     private val args: ProfileEditingFragmentArgs by navArgs()
     private lateinit var changedUserProfile: UserProfile
@@ -51,40 +56,62 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
         binding.lastnameFieldState = EditTextState.IN_PROGRESS
         binding.emailFieldState = EditTextState.IN_PROGRESS
 
+        Log.i(TAG, "onCreateView")
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        profileViewModel.updatedUser.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> {
+                    Log.i(TAG, "loading")
+                }
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful profile editing")
+                    findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
+                }
+            }
+        }
+
+
         binding.confirmEditingButton.setOnClickListener {
             val firstName = binding.firstnameEditText.text.toString()
             val lastName = binding.lastnameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
+
             if (Utils.isValidFirstName(firstName)) {
-                binding.firstnameFieldState = EditTextState.INCORRECT
+                binding.firstnameFieldState = EditTextState.CORRECT
             }
             if (Utils.isValidLastName(lastName)) {
-                binding.lastnameFieldState = EditTextState.INCORRECT
+                binding.lastnameFieldState = EditTextState.CORRECT
             }
             if (Utils.isValidEmail(email)) {
-                binding.emailFieldState = EditTextState.INCORRECT
+                binding.emailFieldState = EditTextState.CORRECT
             }
             if (binding.firstnameFieldState?.isCorrect() == true
                 && binding.lastnameFieldState?.isCorrect() == true
                 && binding.emailFieldState?.isCorrect() == true
             ) {
-                authenticationViewModel.update(
+                profileViewModel.update(
+                    changedUserProfile.phoneNumber,
                     firstName,
                     lastName,
                     email,
                     object : CoroutinesErrorHandler {
                         override fun onError(message: String) {
-                            Log.e("confirmEditingButton", "Error! $message")
+                            Log.e(TAG, "Error! $message")
                         }
                     }
                 )
-                findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
             }
         }
 

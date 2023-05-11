@@ -38,13 +38,13 @@ class LocalTokenStorageService(private val context: Context) {
         }
     }
 
-    suspend fun deleteAccessToken() {
+    suspend fun clearAccessToken() {
         context.authenticationDataStore.edit { preferences ->
             preferences.remove(ACCESS_TOKEN_KEY)
         }
     }
 
-    suspend fun deleteRefreshToken() {
+    suspend fun clearRefreshToken() {
         context.authenticationDataStore.edit { preferences ->
             preferences.remove(REFRESH_TOKEN_KEY)
         }

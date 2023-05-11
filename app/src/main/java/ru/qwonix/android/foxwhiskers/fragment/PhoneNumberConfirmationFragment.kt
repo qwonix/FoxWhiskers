@@ -11,27 +11,21 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSend
 import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
-import ru.qwonix.android.foxwhiskers.viewmodel.TokenViewModel
 import java.util.concurrent.TimeUnit
 
 
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
 
-    private val TAG = "PhoneNumberConfirmationFragment"
+    private val TAG = "PhoneConfirmFragment"
 
     private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
-
-    private val args: PhoneNumberConfirmationFragmentArgs by navArgs()
-    private lateinit var phoneNumber: String
 
     private lateinit var binding: FragmentPhoneNumberConfirmationBinding
 
@@ -61,10 +55,10 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
             isTimerExpired = false
             hasError = false
         }
-
-        this.phoneNumber = args.phoneNumber
-
         countDownTimer.start()
+
+        Log.i(TAG, "onCreateView")
+
         return binding.root
     }
 
@@ -73,24 +67,19 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
 
         binding.pinCodeDigit1.focusAndShowKeyboard()
 
-        authenticationViewModel.authenticatedResponse.observe(viewLifecycleOwner) {
+        authenticationViewModel.authenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
-                    Log.e(TAG, "cant login to $phoneNumber – ${it.code} ${it.errorMessage}")
+                    Log.e(TAG, "code ${it.code} – ${it.errorMessage}")
                     binding.hasError = true
                 }
 
                 is ApiResponse.Loading -> {
-
+                    Log.i(TAG, "loading")
                 }
 
                 is ApiResponse.Success -> {
-                    Log.i(TAG, "Success login $phoneNumber")
-                    authenticationViewModel.authenticate(
-                        it.data.jwtAccessToken,
-                        it.data.jwtRefreshToken,
-                        UserProfile(null, null, null, phoneNumber)
-                    )
+                    Log.i(TAG, "Success login")
                     findNavController().navigate(R.id.action_phoneNumberConfirmationFragment_to_profileFragment)
                 }
             }
@@ -101,11 +90,10 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
                 "${binding.pinCodeDigit1.text}${binding.pinCodeDigit2.text}${binding.pinCodeDigit3.text}${binding.pinCodeDigit4.text}"
             if (pinCode.length == 4 && pinCode.isDigitsOnly()) {
                 authenticationViewModel.authenticate(
-                    phoneNumber,
                     pinCode.toInt(),
                     object : CoroutinesErrorHandler {
                         override fun onError(message: String) {
-                            Log.e(TAG, "check code error $phoneNumber – $message")
+                            TODO("Not yet implemented")
                         }
                     })
             } else {
@@ -115,10 +103,9 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
 
         binding.sendAgainButton.setOnClickListener {
             binding.isTimerExpired = false
-            authenticationViewModel.sendCode(phoneNumber, object : CoroutinesErrorHandler {
+            authenticationViewModel.sendCodeAgain(object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
-                    Log.e(TAG, "send code error $phoneNumber – $message")
-
+                    TODO("Not yet implemented")
                 }
             })
             countDownTimer.start()

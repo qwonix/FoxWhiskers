@@ -21,16 +21,16 @@ class AuthenticationAuthenticator @Inject constructor(
         }
         return runBlocking {
             if (refreshToken == null) {
-                localTokenStorageService.deleteAccessToken()
-                localTokenStorageService.deleteRefreshToken()
+                localTokenStorageService.clearAccessToken()
+                localTokenStorageService.clearRefreshToken()
                 return@runBlocking null
             }
 
             val newToken = authenticationService.refreshToken(refreshToken)
 
             if (newToken.isSuccessful && newToken.body() == null) { //Couldn't refresh the token, so restart the login process
-                localTokenStorageService.deleteAccessToken()
-                localTokenStorageService.deleteRefreshToken()
+                localTokenStorageService.clearAccessToken()
+                localTokenStorageService.clearRefreshToken()
                 return@runBlocking null
             } else {
                 newToken.body()?.let {

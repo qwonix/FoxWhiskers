@@ -3,15 +3,12 @@ package ru.qwonix.android.foxwhiskers.service
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.PUT
 import ru.qwonix.android.foxwhiskers.dto.UpdateUserProfileDTO
 import ru.qwonix.android.foxwhiskers.entity.UserProfile
 
 interface UserService {
-    @GET("auth/user")
-    suspend fun find(): Response<UserProfile>
-
-    @POST("auth/update")
+    @PUT("client/update")
     suspend fun update(
         @Body updateUserProfileDTO: UpdateUserProfileDTO
     ): Response<UserProfile>

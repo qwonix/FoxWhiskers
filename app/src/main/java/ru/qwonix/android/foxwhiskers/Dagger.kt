@@ -15,8 +15,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
-import ru.qwonix.android.foxwhiskers.repository.LocalTokenStorageRepository
-import ru.qwonix.android.foxwhiskers.repository.LocalUserStorageRepository
 import ru.qwonix.android.foxwhiskers.repository.MenuRepository
 import ru.qwonix.android.foxwhiskers.repository.UserRepository
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
@@ -88,32 +86,30 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        authenticationService: AuthenticationService
+        authenticationService: AuthenticationService,
+        localUserStorageService: LocalUserStorageService,
+        localTokenStorageService: LocalTokenStorageService
+
     ) =
-        AuthenticationRepository(authenticationService)
+        AuthenticationRepository(
+            authenticationService,
+            localUserStorageService,
+            localTokenStorageService
+        )
 
     @Provides
     @Singleton
-    fun provideUserRepository(userService: UserService) =
-        UserRepository(userService)
+    fun provideUserRepository(
+        userService: UserService,
+        localUserStorageService: LocalUserStorageService,
+        localTokenStorageService: LocalTokenStorageService
+    ) =
+        UserRepository(userService, localUserStorageService, localTokenStorageService)
 
     @Provides
     @Singleton
     fun provideMenuRepository(menuService: MenuService) =
         MenuRepository(menuService)
-
-
-    @Provides
-    @Singleton
-    fun provideLocalUserStorageRepository(localUserStorageService: LocalUserStorageService) =
-        LocalUserStorageRepository(localUserStorageService)
-
-
-    @Provides
-    @Singleton
-    fun provideLocalTokenStorageRepository(localTokenStorageService: LocalTokenStorageService) =
-        LocalTokenStorageRepository(localTokenStorageService)
-
 
 }
 

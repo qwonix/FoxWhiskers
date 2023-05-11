@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
@@ -22,7 +23,7 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 
 class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) {
 
-    private val TAG = "PhoneNumberInputFragment"
+    private val TAG = "PhoneInputFragment"
 
     private lateinit var binding: FragmentPhoneNumberInputBinding
     private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
@@ -37,6 +38,7 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
             hasError = false
             isMaskFilled = false
         }
+        Log.i(TAG, "onCreateView")
         return binding.root
     }
 
@@ -69,21 +71,35 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
             }
         })
 
+        authenticationViewModel.sendCodeResponse.observe(viewLifecycleOwner) {
+            Log.i(TAG, "observe ${it}")
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                    binding.hasError = true
+                }
+
+                is ApiResponse.Loading -> {
+                    Log.i(TAG, "loading")
+                }
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful code sending")
+                    findNavController().navigate(R.id.action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment)
+                }
+            }
+        }
 
         binding.sendCodeButton.setOnClickListener {
             if (binding.hasError == false && binding.isMaskFilled == true) {
                 val phoneNumber = binding.phoneNumberTextView.text.toString()
+
                 authenticationViewModel.sendCode(phoneNumber, object : CoroutinesErrorHandler {
                     override fun onError(message: String) {
-                        Log.e(TAG, "code cant be send to $phoneNumber – $message")
+                        TODO("Not yet implemented")
                     }
                 })
 
-                findNavController().navigate(
-                    PhoneNumberInputFragmentDirections.actionPhoneNumberInputFragmentToPhoneNumberConfirmationFragment(
-                        phoneNumber
-                    )
-                )
             } else {
                 binding.hasError = true
             }

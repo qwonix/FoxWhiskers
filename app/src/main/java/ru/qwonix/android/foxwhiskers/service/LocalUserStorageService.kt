@@ -15,8 +15,6 @@ class LocalUserStorageService(private val context: Context) {
         val LAST_NAME = stringPreferencesKey("last_name")
         val EMAIL = stringPreferencesKey("email")
         val PHONE_NUMBER = stringPreferencesKey("phone_number")
-        val JWT_ACCESS_TOKEN = stringPreferencesKey("jwt_access_token")
-        val JWT_REFRESH_TOKEN = stringPreferencesKey("jwt_refresh_token")
     }
 
 

@@ -7,8 +7,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 open class BaseViewModel : ViewModel() {
     private var mJob: Job? = null
@@ -24,10 +24,21 @@ open class BaseViewModel : ViewModel() {
             }
         }) {
             request().collect {
-                withContext(Dispatchers.Main) {
-                    liveData.value = it
-                }
+                liveData.postValue(it)
             }
+        }
+    }
+
+    protected fun <T> baseRequest(
+        errorHandler: CoroutinesErrorHandler,
+        request: () -> Flow<T>
+    ) {
+        mJob = viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, error ->
+            viewModelScope.launch(Dispatchers.Main) {
+                errorHandler.onError(error.localizedMessage ?: "Error occurred! Please try again.")
+            }
+        }) {
+            request().collect()
         }
     }
 

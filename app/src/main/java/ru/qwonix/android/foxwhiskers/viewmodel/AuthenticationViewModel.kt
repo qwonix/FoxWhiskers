@@ -1,109 +1,53 @@
 package ru.qwonix.android.foxwhiskers.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import ru.qwonix.android.foxwhiskers.dto.AuthenticationResponseDTO
-import ru.qwonix.android.foxwhiskers.dto.UpdateUserProfileDTO
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
-import ru.qwonix.android.foxwhiskers.repository.LocalTokenStorageRepository
-import ru.qwonix.android.foxwhiskers.repository.LocalUserStorageRepository
-import ru.qwonix.android.foxwhiskers.repository.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val userRepository: UserRepository,
     private val authenticationRepository: AuthenticationRepository,
-    private val localUserStorageRepository: LocalUserStorageRepository,
-    private val localTokenStorageRepository: LocalTokenStorageRepository,
 ) : BaseViewModel() {
 
-    private val _authenticatedUser = MutableLiveData<ApiResponse<UserProfile?>>()
-    val authenticatedUser = _authenticatedUser
+    private val _authenticationResponse = MutableLiveData<ApiResponse<AuthenticationResponseDTO>>()
+    val authenticationResponse = _authenticationResponse
 
-    private val _authenticatedResponse = MutableLiveData<ApiResponse<AuthenticationResponseDTO>>()
-    val authenticatedResponse = _authenticatedResponse
+    private val _sendCodeResponse = MutableLiveData<ApiResponse<Boolean>>()
+    val sendCodeResponse = _sendCodeResponse
 
-    init {
-        authenticate(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
+    private var authenticationPhoneNumber: String? = null
+
+    fun authenticate(
+        code: Int,
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) {
+        val phoneNumber = authenticationPhoneNumber
+        if (phoneNumber != null) {
+            baseRequest(_authenticationResponse, coroutinesErrorHandler) {
+                authenticationRepository.authenticate(phoneNumber, code)
             }
-        })
-    }
-
-    fun authenticate(
-        accessToken: String,
-        refreshToken: String,
-        userProfile: UserProfile
-    ) {
-        _authenticatedUser.postValue(ApiResponse.Success(userProfile))
-
-        viewModelScope.launch {
-            localUserStorageRepository.saveUserProfile(userProfile).collect()
-            localTokenStorageRepository.saveAccessToken(accessToken).collect()
-            localTokenStorageRepository.saveRefreshToken(refreshToken).collect()
         }
     }
 
-    fun authenticate(
-        coroutinesErrorHandler: CoroutinesErrorHandler
-    ) = baseRequest(
-        _authenticatedUser,
-        coroutinesErrorHandler
-    ) {
-        localUserStorageRepository.loadUserProfile()
-    }
+    fun sendCode(phoneNumber: String, coroutinesErrorHandler: CoroutinesErrorHandler) =
+        baseRequest(
+            _sendCodeResponse,
+            coroutinesErrorHandler
+        ) {
+            authenticationPhoneNumber = phoneNumber
+            authenticationRepository.sendAuthenticationCode(phoneNumber)
+        }
 
-
-    fun authenticate(
-        phoneNumber: String, code: Int,
-        coroutinesErrorHandler: CoroutinesErrorHandler
-    ) {
-        baseRequest(_authenticatedResponse, coroutinesErrorHandler) {
-            authenticationRepository.authenticate(phoneNumber, code)
+    fun sendCodeAgain(coroutinesErrorHandler: CoroutinesErrorHandler) {
+        val phoneNumber = authenticationPhoneNumber
+        if (phoneNumber != null) {
+            baseRequest(coroutinesErrorHandler) {
+                authenticationRepository.sendAuthenticationCode(phoneNumber)
+            }
         }
     }
 
-    fun logout() {
-        localTokenStorageRepository.deleteAccessToken()
-        localTokenStorageRepository.deleteRefreshToken()
-    }
-
-    fun login(data: UserProfile, accessToken: String, refreshToken: String) {
-        localUserStorageRepository.saveUserProfile(data)
-        localTokenStorageRepository.saveAccessToken(accessToken)
-        localTokenStorageRepository.saveRefreshToken(refreshToken)
-    }
-
-    fun sendCode(phoneNumber: String, coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
-        // TODO: loading
-        MutableLiveData(),
-        coroutinesErrorHandler
-    ) {
-        authenticationRepository.sendAuthenticationCode(phoneNumber)
-    }
-
-    fun update(
-        firstName: String,
-        lastName: String,
-        email: String,
-        coroutinesErrorHandler: CoroutinesErrorHandler
-    ) = baseRequest(
-        // TODO: loading
-        MutableLiveData(),
-        coroutinesErrorHandler
-    ) {
-        val updateUserProfileDTO = UpdateUserProfileDTO(firstName, lastName, email)
-        userRepository.update(updateUserProfileDTO)
-    }
-
-    fun isRequiredForEdit(data: UserProfile): Boolean {
-        return data.firstName.isNullOrBlank() || data.lastName.isNullOrBlank() || data.email.isNullOrBlank()
-    }
 }
