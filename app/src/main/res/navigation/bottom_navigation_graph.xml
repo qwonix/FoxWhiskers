@@ -33,6 +33,11 @@
             android:name="ru.qwonix.android.foxwhiskers.fragment.PhoneNumberConfirmationFragment"
             android:label="PhoneNumberConfirmationFragment">
 
+            <argument
+                android:name="phoneNumber"
+                app:argType="string"
+                app:nullable="false" />
+
             <action
                 android:id="@+id/action_phoneNumberConfirmationFragment_to_profileFragment"
                 app:destination="@id/profileFragment" />

@@ -18,36 +18,28 @@ class AuthenticationViewModel @Inject constructor(
     private val _sendCodeResponse = MutableLiveData<ApiResponse<Boolean>>()
     val sendCodeResponse = _sendCodeResponse
 
-    private var authenticationPhoneNumber: String? = null
-
     fun authenticate(
+        phoneNumber: String,
         code: Int,
         coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(_authenticationResponse, coroutinesErrorHandler) {
+        authenticationRepository.authenticate(phoneNumber, code)
+    }
+
+    fun sendCode(
+        phoneNumber: String,
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _sendCodeResponse,
+        coroutinesErrorHandler
     ) {
-        val phoneNumber = authenticationPhoneNumber
-        if (phoneNumber != null) {
-            baseRequest(_authenticationResponse, coroutinesErrorHandler) {
-                authenticationRepository.authenticate(phoneNumber, code)
-            }
-        }
+        authenticationRepository.sendAuthenticationCode(phoneNumber)
     }
 
-    fun sendCode(phoneNumber: String, coroutinesErrorHandler: CoroutinesErrorHandler) =
-        baseRequest(
-            _sendCodeResponse,
-            coroutinesErrorHandler
-        ) {
-            authenticationPhoneNumber = phoneNumber
-            authenticationRepository.sendAuthenticationCode(phoneNumber)
-        }
-
-    fun sendCodeAgain(coroutinesErrorHandler: CoroutinesErrorHandler) {
-        val phoneNumber = authenticationPhoneNumber
-        if (phoneNumber != null) {
-            baseRequest(coroutinesErrorHandler) {
-                authenticationRepository.sendAuthenticationCode(phoneNumber)
-            }
-        }
+    fun sendCodeAgain(
+        phoneNumber: String,
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(coroutinesErrorHandler) {
+        authenticationRepository.sendAuthenticationCode(phoneNumber)
     }
-
 }

@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
@@ -21,12 +22,13 @@ import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 
 
+@AndroidEntryPoint
 class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) {
 
     private val TAG = "PhoneInputFragment"
 
     private lateinit var binding: FragmentPhoneNumberInputBinding
-    private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
+    private val authenticationViewModel: AuthenticationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +74,6 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
         })
 
         authenticationViewModel.sendCodeResponse.observe(viewLifecycleOwner) {
-            Log.i(TAG, "observe ${it}")
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -81,10 +82,13 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
 
                 is ApiResponse.Loading -> Log.i(TAG, "loading")
 
-
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful code sending")
-                    findNavController().navigate(R.id.action_phoneNumberInputFragment_to_phoneNumberConfirmationFragment)
+                    findNavController().navigate(
+                        PhoneNumberInputFragmentDirections.actionPhoneNumberInputFragmentToPhoneNumberConfirmationFragment(
+                            binding.phoneNumberTextView.text.toString()
+                        )
+                    )
                 }
             }
         }

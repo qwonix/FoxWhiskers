@@ -9,7 +9,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
@@ -25,7 +25,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
     private val TAG = "ProfileEditingFragment"
 
-    private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     private lateinit var binding: FragmentProfileEditingBinding
 
@@ -71,85 +71,93 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 is ApiResponse.Loading -> Log.i(TAG, "loading")
 
                 is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful client editing")
-                    if (it.data != null) {
-                        if (!profileViewModel.isRequiredForEdit(it.data)) {
-                            findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
-                        }
-                        binding.client = it.data
-                    }
+                    binding.client = it.data
                 }
             }
+        }
 
 
-            binding.confirmEditingButton.setOnClickListener {
-                val phoneNumber = profileViewModel.authenticatedClient.value!!.phoneNumber
-                val firstName = binding.firstnameEditText.text.toString()
-                val lastName = binding.lastnameEditText.text.toString()
-                val email = binding.emailEditText.text.toString()
+        profileViewModel.clientUpdateResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
 
-                if (Utils.isValidFirstName(firstName)) {
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful client updating")
+                    findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
+                }
+            }
+        }
+
+        binding.confirmEditingButton.setOnClickListener {
+            val phoneNumber = profileViewModel.authenticatedClient.value!!.phoneNumber
+            val firstName = binding.firstnameEditText.text.toString()
+            val lastName = binding.lastnameEditText.text.toString()
+            val email = binding.emailEditText.text.toString()
+
+            if (Utils.isValidFirstName(firstName)) {
+                binding.firstnameFieldState = EditTextState.CORRECT
+            }
+            if (Utils.isValidLastName(lastName)) {
+                binding.lastnameFieldState = EditTextState.CORRECT
+            }
+            if (Utils.isValidEmail(email)) {
+                binding.emailFieldState = EditTextState.CORRECT
+            }
+            if (binding.firstnameFieldState?.isCorrect() == true
+                && binding.lastnameFieldState?.isCorrect() == true
+                && binding.emailFieldState?.isCorrect() == true
+            ) {
+                profileViewModel.update(
+                    phoneNumber,
+                    firstName,
+                    lastName,
+                    email,
+                    object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            Log.e(TAG, "Error! $message")
+                        }
+                    }
+                )
+            }
+        }
+
+        binding.firstnameEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.firstnameFieldState = EditTextState.IN_PROGRESS
+            } else {
+                val isValid =
+                    Utils.isValidFirstName((v as EditText).text.toString())
+                if (isValid) {
                     binding.firstnameFieldState = EditTextState.CORRECT
+                } else {
+                    binding.firstnameFieldState = EditTextState.INCORRECT
                 }
-                if (Utils.isValidLastName(lastName)) {
+            }
+        }
+        binding.lastnameEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.lastnameFieldState = EditTextState.IN_PROGRESS
+            } else {
+                val isValid =
+                    Utils.isValidLastName((v as EditText).text.toString())
+                if (isValid) {
                     binding.lastnameFieldState = EditTextState.CORRECT
-                }
-                if (Utils.isValidEmail(email)) {
-                    binding.emailFieldState = EditTextState.CORRECT
-                }
-                if (binding.firstnameFieldState?.isCorrect() == true
-                    && binding.lastnameFieldState?.isCorrect() == true
-                    && binding.emailFieldState?.isCorrect() == true
-                ) {
-                    profileViewModel.update(
-                        phoneNumber,
-                        firstName,
-                        lastName,
-                        email,
-                        object : CoroutinesErrorHandler {
-                            override fun onError(message: String) {
-                                Log.e(TAG, "Error! $message")
-                            }
-                        }
-                    )
-                }
-            }
-
-            binding.firstnameEditText.setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    binding.firstnameFieldState = EditTextState.IN_PROGRESS
                 } else {
-                    val isValid =
-                        Utils.isValidFirstName((v as EditText).text.toString())
-                    if (isValid) {
-                        binding.firstnameFieldState = EditTextState.CORRECT
-                    } else {
-                        binding.firstnameFieldState = EditTextState.INCORRECT
-                    }
+                    binding.lastnameFieldState = EditTextState.INCORRECT
                 }
             }
-            binding.lastnameEditText.setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    binding.lastnameFieldState = EditTextState.IN_PROGRESS
-                } else {
-                    val isValid =
-                        Utils.isValidLastName((v as EditText).text.toString())
-                    if (isValid) {
-                        binding.lastnameFieldState = EditTextState.CORRECT
-                    } else {
-                        binding.lastnameFieldState = EditTextState.INCORRECT
-                    }
-                }
-            }
+        }
 
-            binding.emailEditText.addTextChangedListener {
-                if (it != null && Utils.isValidEmail(it.toString())) {
-                    binding.emailFieldState = EditTextState.CORRECT
-                } else {
-                    binding.emailFieldState = EditTextState.IN_PROGRESS
-                }
+        binding.emailEditText.addTextChangedListener {
+            if (it != null && Utils.isValidEmail(it.toString())) {
+                binding.emailFieldState = EditTextState.CORRECT
+            } else {
+                binding.emailFieldState = EditTextState.IN_PROGRESS
             }
-
         }
     }
 }

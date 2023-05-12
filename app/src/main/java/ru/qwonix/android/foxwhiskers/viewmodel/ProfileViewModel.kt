@@ -25,6 +25,10 @@ class ProfileViewModel @Inject constructor(
     private val _clientAuthenticationResponse = MutableLiveData<ApiResponse<Client?>>()
     val clientAuthenticationResponse: LiveData<ApiResponse<Client?>> = _clientAuthenticationResponse
 
+    private val _clientUpdateResponse = MutableLiveData<ApiResponse<Client?>>()
+    val clientUpdateResponse: LiveData<ApiResponse<Client?>> = _clientUpdateResponse
+
+
     init {
         clientAuthenticationResponse.observeForever {
             when (it) {
@@ -55,7 +59,7 @@ class ProfileViewModel @Inject constructor(
         email: String,
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _clientAuthenticationResponse,
+        _clientUpdateResponse,
         coroutinesErrorHandler
     ) {
         val updateClientDTO = UpdateClientDTO(phoneNumber, firstName, lastName, email)
@@ -63,11 +67,11 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun logout(coroutinesErrorHandler: CoroutinesErrorHandler) = baseRequest(
-        MutableLiveData(),
-        coroutinesErrorHandler
-    ) {
-        userRepository.logout()
+    fun logout(coroutinesErrorHandler: CoroutinesErrorHandler) {
+        baseRequest(MutableLiveData(), coroutinesErrorHandler) {
+            userRepository.logout()
+        }
+        _clientAuthenticationResponse.postValue(ApiResponse.Failure("logout", 401))
     }
 
     fun isRequiredForEdit(data: Client): Boolean {

@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.core.text.isDigitsOnly
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberConfirmationBinding
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
@@ -20,12 +22,13 @@ import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import java.util.concurrent.TimeUnit
 
-
+@AndroidEntryPoint
 class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_confirmation) {
 
     private val TAG = "PhoneConfirmFragment"
 
-    private val authenticationViewModel: AuthenticationViewModel by activityViewModels()
+    private val authenticationViewModel: AuthenticationViewModel by viewModels()
+    private val args: PhoneNumberConfirmationFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentPhoneNumberConfirmationBinding
 
@@ -89,6 +92,7 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
                 "${binding.pinCodeDigit1.text}${binding.pinCodeDigit2.text}${binding.pinCodeDigit3.text}${binding.pinCodeDigit4.text}"
             if (pinCode.length == 4 && pinCode.isDigitsOnly()) {
                 authenticationViewModel.authenticate(
+                    args.phoneNumber,
                     pinCode.toInt(),
                     object : CoroutinesErrorHandler {
                         override fun onError(message: String) {
@@ -102,11 +106,13 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
 
         binding.sendAgainButton.setOnClickListener {
             binding.isTimerExpired = false
-            authenticationViewModel.sendCodeAgain(object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    TODO("Not yet implemented")
-                }
-            })
+            authenticationViewModel.sendCodeAgain(
+                args.phoneNumber,
+                object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        TODO("Not yet implemented")
+                    }
+                })
             countDownTimer.start()
         }
 

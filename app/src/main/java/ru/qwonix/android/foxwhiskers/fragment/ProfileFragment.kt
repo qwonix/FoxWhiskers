@@ -76,11 +76,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         binding.editButton.setOnClickListener {
             Log.i(TAG, "edit – ${binding.client}")
-            val client = binding.client
-
-            if (client != null && profileViewModel.isRequiredForEdit(client)) {
-                findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
-            }
+            findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
         }
     }
 }
