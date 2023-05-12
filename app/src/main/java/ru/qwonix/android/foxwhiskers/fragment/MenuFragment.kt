@@ -2,6 +2,7 @@ package ru.qwonix.android.foxwhiskers.fragment
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,13 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
+
+    private val TAG = "MenuFragment"
+
     companion object {
         /**
          * Load picture from the internet via Picasso
@@ -48,7 +52,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     }
 
     private lateinit var binding: FragmentMenuBinding
-    private val appViewModel: AppViewModel by activityViewModels()
+    private val menuViewModel: MenuViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,28 +67,18 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         val menuDishAdapter = MenuDishAdapter()
         val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
 
-        appViewModel.dishes.observe(viewLifecycleOwner) {
+        menuViewModel.dishes.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
-                    "Code: ${it.code}, ${it.errorMessage}"
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
                 }
 
-                ApiResponse.Loading -> "Loading"
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
 
-                is ApiResponse.Success ->
-                    menuDishAdapter.setDishes(it.data)
-            }
-        }
-
-        appViewModel.dishes.observe(viewLifecycleOwner) {
-            when (it) {
-                is ApiResponse.Failure -> {
-                    "Code: ${it.code}, ${it.errorMessage}"
-                }
-
-                ApiResponse.Loading -> "Loading"
 
                 is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load dishes ${it.data}")
+                    menuDishAdapter.setDishes(it.data)
 
                     val dishes: Map<DishType, List<Dish>> =
                         it.data.groupBy { dish: Dish -> dish.type }

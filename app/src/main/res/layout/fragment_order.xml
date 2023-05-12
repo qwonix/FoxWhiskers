@@ -19,9 +19,6 @@
             name="orderItemCount"
             type="Integer" />
 
-        <variable
-            name="viewModel"
-            type="ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel" />
     </data>
 
     <LinearLayout

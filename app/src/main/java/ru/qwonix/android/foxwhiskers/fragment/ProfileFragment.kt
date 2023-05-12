@@ -49,9 +49,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
                 }
 
-                is ApiResponse.Loading -> {
-                    Log.i(TAG, "loading")
-                }
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful profile load – ${it.data}")

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.PointF
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,17 +29,21 @@ import com.yandex.runtime.ui_view.ViewProvider
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderPickupLocationBinding
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
 class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_location) {
+
+    private val TAG = "OderPickUpLocationFrag"
+
     companion object {
         fun newInstance() = OderPickUpLocationFragment()
     }
 
-    private val appViewModel: AppViewModel by activityViewModels()
+    private val menuViewModel: MenuViewModel by activityViewModels()
 
     private val iconStyle = IconStyle().apply { anchor = PointF(0.5f, 1.0f) }
 
@@ -69,7 +74,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
 
         binding.apply {
             // FIXME: pass directly menuViewModel
-            pickupLocation = appViewModel.selectedPickUpLocation.value
+            pickupLocation = menuViewModel.selectedPickUpLocation.value
         }
 
         return binding.root
@@ -90,8 +95,8 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
             val mapIntent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(
-                    "geo:${appViewModel.selectedPickUpLocation.value?.latitude ?: Utils.primaryCityPoint.latitude}," +
-                            "${appViewModel.selectedPickUpLocation.value?.longitude ?: Utils.primaryCityPoint.longitude}?q=Усы+Лисы&z=15"
+                    "geo:${menuViewModel.selectedPickUpLocation.value?.latitude ?: Utils.primaryCityPoint.latitude}," +
+                            "${menuViewModel.selectedPickUpLocation.value?.longitude ?: Utils.primaryCityPoint.longitude}?q=Усы+Лисы&z=15"
                 )
             )
             // suggest selection of an application
@@ -107,7 +112,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
         }
 
         // smooth move camera to current selected
-        appViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
+        menuViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
             binding.apply {
                 mapview.map.move(
                     CameraPosition(
@@ -121,11 +126,21 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
             }
         }
 
-        appViewModel.locations.observe(viewLifecycleOwner)
-        {
-            binding.mapview.map.mapObjects.clear()
-            addLocationsToMap(it)
-            setViewByUserData(appViewModel.selectedPickUpLocation.value!!, selectedPoint)
+        menuViewModel.locations.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load locations ${it.data}")
+                    binding.mapview.map.mapObjects.clear()
+                    addLocationsToMap(it.data)
+                    setViewByUserData(menuViewModel.selectedPickUpLocation.value!!, selectedPoint)
+                }
+            }
         }
     }
 
@@ -139,16 +154,16 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
         tappedMapObject as PlacemarkMapObject
 
         // if current selected
-        if (appViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
+        if (menuViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
             return@MapObjectTapListener true
         }
 
         // set tapped object as selected
         tappedMapObject.setView(selectedPoint, iconStyle)
-        appViewModel.setSelectedLocation(tappedMapObject.userData as PickUpLocation)
+        menuViewModel.setSelectedLocation(tappedMapObject.userData as PickUpLocation)
 
         // set previous selected as default
-        setViewByUserData(appViewModel.selectedPickUpLocation.value!!, unselectedPoint)
+        setViewByUserData(menuViewModel.selectedPickUpLocation.value!!, unselectedPoint)
 
         true
     }

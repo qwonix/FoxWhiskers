@@ -10,7 +10,7 @@ class Dish(
     var imageUrl: String,
     var shortDescription: String,
     var currencyPrice: Double,
-    var type : DishType
+    var type: DishType
 ) : BaseObservable() {
 
     @Bindable

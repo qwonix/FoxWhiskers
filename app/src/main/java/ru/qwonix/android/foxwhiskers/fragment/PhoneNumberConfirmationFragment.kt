@@ -70,13 +70,12 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
         authenticationViewModel.authenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
-                    Log.e(TAG, "code ${it.code} – ${it.errorMessage}")
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
                     binding.hasError = true
                 }
 
-                is ApiResponse.Loading -> {
-                    Log.i(TAG, "loading")
-                }
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Success login")

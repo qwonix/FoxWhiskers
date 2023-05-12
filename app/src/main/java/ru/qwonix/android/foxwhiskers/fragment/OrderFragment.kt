@@ -14,14 +14,14 @@ import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderDishAdapter
 import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.util.Utils
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 import java.math.BigDecimal
 
 
 class OrderFragment : Fragment(R.layout.fragment_order) {
 
     private lateinit var binding: FragmentOrderBinding
-    private val appViewModel: AppViewModel by activityViewModels()
+    private val menuViewModel: MenuViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,7 +29,6 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         binding = FragmentOrderBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = appViewModel
             priceFormat = Utils.DECIMAL_FORMAT
             orderPrice = 0.0
             orderItemCount = 0
@@ -41,7 +40,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         super.onViewCreated(view, savedInstanceState)
 
         val orderDishAdapter = OrderDishAdapter()
-        appViewModel.orderCart.observe(viewLifecycleOwner) {
+        menuViewModel.orderCart.observe(viewLifecycleOwner) {
             orderDishAdapter.data = it
             binding.orderPrice =
                 (it.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }).toDouble()

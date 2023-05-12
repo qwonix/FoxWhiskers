@@ -7,14 +7,14 @@ import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeChipBinding
 import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
-class MenuDishTypeChipAdapter(val recyclerView: RecyclerView) : RecyclerView.Adapter<MenuDishTypeChipAdapter.ViewHolder>() {
+class MenuDishTypeChipAdapter(val recyclerView: RecyclerView) :
+    RecyclerView.Adapter<MenuDishTypeChipAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(recyclerView: RecyclerView, position: Int)
     }
 
     lateinit var onItemClickListener: OnItemClickListener
-    set
 
     var dishTypes = emptyList<Pair<DishType, Int>>()
 

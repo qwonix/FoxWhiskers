@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +19,19 @@ import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSearch
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
 class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
+
+    private val TAG = "MenuSearchFragment"
 
     companion object {
         fun newInstance() = MenuSearchFragment()
     }
 
     private lateinit var binding: FragmentMenuSearchBinding
-    private val appViewModel: AppViewModel by activityViewModels()
+    private val menuViewModel: MenuViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,29 +82,26 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
                     orderDishAdapter.data = emptyList()
                     binding.clearText.visibility = View.INVISIBLE
                 } else {
-                    val apiResponse = appViewModel.dishes.value
-                    when (apiResponse) {
+                    when (val it = menuViewModel.dishes.value) {
                         is ApiResponse.Failure -> {
-                            "Code: ${apiResponse.code}, ${apiResponse.errorMessage}"
+                            Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
                         }
 
-                        ApiResponse.Loading -> "Loading"
+                        is ApiResponse.Loading -> Log.i(TAG, "loading")
 
                         is ApiResponse.Success -> {
-                            orderDishAdapter.data =
-                                apiResponse.data.filter { dish ->
-                                    dish.title.contains(
-                                        s,
-                                        true
-                                    )
-                                }
+                            Log.i(TAG, "Successful load dishes ${it.data}")
                             binding.clearText.visibility = View.VISIBLE
+
+                            orderDishAdapter.data = it.data.filter { dish ->
+                                dish.title.contains(s, true)
+                            }
                         }
 
-                        else -> {}
+                        else -> {
+                            TODO("Not yet implemented")
+                        }
                     }
-
-
                 }
             }
         })

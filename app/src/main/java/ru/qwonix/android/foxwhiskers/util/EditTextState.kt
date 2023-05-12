@@ -3,7 +3,7 @@ package ru.qwonix.android.foxwhiskers.util
 import ru.qwonix.android.foxwhiskers.R
 
 enum class EditTextState(
-    val backgroundId: Int
+    val drawableId: Int
 ) {
     IN_PROGRESS(R.drawable.rectangle_corners15_gray500_background),
     CORRECT(R.drawable.rectangle_green_stroke_corners15_gray500_background),

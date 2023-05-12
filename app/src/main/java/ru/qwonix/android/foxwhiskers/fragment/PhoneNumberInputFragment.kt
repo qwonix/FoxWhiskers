@@ -79,9 +79,8 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
                     binding.hasError = true
                 }
 
-                is ApiResponse.Loading -> {
-                    Log.i(TAG, "loading")
-                }
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful code sending")

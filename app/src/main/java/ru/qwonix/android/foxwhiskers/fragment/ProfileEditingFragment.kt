@@ -71,9 +71,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
                 }
 
-                is ApiResponse.Loading -> {
-                    Log.i(TAG, "loading")
-                }
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful profile editing")

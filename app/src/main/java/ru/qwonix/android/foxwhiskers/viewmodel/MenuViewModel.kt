@@ -5,10 +5,6 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
@@ -17,24 +13,18 @@ import ru.qwonix.android.foxwhiskers.repository.MenuRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class AppViewModel @Inject constructor(
+class MenuViewModel @Inject constructor(
     private val menuRepository: MenuRepository
 ) : BaseViewModel() {
-
-    var job: Job? = null
-    val errorMessage = MutableLiveData<String>()
-    val loading = MutableLiveData<Boolean>()
-    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
-    }
+    private val TAG = "MenuViewModel"
 
     val selectedPaymentMethod: MutableLiveData<PaymentMethod> =
         MutableLiveData(PaymentMethod.INAPP_ONLINE_CARD)
 
     val selectedPickUpLocation: MutableLiveData<PickUpLocation> = MutableLiveData()
 
-    private val _locations: MutableLiveData<List<PickUpLocation>> = MutableLiveData()
-    val locations: LiveData<List<PickUpLocation>> = _locations
+    private val _locations: MutableLiveData<ApiResponse<List<PickUpLocation>>> = MutableLiveData()
+    val locations: LiveData<ApiResponse<List<PickUpLocation>>> = _locations
 
     private val _dishes: MutableLiveData<ApiResponse<List<Dish>>> = MutableLiveData()
     val dishes: LiveData<ApiResponse<List<Dish>>> = _dishes
@@ -43,17 +33,33 @@ class AppViewModel @Inject constructor(
     val orderCart: LiveData<List<Dish>> = _orderCart
 
     init {
-        _locations.observeForever { selectedPickUpLocation.postValue(it.maxBy { location -> location.priority }) }
+        locations.observeForever {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load locations ${it.data}")
+                    selectedPickUpLocation.postValue(it.data.maxBy { it.priority })
+                }
+            }
+        }
 
         dishes.observeForever {
             when (it) {
                 is ApiResponse.Failure -> {
-                    "Code: ${it.code}, ${it.errorMessage}"
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
                 }
 
-                ApiResponse.Loading -> "Loading"
+                ApiResponse.Loading -> Log.i(TAG, "loading")
+
 
                 is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load dishes - ${it.data}")
+
                     it.data.map { data ->
                         data.addOnPropertyChangedCallback(object :
                             Observable.OnPropertyChangedCallback() {
@@ -72,19 +78,19 @@ class AppViewModel @Inject constructor(
                         })
                     }
                 }
-
             }
         }
 
 
         loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                Log.e("confirmEditingButton", "Error! $message")
+                TODO("Not yet implemented")
             }
         })
+
         loadLocations(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                Log.e("confirmEditingButton", "Error! $message")
+                TODO("Not yet implemented")
             }
         })
     }
@@ -97,44 +103,22 @@ class AppViewModel @Inject constructor(
         this.selectedPaymentMethod.postValue(paymentMethod)
     }
 
-    fun loadDishes(
+    private fun loadDishes(
         coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _dishes,
+        coroutinesErrorHandler
     ) {
-        baseRequest(
-            _dishes,
-            coroutinesErrorHandler
-        ) {
-            menuRepository.findAllDishes()
-        }
+        menuRepository.findAllDishes()
     }
 
 
     fun loadLocations(
         coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _locations,
+        coroutinesErrorHandler
     ) {
-        val first: ApiResponse<List<PickUpLocation>>
-        runBlocking {
-            first = menuRepository.findAllLocations().first()
-        }
-        when (first) {
-            is ApiResponse.Failure -> Log.e("", "")
-            is ApiResponse.Success -> {
-                _locations.postValue(first.data)
-            }
-
-            is ApiResponse.Loading -> Log.e("", "")
-        }
-    }
-
-
-    private fun onError(message: String) {
-        Log.e("tag", message)
-        errorMessage.postValue(message)
-        loading.value = false
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        job?.cancel()
+        menuRepository.findAllLocations()
     }
 }

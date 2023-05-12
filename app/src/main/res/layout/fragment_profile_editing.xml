@@ -99,7 +99,7 @@
                         <EditText
                             android:id="@+id/firstname_edit_text"
                             style="@style/ProfileInfoField.EditText"
-                            state="@{firstnameFieldState}"
+                            state="@{firstnameFieldState.drawableId}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:autofillHints="name"
@@ -125,7 +125,7 @@
                         <EditText
                             android:id="@+id/lastname_edit_text"
                             style="@style/ProfileInfoField.EditText"
-                            state="@{lastnameFieldState}"
+                            state="@{lastnameFieldState.drawableId}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:autofillHints="username"
@@ -150,7 +150,7 @@
                         <EditText
                             android:id="@+id/email_edit_text"
                             style="@style/ProfileInfoField.EditText"
-                            state="@{emailFieldState}"
+                            state="@{emailFieldState.drawableId}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:autofillHints="emailAddress"
