@@ -20,8 +20,8 @@
             type="ru.qwonix.android.foxwhiskers.util.EditTextState" />
 
         <variable
-            name="userProfile"
-            type="ru.qwonix.android.foxwhiskers.entity.UserProfile" />
+            name="client"
+            type="ru.qwonix.android.foxwhiskers.entity.Client" />
     </data>
 
     <FrameLayout
@@ -105,7 +105,7 @@
                             android:autofillHints="name"
                             android:hint="Не указано"
                             android:inputType="textPersonName"
-                            android:text='@{userProfile.firstName}'
+                            android:text='@{client.firstName}'
                             tools:style="@style/ProfileInfoField.EditText" />
                     </LinearLayout>
 
@@ -131,7 +131,7 @@
                             android:autofillHints="username"
                             android:hint="Не указана"
                             android:inputType="textPersonName"
-                            android:text='@{userProfile.lastName}'/>
+                            android:text='@{client.lastName}' />
                     </LinearLayout>
 
                     <LinearLayout
@@ -156,7 +156,7 @@
                             android:autofillHints="emailAddress"
                             android:hint="Не указана"
                             android:inputType="textEmailAddress"
-                            android:text='@{userProfile.email}' />
+                            android:text='@{client.email}' />
                     </LinearLayout>
 
                     <LinearLayout
@@ -176,7 +176,7 @@
                             style="@style/ProfileInfoField"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{userProfile.phoneNumber}'
+                            android:text='@{client.phoneNumber}'
                             tools:text="+7 (981) 951-75-51" />
                     </LinearLayout>
                 </LinearLayout>

@@ -5,7 +5,7 @@ import java.util.UUID
 
 data class Order(
     val id: UUID,
-    val user: UserProfile,
+    val client: Client,
     val status: OrderStatus,
     val pickUpLocation: PickUpLocation,
     val orderItems: List<OrderItem>,

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
@@ -36,13 +36,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileViewModel.tryLoadUserProfile(object : CoroutinesErrorHandler {
+        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }
         })
 
-        profileViewModel.authenticatedUser.observe(viewLifecycleOwner) {
+        profileViewModel.authenticatedClient.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -52,17 +52,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 is ApiResponse.Loading -> Log.i(TAG, "loading")
 
                 is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful profile load – ${it.data}")
-                    val data: UserProfile = it.data!!
+                    Log.i(TAG, "Successful client load – ${it.data}")
+                    val data: Client = it.data!!
 
-                    binding.userProfile = data
+                    binding.client = data
 
                     if (profileViewModel.isRequiredForEdit(data)) {
-                        findNavController().navigate(
-                            ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
-                                data
-                            )
-                        )
+                        findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
                     }
                 }
             }
@@ -70,7 +66,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
         binding.logoutButton.setOnClickListener {
-            Log.i(TAG, "logout – ${binding.userProfile}")
+            Log.i(TAG, "logout – ${binding.client}")
             profileViewModel.logout(object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     TODO("Not yet implemented")
@@ -79,15 +75,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         binding.editButton.setOnClickListener {
-            Log.i(TAG, "edit – ${binding.userProfile}")
-            val userProfile = binding.userProfile
+            Log.i(TAG, "edit – ${binding.client}")
+            val client = binding.client
 
-            if (userProfile != null && profileViewModel.isRequiredForEdit(userProfile)) {
-                findNavController().navigate(
-                    ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
-                        userProfile
-                    )
-                )
+            if (client != null && profileViewModel.isRequiredForEdit(client)) {
+                findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
             }
         }
     }

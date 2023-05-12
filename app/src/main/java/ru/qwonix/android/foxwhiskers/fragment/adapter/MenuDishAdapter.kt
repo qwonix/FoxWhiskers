@@ -73,7 +73,7 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         private fun bindDish(dish: DataModel.Dish) {
             (binding as ItemMenuDishBinding).dish = dish.value
-            (binding as ItemMenuDishBinding).priceFormat = Utils.DECIMAL_FORMAT
+            binding.priceFormat = Utils.DECIMAL_FORMAT
         }
 
         private fun bindDishType(dishType: DataModel.DishType) {

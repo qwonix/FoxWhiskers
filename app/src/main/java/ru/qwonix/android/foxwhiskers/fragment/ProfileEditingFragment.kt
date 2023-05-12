@@ -11,11 +11,9 @@ import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileEditingBinding
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.EditTextState
 import ru.qwonix.android.foxwhiskers.util.Utils
@@ -28,9 +26,6 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     private val TAG = "ProfileEditingFragment"
 
     private val profileViewModel: ProfileViewModel by viewModels()
-
-    private val args: ProfileEditingFragmentArgs by navArgs()
-    private lateinit var changedUserProfile: UserProfile
 
     private lateinit var binding: FragmentProfileEditingBinding
 
@@ -49,8 +44,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     ): View {
         binding = FragmentProfileEditingBinding.inflate(inflater, container, false)
 
-        this.changedUserProfile = args.userProfile
-        binding.userProfile = changedUserProfile
+        binding.client = (profileViewModel.authenticatedClient.value as ApiResponse.Success).data
 
         binding.firstnameFieldState = EditTextState.IN_PROGRESS
         binding.lastnameFieldState = EditTextState.IN_PROGRESS
@@ -65,7 +59,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        profileViewModel.updatedUser.observe(viewLifecycleOwner) {
+        profileViewModel.updatedClient.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -74,7 +68,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 is ApiResponse.Loading -> Log.i(TAG, "loading")
 
                 is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful profile editing")
+                    Log.i(TAG, "Successful client editing")
                     findNavController().navigate(R.id.action_profileEditingFragment_to_profileFragment)
                 }
             }
@@ -100,7 +94,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 && binding.emailFieldState?.isCorrect() == true
             ) {
                 profileViewModel.update(
-                    changedUserProfile.phoneNumber,
+                    binding.client!!.phoneNumber,
                     firstName,
                     lastName,
                     email,

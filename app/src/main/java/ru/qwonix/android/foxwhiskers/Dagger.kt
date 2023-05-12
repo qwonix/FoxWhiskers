@@ -26,8 +26,8 @@ import ru.qwonix.android.foxwhiskers.util.AuthenticationAuthenticator
 import ru.qwonix.android.foxwhiskers.util.AuthenticationInterceptor
 import javax.inject.Singleton
 
-val Context.authenticationDataStore: DataStore<Preferences> by preferencesDataStore(name = "AuthenticationDataStore")
-val Context.dataStore by preferencesDataStore(name = "UserProfile")
+val Context.authenticationDataStore by preferencesDataStore(name = "AuthenticationDataStore")
+val Context.clientDataStore by preferencesDataStore(name = "Client")
 
 @[Module InstallIn(SingletonComponent::class)]
 object ServiceModule {

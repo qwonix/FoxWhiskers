@@ -3,7 +3,7 @@ package ru.qwonix.android.foxwhiskers.repository
 import okhttp3.internal.EMPTY_RESPONSE
 import retrofit2.Response
 import ru.qwonix.android.foxwhiskers.dto.AuthenticationRequestDTO
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
 import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import ru.qwonix.android.foxwhiskers.service.LocalUserStorageService
@@ -25,15 +25,15 @@ class AuthenticationRepository @Inject constructor(
         if (authenticate.isSuccessful && body != null) {
             localTokenStorageService.saveAccessToken(body.jwtAccessToken)
             localTokenStorageService.saveRefreshToken(body.jwtRefreshToken)
-            val userProfile = UserProfile(null, null, null, phoneNumber)
-            localUserStorageService.saveUserProfile(userProfile)
+            val client = Client(null, null, null, phoneNumber)
+            localUserStorageService.saveUserProfile(client)
         }
 
         return@apiRequestFlow authenticate
     }
 
-    fun loadUserProfile() = apiRequestFlow {
-        var loadedUserProfile: UserProfile? = localUserStorageService.loadUserProfile()
+    fun loadClient() = apiRequestFlow {
+        var loadedUserProfile: Client? = localUserStorageService.loadUserProfile()
         if (loadedUserProfile != null) {
             val userProfileResponse = userService.one(loadedUserProfile.phoneNumber)
             val body = userProfileResponse.body()

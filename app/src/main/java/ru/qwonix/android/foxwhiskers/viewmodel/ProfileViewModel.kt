@@ -2,8 +2,8 @@ package ru.qwonix.android.foxwhiskers.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ru.qwonix.android.foxwhiskers.dto.UpdateUserProfileDTO
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
 import ru.qwonix.android.foxwhiskers.repository.UserRepository
@@ -15,19 +15,19 @@ class ProfileViewModel @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) : BaseViewModel() {
 
-    private val _authenticatedUser = MutableLiveData<ApiResponse<UserProfile?>>()
-    val authenticatedUser = _authenticatedUser
+    private val _authenticatedClient = MutableLiveData<ApiResponse<Client?>>()
+    val authenticatedClient = _authenticatedClient
 
-    private val _updatedUser = MutableLiveData<ApiResponse<UserProfile?>>()
-    val updatedUser = _updatedUser
+    private val _updatedClient = MutableLiveData<ApiResponse<Client?>>()
+    val updatedClient = _updatedClient
 
-    fun tryLoadUserProfile(
+    fun tryLoadClient(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _authenticatedUser,
+        _authenticatedClient,
         coroutinesErrorHandler
     ) {
-        authenticationRepository.loadUserProfile()
+        authenticationRepository.loadClient()
     }
 
     fun update(
@@ -37,11 +37,11 @@ class ProfileViewModel @Inject constructor(
         email: String,
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _updatedUser,
+        _updatedClient,
         coroutinesErrorHandler
     ) {
-        val updateUserProfileDTO = UpdateUserProfileDTO(phoneNumber, firstName, lastName, email)
-        userRepository.update(updateUserProfileDTO)
+        val updateClientDTO = UpdateClientDTO(phoneNumber, firstName, lastName, email)
+        userRepository.update(updateClientDTO)
     }
 
 
@@ -52,7 +52,7 @@ class ProfileViewModel @Inject constructor(
         userRepository.logout()
     }
 
-    fun isRequiredForEdit(data: UserProfile): Boolean {
+    fun isRequiredForEdit(data: Client): Boolean {
         return data.firstName.isNullOrBlank() || data.lastName.isNullOrBlank() || data.email.isNullOrBlank()
     }
 }

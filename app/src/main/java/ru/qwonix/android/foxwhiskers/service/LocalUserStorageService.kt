@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.firstOrNull
-import ru.qwonix.android.foxwhiskers.dataStore
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
+import ru.qwonix.android.foxwhiskers.clientDataStore
+import ru.qwonix.android.foxwhiskers.entity.Client
 
 
 class LocalUserStorageService(private val context: Context) {
@@ -18,12 +18,12 @@ class LocalUserStorageService(private val context: Context) {
     }
 
 
-    suspend fun loadUserProfile(): UserProfile? {
-        val preferences = context.dataStore.data.firstOrNull()
+    suspend fun loadUserProfile(): Client? {
+        val preferences = context.clientDataStore.data.firstOrNull()
         return if (preferences == null || !preferences.contains(FIRST_NAME)) {
             null
         } else {
-            UserProfile(
+            Client(
                 firstName = preferences[FIRST_NAME],
                 lastName = preferences[LAST_NAME],
                 email = preferences[EMAIL],
@@ -32,17 +32,17 @@ class LocalUserStorageService(private val context: Context) {
         }
     }
 
-    suspend fun saveUserProfile(userProfile: UserProfile) {
-        context.dataStore.edit { preferences ->
-            preferences[FIRST_NAME] = userProfile.firstName ?: ""
-            preferences[LAST_NAME] = userProfile.lastName ?: ""
-            preferences[EMAIL] = userProfile.email ?: ""
-            preferences[PHONE_NUMBER] = userProfile.phoneNumber
+    suspend fun saveUserProfile(client: Client) {
+        context.clientDataStore.edit { preferences ->
+            preferences[FIRST_NAME] = client.firstName ?: ""
+            preferences[LAST_NAME] = client.lastName ?: ""
+            preferences[EMAIL] = client.email ?: ""
+            preferences[PHONE_NUMBER] = client.phoneNumber
         }
     }
 
     suspend fun clearUserProfile() {
-        context.dataStore.edit { preferences ->
+        context.clientDataStore.edit { preferences ->
             preferences.clear()
         }
     }

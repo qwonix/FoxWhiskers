@@ -1,7 +1,7 @@
 package ru.qwonix.android.foxwhiskers.repository
 
 import retrofit2.Response
-import ru.qwonix.android.foxwhiskers.dto.UpdateUserProfileDTO
+import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
 import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import ru.qwonix.android.foxwhiskers.service.LocalUserStorageService
 import ru.qwonix.android.foxwhiskers.service.UserService
@@ -14,8 +14,7 @@ class UserRepository @Inject constructor(
 ) {
 
 
-
-    fun update(updateUserProfileDTO: UpdateUserProfileDTO) = apiRequestFlow {
+    fun update(updateUserProfileDTO: UpdateClientDTO) = apiRequestFlow {
         val update = userService.update(updateUserProfileDTO)
         val body = update.body()
         if (update.isSuccessful && body != null) {

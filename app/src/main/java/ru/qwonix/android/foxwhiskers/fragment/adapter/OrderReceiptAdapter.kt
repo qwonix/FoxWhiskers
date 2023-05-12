@@ -2,11 +2,8 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.qwonix.android.foxwhiskers.databinding.ItemOrderDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemOrderReceiptBinding
-import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.Order
 import ru.qwonix.android.foxwhiskers.util.Utils
 
