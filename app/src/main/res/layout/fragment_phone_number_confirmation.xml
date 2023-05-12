@@ -15,177 +15,192 @@
             type="Boolean" />
     </data>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:background="@drawable/rectangle_corners15_yellow300_background"
+            android:fontFamily="@font/rubik_medium"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="5dp"
+            android:text="Вход"
+            android:textColor="@color/gray_900"
+            android:textSize="20sp" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/pinCode_digit_1"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
+                android:fontFamily="@font/rubik_medium"
+                android:gravity="center"
+                android:hint="×"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="20dp"
+                android:textColor="@color/gray_900"
+                android:textColorHint="@color/gray_700"
+
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="32sp"
+                tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
+
+            <EditText
+                android:id="@+id/pinCode_digit_2"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
+                android:fontFamily="@font/rubik_medium"
+                android:gravity="center"
+                android:hint="×"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="20dp"
+                android:textColor="@color/gray_900"
+                android:textColorHint="@color/gray_700"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="32sp"
+                tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
+
+            <EditText
+                android:id="@+id/pinCode_digit_3"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
+                android:fontFamily="@font/rubik_medium"
+                android:gravity="center"
+                android:hint="×"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="20dp"
+                android:textColor="@color/gray_900"
+                android:textColorHint="@color/gray_700"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="32sp"
+                tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
+
+            <EditText
+                android:id="@+id/pinCode_digit_4"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
+                android:fontFamily="@font/rubik_medium"
+                android:gravity="center"
+                android:hint="×"
+                android:imeOptions="actionSend"
+                android:inputType="number"
+                android:maxLength="1"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="20dp"
+                android:textColor="@color/gray_900"
+                android:textColorHint="@color/gray_700"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="32sp"
+                tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/check_code_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rectangle_corners13_yellow300_background"
+            android:fontFamily="@font/rubik_regular"
+            android:paddingHorizontal="60dp"
+            android:paddingVertical="15dp"
+            android:text="Подтвердить"
+            android:textColor="@color/gray_900"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="@{isTimerExpired ? View.GONE : View.VISIBLE}">
 
-                <EditText
-                    android:id="@+id/pinCode_digit_1"
-                    android:layout_width="55dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                    android:fontFamily="@font/rubik_medium"
-                    android:gravity="center"
-                    android:hint="×"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="20dp"
-                    android:textColor="@color/gray_900"
-                    android:textColorHint="@color/gray_700"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Повторить отправку кода можно"
+                    android:textColor="@color/gray_700"
+                    android:textSize="12sp" />
 
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="32sp"
-                    tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
-
-                <EditText
-                    android:id="@+id/pinCode_digit_2"
-                    android:layout_width="55dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
-                    android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                    android:fontFamily="@font/rubik_medium"
-                    android:gravity="center"
-                    android:hint="×"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="20dp"
-                    android:textColor="@color/gray_900"
-                    android:textColorHint="@color/gray_700"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="32sp"
-                    tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
+                    android:fontFamily="@font/rubik_light"
+                    android:text="через"
+                    android:textColor="@color/gray_700"
+                    android:textSize="12sp" />
 
-                <EditText
-                    android:id="@+id/pinCode_digit_3"
-                    android:layout_width="55dp"
+                <TextView
+                    android:id="@+id/countdown"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
-                    android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
                     android:fontFamily="@font/rubik_medium"
-                    android:gravity="center"
-                    android:hint="×"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="20dp"
-                    android:textColor="@color/gray_900"
-                    android:textColorHint="@color/gray_700"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="32sp"
-                    tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
+                    android:textColor="@color/gray_700"
+                    android:textSize="12sp"
+                    tools:text="1:42" />
 
-                <EditText
-                    android:id="@+id/pinCode_digit_4"
-                    android:layout_width="55dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
-                    android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                    android:fontFamily="@font/rubik_medium"
-                    android:gravity="center"
-                    android:hint="×"
-                    android:imeOptions="actionSend"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="20dp"
-                    android:textColor="@color/gray_900"
-                    android:textColorHint="@color/gray_700"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="32sp"
-                    tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
-
+                    android:fontFamily="@font/rubik_light"
+                    android:text="сек."
+                    android:textColor="@color/gray_700"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/check_code_button"
+                android:id="@+id/send_again_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/rectangle_corners13_yellow300_background"
-                android:fontFamily="@font/rubik_regular"
-                android:paddingHorizontal="60dp"
-                android:paddingVertical="15dp"
-                android:text="Подтвердить"
+                android:background="@drawable/rectangle_stroke1_corners15_yellow300_background"
+                android:clickable="@{isTimerExpired}"
+                android:fontFamily="@font/rubik_light"
+                android:paddingHorizontal="50dp"
+                android:paddingVertical="10dp"
+                android:text="Отправить код повторно"
                 android:textColor="@color/gray_900"
-                android:textSize="14sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="@{isTimerExpired ? View.GONE : View.VISIBLE}">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="Повторить отправку кода можно"
-                        android:textColor="@color/gray_700"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:fontFamily="@font/rubik_light"
-                        android:text="через"
-                        android:textColor="@color/gray_700"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/countdown"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:fontFamily="@font/rubik_medium"
-                        android:textColor="@color/gray_700"
-                        android:textSize="12sp"
-                        tools:text="1:42" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:fontFamily="@font/rubik_light"
-                        android:text="сек."
-                        android:textColor="@color/gray_700"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/send_again_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_stroke1_corners15_yellow300_background"
-                    android:clickable="@{isTimerExpired}"
-                    android:fontFamily="@font/rubik_light"
-                    android:paddingHorizontal="50dp"
-                    android:paddingVertical="10dp"
-                    android:text="Отправить код повторно"
-                    android:textColor="@color/gray_900"
-                    android:textSize="14sp"
-                    android:visibility="@{isTimerExpired ? View.VISIBLE : View.GONE}" />
-            </LinearLayout>
+                android:textSize="14sp"
+                android:visibility="@{isTimerExpired ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
+    </LinearLayout>
 </layout>
