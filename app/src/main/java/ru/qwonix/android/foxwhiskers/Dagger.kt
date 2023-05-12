@@ -86,12 +86,14 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
+        userService: UserService,
         authenticationService: AuthenticationService,
         localUserStorageService: LocalUserStorageService,
         localTokenStorageService: LocalTokenStorageService
 
     ) =
         AuthenticationRepository(
+            userService,
             authenticationService,
             localUserStorageService,
             localTokenStorageService

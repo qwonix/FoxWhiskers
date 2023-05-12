@@ -7,10 +7,12 @@ import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
 import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import ru.qwonix.android.foxwhiskers.service.LocalUserStorageService
+import ru.qwonix.android.foxwhiskers.service.UserService
 import javax.inject.Inject
 
 
 class AuthenticationRepository @Inject constructor(
+    private val userService: UserService,
     private val authenticationService: AuthenticationService,
     private val localUserStorageService: LocalUserStorageService,
     private val localTokenStorageService: LocalTokenStorageService
@@ -31,12 +33,18 @@ class AuthenticationRepository @Inject constructor(
     }
 
     fun loadUserProfile() = apiRequestFlow {
-        val userProfile: UserProfile? = localUserStorageService.loadUserProfile()
-        if (userProfile != null) {
-            Response.success(userProfile)
+        var loadedUserProfile: UserProfile? = localUserStorageService.loadUserProfile()
+        if (loadedUserProfile != null) {
+            val userProfileResponse = userService.one(loadedUserProfile.phoneNumber)
+            val body = userProfileResponse.body()
+            if (userProfileResponse.isSuccessful && body != null) {
+                if (body != loadedUserProfile)
+                    loadedUserProfile = body
+            }
         } else {
-            Response.error(404, EMPTY_RESPONSE)
+            return@apiRequestFlow Response.error(404, EMPTY_RESPONSE)
         }
+        return@apiRequestFlow Response.success(loadedUserProfile)
     }
 
     fun sendAuthenticationCode(phoneNumber: String) = apiRequestFlow {
