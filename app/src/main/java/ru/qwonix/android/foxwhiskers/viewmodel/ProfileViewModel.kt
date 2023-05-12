@@ -1,5 +1,7 @@
 package ru.qwonix.android.foxwhiskers.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
@@ -15,16 +17,32 @@ class ProfileViewModel @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) : BaseViewModel() {
 
-    private val _authenticatedClient = MutableLiveData<ApiResponse<Client?>>()
-    val authenticatedClient = _authenticatedClient
+    private val TAG = "ProfileViewModel"
 
-    private val _updatedClient = MutableLiveData<ApiResponse<Client?>>()
-    val updatedClient = _updatedClient
+    private val _authenticatedClient = MutableLiveData<Client>()
+    val authenticatedClient: LiveData<Client> = _authenticatedClient
+
+    private val _clientAuthenticationResponse = MutableLiveData<ApiResponse<Client?>>()
+    val clientAuthenticationResponse: LiveData<ApiResponse<Client?>> = _clientAuthenticationResponse
+
+    init {
+        clientAuthenticationResponse.observeForever {
+            when (it) {
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "${it} ${it.data}")
+                    val data = it.data!!
+                    _authenticatedClient.postValue(data)
+                }
+
+                else -> {}
+            }
+        }
+    }
 
     fun tryLoadClient(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _authenticatedClient,
+        _clientAuthenticationResponse,
         coroutinesErrorHandler
     ) {
         authenticationRepository.loadClient()
@@ -37,7 +55,7 @@ class ProfileViewModel @Inject constructor(
         email: String,
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _updatedClient,
+        _clientAuthenticationResponse,
         coroutinesErrorHandler
     ) {
         val updateClientDTO = UpdateClientDTO(phoneNumber, firstName, lastName, email)

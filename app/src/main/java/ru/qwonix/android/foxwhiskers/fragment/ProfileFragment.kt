@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
-import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
@@ -42,7 +41,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         })
 
-        profileViewModel.authenticatedClient.observe(viewLifecycleOwner) {
+        profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -53,13 +52,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful client load – ${it.data}")
-                    val data: Client = it.data!!
 
-                    binding.client = data
-
-                    if (profileViewModel.isRequiredForEdit(data)) {
-                        findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
+                    if (it.data != null) {
+                        if (profileViewModel.isRequiredForEdit(it.data)) {
+                            findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
+                        }
+                        binding.client = it.data
                     }
+
                 }
             }
         }

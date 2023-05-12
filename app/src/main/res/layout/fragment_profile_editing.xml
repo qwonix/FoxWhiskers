@@ -177,7 +177,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text='@{client.phoneNumber}'
-                            tools:text="+7 (981) 951-75-51" />
+                            tools:text="+7 (999) 123-45-67" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
