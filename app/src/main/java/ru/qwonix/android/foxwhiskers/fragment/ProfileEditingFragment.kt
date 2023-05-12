@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
@@ -98,19 +99,27 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
             val lastName = binding.lastnameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
 
+            var canUpdate = true
+
             if (Utils.isValidFirstName(firstName)) {
                 binding.firstnameFieldState = EditTextState.CORRECT
+            } else {
+                binding.firstnameFieldState = EditTextState.INCORRECT
+                canUpdate = false
             }
             if (Utils.isValidLastName(lastName)) {
                 binding.lastnameFieldState = EditTextState.CORRECT
+            } else {
+                binding.lastnameFieldState = EditTextState.INCORRECT
+                canUpdate = false
             }
             if (Utils.isValidEmail(email)) {
                 binding.emailFieldState = EditTextState.CORRECT
+            } else {
+                binding.emailFieldState = EditTextState.INCORRECT
+                canUpdate = false
             }
-            if (binding.firstnameFieldState?.isCorrect() == true
-                && binding.lastnameFieldState?.isCorrect() == true
-                && binding.emailFieldState?.isCorrect() == true
-            ) {
+            if (canUpdate) {
                 profileViewModel.update(
                     phoneNumber,
                     firstName,
@@ -118,10 +127,9 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                     email,
                     object : CoroutinesErrorHandler {
                         override fun onError(message: String) {
-                            Log.e(TAG, "Error! $message")
+                            TODO("Not yet implemented")
                         }
-                    }
-                )
+                    })
             }
         }
 
@@ -129,8 +137,11 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
             if (hasFocus) {
                 binding.firstnameFieldState = EditTextState.IN_PROGRESS
             } else {
+                val editText = v as EditText
+                editText.setText(editText.text.trim(), TextView.BufferType.EDITABLE)
+
                 val isValid =
-                    Utils.isValidFirstName((v as EditText).text.toString())
+                    Utils.isValidFirstName(editText.text.toString())
                 if (isValid) {
                     binding.firstnameFieldState = EditTextState.CORRECT
                 } else {
@@ -142,8 +153,11 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
             if (hasFocus) {
                 binding.lastnameFieldState = EditTextState.IN_PROGRESS
             } else {
+                val editText = v as EditText
+                editText.setText(editText.text.trim(), TextView.BufferType.EDITABLE)
+
                 val isValid =
-                    Utils.isValidLastName((v as EditText).text.toString())
+                    Utils.isValidLastName(editText.text.toString())
                 if (isValid) {
                     binding.lastnameFieldState = EditTextState.CORRECT
                 } else {
