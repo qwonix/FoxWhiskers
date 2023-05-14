@@ -10,19 +10,20 @@ import ru.qwonix.android.foxwhiskers.util.Utils
 
 
 class MenuSearchDishAdapter : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHolder>() {
-    var data = emptyList<Dish>()
-        set(value) {
-            val orderDishesDiffUtil = OrderDishesDiffUtil(field, value)
-            val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
-            diffResult.dispatchUpdatesTo(this)
+    var data = mutableListOf<Dish>()
 
-            field = value
-        }
+    fun setFoundDishes(foundDishes: List<Dish>) {
+        val orderDishesDiffUtil = OrderDishesDiffUtil(data, foundDishes)
+        val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
+        diffResult.dispatchUpdatesTo(this)
 
-    private lateinit var binding: ItemMenuSearchDishBinding
+        data.clear()
+        data.addAll(foundDishes)
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding =
+        val binding =
             ItemMenuSearchDishBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }

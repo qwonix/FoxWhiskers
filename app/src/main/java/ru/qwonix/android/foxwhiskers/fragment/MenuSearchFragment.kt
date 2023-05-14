@@ -2,12 +2,11 @@ package ru.qwonix.android.foxwhiskers.fragment
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,43 +67,35 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
             })
         }
 
-        binding.searchBarTextView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//                TODO("Not yet implemented")
-            }
+        binding.searchBarTextView.addTextChangedListener {
+            if (it.isNullOrBlank()) {
+                orderDishAdapter.setFoundDishes(emptyList())
+                binding.clearText.visibility = View.INVISIBLE
+            } else {
+                when (val dishes = menuViewModel.dishes.value) {
+                    is ApiResponse.Failure -> {
+                        Log.e(TAG, "code: ${dishes.code} – ${dishes.errorMessage}")
+                    }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                TODO("Not yet implemented")
-            }
+                    is ApiResponse.Loading -> Log.i(TAG, "loading")
 
-            override fun afterTextChanged(s: Editable) {
-                if (s.isBlank()) {
-                    orderDishAdapter.data = emptyList()
-                    binding.clearText.visibility = View.INVISIBLE
-                } else {
-                    when (val it = menuViewModel.dishes.value) {
-                        is ApiResponse.Failure -> {
-                            Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                    is ApiResponse.Success -> {
+                        Log.i(TAG, "Successful load dishes ${dishes.data}")
+                        binding.clearText.visibility = View.VISIBLE
+
+                        val foundDishes = dishes.data.filter { dish ->
+                            dish.title.contains(it, true)
                         }
 
-                        is ApiResponse.Loading -> Log.i(TAG, "loading")
+                        orderDishAdapter.setFoundDishes(foundDishes)
+                    }
 
-                        is ApiResponse.Success -> {
-                            Log.i(TAG, "Successful load dishes ${it.data}")
-                            binding.clearText.visibility = View.VISIBLE
-
-                            orderDishAdapter.data = it.data.filter { dish ->
-                                dish.title.contains(s, true)
-                            }
-                        }
-
-                        else -> {
-                            TODO("Not yet implemented")
-                        }
+                    else -> {
+                        TODO("Not yet implemented")
                     }
                 }
             }
-        })
+        }
 
         binding.searchBarTextView.focusAndShowKeyboard()
         binding.searchBarTextView.onSearch { }

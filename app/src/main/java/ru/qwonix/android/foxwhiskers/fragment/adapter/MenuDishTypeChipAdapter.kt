@@ -7,8 +7,15 @@ import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeChipBinding
 import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
-class MenuDishTypeChipAdapter(val recyclerView: RecyclerView) :
+class MenuDishTypeChipAdapter(private val recyclerView: RecyclerView) :
     RecyclerView.Adapter<MenuDishTypeChipAdapter.ViewHolder>() {
+
+    val data = mutableListOf<Pair<DishType, Int>>()
+
+    fun setDishTypes(dishTypeOnClick: Map<DishType, Int>) {
+        data.clear()
+        data.addAll(dishTypeOnClick.toList())
+    }
 
     interface OnItemClickListener {
         fun onItemClick(recyclerView: RecyclerView, position: Int)
@@ -16,33 +23,25 @@ class MenuDishTypeChipAdapter(val recyclerView: RecyclerView) :
 
     lateinit var onItemClickListener: OnItemClickListener
 
-    var dishTypes = emptyList<Pair<DishType, Int>>()
-
-    fun setDishTypes(dishTypeOnClick: Map<DishType, Int>) {
-        dishTypes = dishTypeOnClick.toList()
-    }
-
-    private lateinit var binding: ItemMenuDishTypeChipBinding
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding =
+        val binding =
             ItemMenuDishTypeChipBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val pair = dishTypes[position]
+        val pair = data[position]
         holder.bind(pair.first)
     }
 
-    override fun getItemCount(): Int = dishTypes.size
+    override fun getItemCount(): Int = data.size
 
     inner class ViewHolder(
         private val binding: ItemMenuDishTypeChipBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                onItemClickListener.onItemClick(recyclerView, dishTypes[adapterPosition].second)
+                onItemClickListener.onItemClick(recyclerView, data[adapterPosition].second)
             }
         }
 

@@ -87,7 +87,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                         mutableMapOf()
                     var i = 0
                     for ((k, v) in dishes) {
-                        chips.put(k, i)
+                        chips[k] = i
                         i += v.count() + 1
                     }
 
@@ -109,7 +109,6 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                 }
             }
         }
-
 
 
         binding.recyclerDishTypeChip.apply {

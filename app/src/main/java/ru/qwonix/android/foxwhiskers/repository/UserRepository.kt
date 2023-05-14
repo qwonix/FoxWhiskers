@@ -13,7 +13,6 @@ class UserRepository @Inject constructor(
     private val localTokenStorageService: LocalTokenStorageService
 ) {
 
-
     fun update(updateUserProfileDTO: UpdateClientDTO) = apiRequestFlow {
         val update = userService.update(updateUserProfileDTO)
         val body = update.body()

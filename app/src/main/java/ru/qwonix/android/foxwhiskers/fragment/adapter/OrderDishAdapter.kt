@@ -10,19 +10,20 @@ import ru.qwonix.android.foxwhiskers.util.Utils
 
 
 class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
-    var data = emptyList<Dish>()
-        set(value) {
-            val orderDishesDiffUtil = OrderDishesDiffUtil(field, value)
-            val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
-            diffResult.dispatchUpdatesTo(this)
+    val data = mutableListOf<Dish>()
 
-            field = value
-        }
+    fun setOrderDishes(orderDishes: List<Dish>) {
+        val orderDishesDiffUtil = OrderDishesDiffUtil(data, orderDishes)
+        val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
+        diffResult.dispatchUpdatesTo(this)
 
-    private lateinit var binding: ItemOrderDishBinding
+        data.clear()
+        data.addAll(orderDishes)
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding =
+        val binding =
             ItemOrderDishBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }

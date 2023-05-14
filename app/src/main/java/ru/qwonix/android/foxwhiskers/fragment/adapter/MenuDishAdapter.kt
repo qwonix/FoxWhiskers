@@ -16,19 +16,16 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     private val data: MutableList<DataModel> = mutableListOf()
 
     fun setDishes(dishes: List<Dish>) {
-        val data: Map<DishType, List<Dish>> = dishes.groupBy { dish: Dish -> dish.type }
-        val recyclerDishesAdapterDataModels =
-            ArrayList<DataModel>(data.size * 5) // pre-allocate capacity
+        val groupedDishes: Map<DishType, List<Dish>> = dishes.groupBy { dish: Dish -> dish.type }
+        val dishesAdapterDataModels = mutableListOf<DataModel>()
 
-        for ((dishType, dishesByType) in data) {
-            recyclerDishesAdapterDataModels += DataModel.DishType(dishType)
-            recyclerDishesAdapterDataModels += dishesByType.map { DataModel.Dish(it) }
+        for ((dishType, dishesByType) in groupedDishes) {
+            dishesAdapterDataModels.add(DataModel.DishType(dishType))
+            dishesAdapterDataModels.addAll(dishesByType.map { DataModel.Dish(it) })
         }
 
-        this.data.apply {
-            clear()
-            addAll(recyclerDishesAdapterDataModels)
-        }
+        data.clear()
+        data.addAll(dishesAdapterDataModels)
     }
 
 

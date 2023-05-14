@@ -60,8 +60,11 @@ class DemoBottomSheetDialogFragment(
         bottomSheetBehavior.isDraggable = false
     }
 
-    fun goToOrderPickUpLocationFragment() = transitToFragment(OderPickUpLocationFragment.newInstance())
-    fun goToOrderConfirmationPaymentFragment() = transitToFragment(OrderConfirmationPaymentFragment.newInstance())
+    fun goToOrderPickUpLocationFragment() =
+        transitToFragment(OderPickUpLocationFragment.newInstance())
+
+    fun goToOrderConfirmationPaymentFragment() =
+        transitToFragment(OrderConfirmationPaymentFragment.newInstance())
 
     private fun transitToFragment(newFragment: Fragment) {
         val currentFragmentRoot = childFragmentManager.fragments[0].requireView()

@@ -41,7 +41,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
 
         val orderDishAdapter = OrderDishAdapter()
         menuViewModel.orderCart.observe(viewLifecycleOwner) {
-            orderDishAdapter.data = it
+            orderDishAdapter.setOrderDishes(it)
             binding.orderPrice =
                 (it.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }).toDouble()
             binding.orderItemCount = it.count()
