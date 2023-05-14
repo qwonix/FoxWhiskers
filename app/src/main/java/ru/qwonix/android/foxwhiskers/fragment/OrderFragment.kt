@@ -44,7 +44,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
             orderDishAdapter.setOrderDishes(it)
             binding.orderPrice =
                 (it.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }).toDouble()
-            binding.orderItemCount = it.count()
+            binding.orderItemCount  = it.sumOf { dish -> dish.count }
         }
 
         binding.recyclerOrderedDishes.apply {
