@@ -47,8 +47,6 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.phoneNumberTextView.focusAndShowKeyboard()
-
         val mask = MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
         val watcher: FormatWatcher = MaskFormatWatcher(mask)
         watcher.installOn(binding.phoneNumberTextView)
