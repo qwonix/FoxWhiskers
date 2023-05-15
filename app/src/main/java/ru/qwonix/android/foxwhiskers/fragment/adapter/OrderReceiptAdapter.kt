@@ -9,12 +9,17 @@ import ru.qwonix.android.foxwhiskers.util.Utils
 
 
 class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>() {
-    var data = emptyList<Order>()
+    private val data = mutableListOf<Order>()
 
-    private lateinit var binding: ItemOrderReceiptBinding
+    fun setOrders(orders: List<Order>) {
+        data.clear()
+        data.addAll(orders)
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding =
+        val binding =
             ItemOrderReceiptBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }

@@ -1,35 +1,30 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderReceiptBinding
-import ru.qwonix.android.foxwhiskers.entity.Order
-import ru.qwonix.android.foxwhiskers.entity.OrderStatus
-import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
-import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
-import ru.qwonix.android.foxwhiskers.entity.UserProfile
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderReceiptAdapter
-import ru.qwonix.android.foxwhiskers.util.Utils
-import ru.qwonix.android.foxwhiskers.viewmodel.AppViewModel
-import java.time.LocalDateTime
-import java.util.Date
-import java.util.UUID
+import ru.qwonix.android.foxwhiskers.repository.ApiResponse
+import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
 
 
+@AndroidEntryPoint
 class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
 
+    private val TAG = "OrderReceiptFragment"
+
     private lateinit var binding: FragmentOrderReceiptBinding
-    private val appViewModel: AppViewModel by activityViewModels()
+    private val orderViewModel: OrderViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +37,26 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val orderReceiptAdapter = OrderReceiptAdapter()
+
+        orderViewModel.orders.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load client orders ${it.data}")
+                    orderReceiptAdapter.setOrders(it.data)
+                }
+            }
+        }
 
         binding.ordersRecycler.apply {
             adapter = orderReceiptAdapter

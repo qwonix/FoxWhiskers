@@ -22,23 +22,37 @@
         android:background="@drawable/rectangle_corners15_white_background"
         android:orientation="vertical">
 
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginVertical="10dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
             android:background="@color/white">
 
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik_regular"
-                android:text="Ваш заказ"
-                android:textColor="@color/gray_900"
-                android:textSize="20sp"
-                tools:text="Ваш заказ №123-4567" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Ваш заказ"
+                    android:textColor="@color/gray_900"
+                    android:textSize="20sp"
+                    tools:text="Ваш заказ №" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="@{String.valueOf(order.id)}"
+                    android:textColor="@color/gray_900"
+                    android:textSize="20sp"
+                    tools:text="123-4567" />
+            </LinearLayout>
 
 
             <LinearLayout

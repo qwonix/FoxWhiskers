@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
@@ -44,7 +45,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
             orderDishAdapter.setOrderDishes(it)
             binding.orderPrice =
                 (it.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }).toDouble()
-            binding.orderItemCount  = it.sumOf { dish -> dish.count }
+            binding.orderItemCount = it.sumOf { dish -> dish.count }
         }
 
         binding.recyclerOrderedDishes.apply {
@@ -62,6 +63,10 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
                     outRect.bottom = 25
                 }
             })
+        }
+
+        binding.currentOrderButton.setOnClickListener {
+            findNavController().navigate(R.id.action_orderFragment_to_orderReceiptFragment)
         }
 
 

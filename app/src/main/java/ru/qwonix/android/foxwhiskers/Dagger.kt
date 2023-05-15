@@ -14,11 +14,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
 import ru.qwonix.android.foxwhiskers.repository.MenuRepository
+import ru.qwonix.android.foxwhiskers.repository.OrderRepository
 import ru.qwonix.android.foxwhiskers.repository.UserRepository
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
 import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import ru.qwonix.android.foxwhiskers.service.LocalUserStorageService
 import ru.qwonix.android.foxwhiskers.service.MenuService
+import ru.qwonix.android.foxwhiskers.service.OrderService
 import ru.qwonix.android.foxwhiskers.service.UserService
 import ru.qwonix.android.foxwhiskers.util.AuthenticationAuthenticator
 import ru.qwonix.android.foxwhiskers.util.AuthenticationInterceptor
@@ -40,6 +42,17 @@ object ServiceModule {
             .client(okHttpClient)
             .build()
             .create(UserService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideOrderService(
+        okHttpClient: OkHttpClient,
+        retrofit: Retrofit.Builder
+    ): OrderService =
+        retrofit
+            .client(okHttpClient)
+            .build()
+            .create(OrderService::class.java)
 
     @Singleton
     @Provides
@@ -105,6 +118,14 @@ object RepositoryModule {
         localTokenStorageService: LocalTokenStorageService
     ) =
         UserRepository(userService, localUserStorageService, localTokenStorageService)
+
+    @Provides
+    @Singleton
+    fun provideOrderRepository(
+        orderService: OrderService
+    ) =
+        OrderRepository(orderService)
+
 
     @Provides
     @Singleton
