@@ -12,21 +12,26 @@ import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileEditingBinding
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.EditTextState
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
-import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.ProfileEditingViewModel
 
 @AndroidEntryPoint
 class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
     private val TAG = "ProfileEditingFragment"
 
-    private val profileViewModel: ProfileViewModel by viewModels()
+    private val args: ProfileEditingFragmentArgs by navArgs()
+    private lateinit var client: Client
+
+    private val profileEditingViewModel: ProfileEditingViewModel by viewModels()
 
     private lateinit var binding: FragmentProfileEditingBinding
 
@@ -38,6 +43,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
             view.setBackgroundResource(drawableId)
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,29 +62,11 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.client = args.client
 
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
+        binding.client = this.client
 
-        profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is ApiResponse.Failure -> {
-                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
-                }
-
-                is ApiResponse.Loading -> Log.i(TAG, "loading")
-
-                is ApiResponse.Success -> {
-                    binding.client = it.data
-                }
-            }
-        }
-
-
-        profileViewModel.clientUpdateResponse.observe(viewLifecycleOwner) {
+        profileEditingViewModel.clientUpdateResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -94,7 +82,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
         }
 
         binding.confirmEditingButton.setOnClickListener {
-            val phoneNumber = profileViewModel.authenticatedClient.value!!.phoneNumber
+            val phoneNumber = client.phoneNumber
             val firstName = binding.firstnameEditText.text.toString()
             val lastName = binding.lastnameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
@@ -120,7 +108,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 canUpdate = false
             }
             if (canUpdate) {
-                profileViewModel.update(
+                profileEditingViewModel.update(
                     phoneNumber,
                     firstName,
                     lastName,

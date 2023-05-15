@@ -59,6 +59,12 @@
             android:id="@+id/profileEditingFragment"
             android:name="ru.qwonix.android.foxwhiskers.fragment.ProfileEditingFragment"
             android:label="ProfileEditingFragment">
+
+            <argument
+                android:name="client"
+                app:argType="ru.qwonix.android.foxwhiskers.entity.Client"
+                app:nullable="false" />
+
             <action
                 android:id="@+id/action_profileEditingFragment_to_profileFragment"
                 app:destination="@id/profileFragment" />

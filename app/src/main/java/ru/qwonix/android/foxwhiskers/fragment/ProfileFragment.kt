@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
@@ -76,7 +77,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         binding.editButton.setOnClickListener {
             Log.i(TAG, "edit – ${binding.client}")
-            findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
+            val client: Client = binding.client!!
+
+            findNavController().navigate(
+                ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
+                    client
+                )
+            )
         }
     }
 }
