@@ -5,8 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Client(
+    val phoneNumber: String,
     val firstName: String?,
     val lastName: String?,
-    val email: String?,
-    val phoneNumber: String
-) : Parcelable
+    val email: String?
+) : Parcelable {
+    constructor(phoneNumber: String) : this(phoneNumber, null, null, null)
+}

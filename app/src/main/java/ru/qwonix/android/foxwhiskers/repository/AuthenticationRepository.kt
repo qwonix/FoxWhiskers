@@ -25,7 +25,7 @@ class AuthenticationRepository @Inject constructor(
         if (authenticate.isSuccessful && body != null) {
             localTokenStorageService.saveAccessToken(body.jwtAccessToken)
             localTokenStorageService.saveRefreshToken(body.jwtRefreshToken)
-            val client = Client(null, null, null, phoneNumber)
+            val client = Client(phoneNumber)
             localClientService.saveUserProfile(client)
         }
 
