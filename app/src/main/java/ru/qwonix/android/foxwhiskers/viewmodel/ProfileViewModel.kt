@@ -6,12 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
-import ru.qwonix.android.foxwhiskers.repository.UserRepository
+import ru.qwonix.android.foxwhiskers.repository.ClientRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+    private val clientRepository: ClientRepository,
     private val authenticationRepository: AuthenticationRepository
 ) : BaseViewModel() {
 
@@ -37,7 +37,7 @@ class ProfileViewModel @Inject constructor(
         MutableLiveData(),
         coroutinesErrorHandler
     ) {
-        userRepository.logout()
+        clientRepository.logout()
     }
 
 

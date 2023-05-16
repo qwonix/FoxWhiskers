@@ -8,7 +8,7 @@ import ru.qwonix.android.foxwhiskers.clientDataStore
 import ru.qwonix.android.foxwhiskers.entity.Client
 
 
-class LocalUserStorageService(private val context: Context) {
+class LocalClientService(private val context: Context) {
 
     private companion object {
         val FIRST_NAME = stringPreferencesKey("first_name")

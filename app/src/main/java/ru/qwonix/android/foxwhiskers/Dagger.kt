@@ -15,13 +15,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
 import ru.qwonix.android.foxwhiskers.repository.MenuRepository
 import ru.qwonix.android.foxwhiskers.repository.OrderRepository
-import ru.qwonix.android.foxwhiskers.repository.UserRepository
+import ru.qwonix.android.foxwhiskers.repository.ClientRepository
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
 import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
-import ru.qwonix.android.foxwhiskers.service.LocalUserStorageService
+import ru.qwonix.android.foxwhiskers.service.LocalClientService
 import ru.qwonix.android.foxwhiskers.service.MenuService
 import ru.qwonix.android.foxwhiskers.service.OrderService
-import ru.qwonix.android.foxwhiskers.service.UserService
+import ru.qwonix.android.foxwhiskers.service.ClientService
 import ru.qwonix.android.foxwhiskers.util.AuthenticationAuthenticator
 import ru.qwonix.android.foxwhiskers.util.AuthenticationInterceptor
 import javax.inject.Singleton
@@ -34,14 +34,14 @@ object ServiceModule {
 
     @Singleton
     @Provides
-    fun provideUserService(
+    fun provideClientService(
         okHttpClient: OkHttpClient,
         retrofit: Retrofit.Builder
-    ): UserService =
+    ): ClientService =
         retrofit
             .client(okHttpClient)
             .build()
-            .create(UserService::class.java)
+            .create(ClientService::class.java)
 
     @Singleton
     @Provides
@@ -77,9 +77,9 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideLocalUserStorageService(
+    fun provideLocalClientService(
         @ApplicationContext context: Context
-    ) = LocalUserStorageService(context)
+    ) = LocalClientService(context)
 
     @Provides
     @Singleton
@@ -97,27 +97,27 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        userService: UserService,
+        clientService: ClientService,
         authenticationService: AuthenticationService,
-        localUserStorageService: LocalUserStorageService,
+        localClientService: LocalClientService,
         localTokenStorageService: LocalTokenStorageService
 
     ) =
         AuthenticationRepository(
-            userService,
+            clientService,
             authenticationService,
-            localUserStorageService,
+            localClientService,
             localTokenStorageService
         )
 
     @Provides
     @Singleton
-    fun provideUserRepository(
-        userService: UserService,
-        localUserStorageService: LocalUserStorageService,
+    fun provideClientRepository(
+        clientService: ClientService,
+        localClientService: LocalClientService,
         localTokenStorageService: LocalTokenStorageService
     ) =
-        UserRepository(userService, localUserStorageService, localTokenStorageService)
+        ClientRepository(clientService, localClientService, localTokenStorageService)
 
     @Provides
     @Singleton

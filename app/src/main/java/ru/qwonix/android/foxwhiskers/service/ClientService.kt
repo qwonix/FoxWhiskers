@@ -7,7 +7,7 @@ import retrofit2.http.PUT
 import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
 import ru.qwonix.android.foxwhiskers.entity.Client
 
-interface UserService {
+interface ClientService {
 
     @POST("client")
     suspend fun one(@Body phoneNumber: String): Response<Client>

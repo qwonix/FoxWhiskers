@@ -7,12 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
 import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
-import ru.qwonix.android.foxwhiskers.repository.UserRepository
+import ru.qwonix.android.foxwhiskers.repository.ClientRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileEditingViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val clientRepository: ClientRepository
 ) : BaseViewModel() {
 
     private val TAG = "ProfileEditingViewModel"
@@ -31,7 +31,7 @@ class ProfileEditingViewModel @Inject constructor(
         coroutinesErrorHandler
     ) {
         val updateClientDTO = UpdateClientDTO(phoneNumber, firstName, lastName, email)
-        userRepository.update(updateClientDTO)
+        clientRepository.update(updateClientDTO)
     }
 
 }
