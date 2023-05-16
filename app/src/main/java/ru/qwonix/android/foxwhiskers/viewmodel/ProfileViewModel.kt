@@ -31,12 +31,15 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun logout(coroutinesErrorHandler: CoroutinesErrorHandler) {
-        baseRequest(MutableLiveData(), coroutinesErrorHandler) {
-            userRepository.logout()
-        }
-        _clientAuthenticationResponse.postValue(ApiResponse.Failure("logout", 401))
+    fun logout(
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        MutableLiveData(),
+        coroutinesErrorHandler
+    ) {
+        userRepository.logout()
     }
+
 
     fun isRequiredForEdit(data: Client): Boolean {
         return data.firstName.isNullOrBlank() || data.lastName.isNullOrBlank() || data.email.isNullOrBlank()

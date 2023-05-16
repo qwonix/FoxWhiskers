@@ -77,6 +77,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     TODO("Not yet implemented")
                 }
             })
+            findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
         }
 
         binding.editButton.setOnClickListener {
