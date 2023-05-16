@@ -24,18 +24,22 @@
 
         <ImageView
             android:id="@+id/back_arrow"
-            android:layout_width="wrap_content"
+            android:layout_width="35dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:contentDescription="back arrow"
-            android:src="@drawable/back_arrow_sign" />
+            android:background="@drawable/rectangle_corners13_background"
+            android:backgroundTint="@color/yellow_300"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:src="@drawable/ic_back_arrow" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/rectangle_top_corners15_white_background"
+            android:background="@drawable/rectangle_top_corners15_background"
+            android:backgroundTint="@color/white"
             android:orientation="vertical"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -111,7 +115,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center"
-                        android:background="@drawable/rectangle_corners13_yellow300_background"
+                        android:background="@drawable/rectangle_corners13_background"
+                        android:backgroundTint="@color/yellow_300"
                         android:paddingHorizontal="15dp"
                         android:paddingVertical="10dp">
 
@@ -132,7 +137,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="1dp"
-                    android:background="@drawable/rectangle_corners15_yellow300_background"
+                    android:background="@drawable/rectangle_corners13_background"
+                    android:backgroundTint="@color/yellow_300"
                     android:paddingVertical="10dp">
 
                     <TextView

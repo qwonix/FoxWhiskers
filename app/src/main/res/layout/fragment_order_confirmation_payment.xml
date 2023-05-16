@@ -39,10 +39,14 @@
 
             <ImageView
                 android:id="@+id/back_arrow"
-                android:layout_width="wrap_content"
+                android:layout_width="35dp"
                 android:layout_height="30dp"
-                android:contentDescription="back arrow"
-                android:src="@drawable/back_arrow_sign" />
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/rectangle_corners13_background"
+                android:backgroundTint="@color/yellow_300"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:src="@drawable/ic_back_arrow" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,7 +63,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_corners15_white_background">
+            android:background="@drawable/rectangle_corners15_background"
+            android:backgroundTint="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,19 +129,24 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
+                            android:layout_width="45dp"
+                            android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
+                            android:background="@drawable/rectangle_corners13_background"
+                            android:backgroundTint="@color/yellow_300"
+                            android:paddingHorizontal="5dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="3dp"
                             android:src="@{PaymentMethod.INAPP_ONLINE_CARD.drawableId}"
-                            tools:src="@drawable/inapp_online_card_payment" />
+                            tools:src="@drawable/ic_online_card_payment" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:fontFamily="@font/rubik_regular"
                             android:text="@{PaymentMethod.INAPP_ONLINE_CARD.title}"
@@ -161,7 +171,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:background="@drawable/rectangle_corners15_white_background">
+            android:background="@drawable/rectangle_corners15_background"
+            android:backgroundTint="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,6 +182,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:onClick="@{() -> viewModel.setSelectedPaymentMethod(PaymentMethod.OFFLINE_CARD)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="15dp"
@@ -179,19 +191,23 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
+                            android:layout_width="45dp"
+                            android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
+                            android:background="@drawable/rectangle_corners13_background"
+                            android:backgroundTint="@color/yellow_300"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="8dp"
                             android:src="@{PaymentMethod.OFFLINE_CARD.drawableId}"
-                            tools:src="@drawable/offline_card_payment" />
+                            tools:src="@drawable/ic_offline_card_payment" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:fontFamily="@font/rubik_regular"
                             android:text="@{PaymentMethod.OFFLINE_CARD.title}"
@@ -219,6 +235,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:onClick="@{() -> viewModel.setSelectedPaymentMethod(PaymentMethod.CASH)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="15dp"
@@ -227,19 +244,23 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
+                            android:layout_width="45dp"
+                            android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
+                            android:background="@drawable/rectangle_corners13_background"
+                            android:backgroundTint="@color/yellow_300"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="5dp"
                             android:src="@{PaymentMethod.CASH.drawableId}"
-                            tools:src="@drawable/cash_payment" />
+                            tools:src="@drawable/ic_cash_payment" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:fontFamily="@font/rubik_regular"
                             android:text="@{PaymentMethod.CASH.title}"
@@ -264,7 +285,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rectangle_corners15_white_background"
+            android:background="@drawable/rectangle_corners15_background"
+            android:backgroundTint="@color/white"
             android:paddingHorizontal="15dp"
             android:paddingVertical="10dp">
 

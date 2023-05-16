@@ -38,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
                 android:fontFamily="@font/rubik_medium"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="5dp"
@@ -51,9 +52,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
-                android:fontFamily="@font/rubik_medium"
                 android:layout_marginStart="20dp"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
+                android:fontFamily="@font/rubik_medium"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="5dp"
                 android:text="Текущий заказ"
@@ -83,7 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
                 android:fontFamily="@font/rubik_light"
                 android:paddingHorizontal="60dp"
                 android:paddingVertical="15dp"
@@ -112,13 +115,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
             android:orientation="vertical"
@@ -128,7 +124,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/rectangle_top_corners15_white_background"
+                android:background="@drawable/rectangle_top_corners15_background"
+                android:backgroundTint="@color/white"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="2dp"
                 android:text='@{String.valueOf(orderItemCount) + " товаров"}'
@@ -140,7 +137,8 @@
                 android:id="@+id/checkout_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="5dp">
 

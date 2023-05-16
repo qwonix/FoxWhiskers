@@ -11,7 +11,7 @@
     <fragment
         android:id="@+id/orderFragment"
         android:name="ru.qwonix.android.foxwhiskers.fragment.OrderFragment"
-        android:label="OrderFragment" >
+        android:label="OrderFragment">
         <action
             android:id="@+id/action_orderFragment_to_orderReceiptFragment"
             app:destination="@id/orderReceiptFragment" />

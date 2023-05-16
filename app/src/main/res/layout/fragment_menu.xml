@@ -19,7 +19,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/rectangle_corners15_gray500_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/gray_500"
                 android:paddingVertical="9dp"
                 android:paddingStart="20dp">
 
@@ -32,8 +33,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="14dp"
                         android:layout_gravity="center_vertical"
+                        android:adjustViewBounds="true"
                         android:contentDescription="back arrow"
-                        android:src="@drawable/search_sign" />
+                        android:src="@drawable/ic_search" />
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:background="@drawable/rectangle_top_corners15_gray_300_background">
+        tools:background="@drawable/rectangle_top_corners15_background"
+        tools:backgroundTint="@color/gray_300">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,19 +20,24 @@
 
             <ImageView
                 android:id="@+id/back_arrow"
-                android:layout_width="wrap_content"
+                android:layout_width="35dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="12dp"
-                android:contentDescription="back arrow"
-                android:src="@drawable/back_arrow_sign" />
+                android:layout_marginStart="10dp"
+                android:background="@drawable/rectangle_corners13_background"
+                android:backgroundTint="@color/yellow_300"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:src="@drawable/ic_back_arrow" />
 
             <FrameLayout
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/rectangle_corners15_gray500_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/gray_500"
                 android:clipToPadding="true"
                 android:paddingVertical="8dp"
                 android:paddingStart="20dp">
@@ -45,8 +51,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="14dp"
                         android:layout_gravity="center_vertical"
+                        android:adjustViewBounds="true"
                         android:contentDescription="back arrow"
-                        android:src="@drawable/search_sign" />
+                        android:src="@drawable/ic_search" />
 
                     <EditText
                         android:id="@+id/search_bar_text_view"
@@ -68,12 +75,14 @@
                     <ImageView
                         android:id="@+id/clear_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="25dp"
                         android:layout_marginEnd="15dp"
                         android:adjustViewBounds="true"
-                        android:contentDescription="clear text"
+                        android:background="@drawable/rectangle_corners13_background"
+                        android:backgroundTint="@color/yellow_300"
                         android:onClick="@{() -> searchBarTextView.getText().clear()}"
-                        android:src="@drawable/clear_cross_sign"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_cross"
                         android:visibility="invisible"
                         tools:visibility="visible" />
 

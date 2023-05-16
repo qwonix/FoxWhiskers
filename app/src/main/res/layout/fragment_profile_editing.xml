@@ -44,7 +44,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/rectangle_corners15_yellow300_background"
+                    android:background="@drawable/rectangle_corners15_background"
+                    android:backgroundTint="@color/yellow_300"
                     android:fontFamily="@font/rubik_medium"
                     android:paddingHorizontal="30dp"
                     android:paddingVertical="5dp"
@@ -106,7 +107,8 @@
                             android:hint="Не указано"
                             android:inputType="textPersonName"
                             android:text='@{client.firstName}'
-                            tools:style="@style/ProfileInfoField.EditText" />
+                            tools:background="@drawable/rectangle_corners15_background"
+                            tools:backgroundTint="@color/gray_500" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -131,7 +133,9 @@
                             android:autofillHints="username"
                             android:hint="Не указана"
                             android:inputType="textPersonName"
-                            android:text='@{client.lastName}' />
+                            android:text='@{client.lastName}'
+                            tools:background="@drawable/rectangle_corners15_background"
+                            tools:backgroundTint="@color/gray_500" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -156,7 +160,9 @@
                             android:autofillHints="emailAddress"
                             android:hint="Не указана"
                             android:inputType="textEmailAddress"
-                            android:text='@{client.email}' />
+                            android:text='@{client.email}'
+                            tools:background="@drawable/rectangle_corners15_background"
+                            tools:backgroundTint="@color/gray_500" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -176,6 +182,8 @@
                             style="@style/ProfileInfoField"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle_corners15_background"
+                            android:backgroundTint="@color/gray_500"
                             android:text='@{client.phoneNumber}'
                             tools:text="+7 (999) 123-45-67" />
                     </LinearLayout>
@@ -189,7 +197,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
                 android:fontFamily="@font/rubik_regular"
                 android:paddingHorizontal="60dp"
                 android:paddingVertical="15dp"

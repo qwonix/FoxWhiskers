@@ -16,6 +16,7 @@
         <variable
             name="paymentMethod"
             type="ru.qwonix.android.foxwhiskers.entity.PaymentMethod" />
+
         <variable
             name="pickUpLocation"
             type="ru.qwonix.android.foxwhiskers.entity.PickUpLocation" />
@@ -57,7 +58,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_corners15_white_background">
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -101,12 +103,16 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_height="55dp"
                             android:layout_gravity="center_vertical|end"
                             android:adjustViewBounds="true"
+                            android:background="@drawable/rectangle_corners13_background"
+                            android:backgroundTint="@color/yellow_300"
                             android:contentDescription="map point icon"
                             android:elevation="1dp"
-                            android:src="@drawable/map_point" />
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="10dp"
+                            android:src="@drawable/ic_map_point" />
 
                     </FrameLayout>
 
@@ -118,9 +124,9 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="@color/yellow_300"
                         android:paddingHorizontal="15dp"
-                        android:paddingVertical="10dp"
-                        android:backgroundTint="@color/yellow_300">
+                        android:paddingVertical="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -132,17 +138,17 @@
                             android:textSize="14sp" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_width="45dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|end"
                             android:adjustViewBounds="true"
-                            android:contentDescription="map point icon"
+                            android:background="@drawable/rectangle_corners13_background"
+                            android:backgroundTint="@color/yellow_300"
                             android:elevation="1dp"
-                            android:src="@drawable/timer_sing" />
-
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="8dp"
+                            android:src="@drawable/ic_timer" />
                     </FrameLayout>
-
-
                 </LinearLayout>
 
             </FrameLayout>
@@ -151,8 +157,10 @@
                 android:id="@+id/option_payment_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle_corners15_white_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/white"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="10dp">
 
@@ -165,7 +173,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start|top"
                         android:fontFamily="@font/rubik_regular"
                         android:text="Способ оплаты"
                         android:textColor="@color/gray_900"
@@ -174,7 +181,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start|bottom"
                         android:fontFamily="@font/rubik_light"
                         android:text="@{paymentMethod.title}"
                         android:textColor="@color/gray_700"
@@ -185,10 +191,14 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
-                    android:layout_gravity="center_vertical|end"
+                    android:layout_gravity="end"
                     android:adjustViewBounds="true"
+                    android:background="@drawable/rectangle_corners13_background"
+                    android:backgroundTint="@color/yellow_300"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
                     android:src="@{paymentMethod.drawableId}"
-                    tools:src="@drawable/inapp_online_card_payment" />
+                    tools:src="@drawable/ic_online_card_payment" />
             </FrameLayout>
 
             <FrameLayout
@@ -196,7 +206,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle_corners15_yellow300_background"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="15dp">
 

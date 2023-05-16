@@ -56,7 +56,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                     if (it.data != null) {
                         if (profileViewModel.isRequiredForEdit(it.data)) {
-                            findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
+                            findNavController().navigate(
+                                ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
+                                    it.data
+                                )
+                            )
                         }
                         binding.client = it.data
                     }

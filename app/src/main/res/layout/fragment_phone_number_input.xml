@@ -23,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/rectangle_corners15_yellow300_background"
+            android:background="@drawable/rectangle_corners15_background"
+            android:backgroundTint="@color/yellow_300"
             android:fontFamily="@font/rubik_medium"
             android:paddingHorizontal="30dp"
             android:paddingVertical="5dp"
@@ -41,7 +42,8 @@
             android:paddingVertical="15dp"
             android:paddingStart="25dp"
             android:paddingEnd="30dp"
-            tools:background="@drawable/rectangle_corners15_gray500_background">
+            tools:background="@drawable/rectangle_corners15_background"
+            tools:backgroundTint="@color/gray_500">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:background="@{isMaskFilled ? @drawable/rectangle_corners13_yellow300_background : @drawable/rectangle_stroke1_corners15_yellow300_background}"
+            android:background="@{isMaskFilled ? @drawable/rectangle_corners15_yellow300_background : @drawable/rectangle_stroke1_corners15_yellow300_background}"
             android:fontFamily="@font/rubik_regular"
             android:paddingHorizontal="60dp"
             android:paddingVertical="15dp"

@@ -28,11 +28,11 @@
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/rectangle_top_corners15_gray_300_background</item>
+        <item name="android:backgroundTint">@color/gray_300</item>
+        <item name="android:background">@drawable/rectangle_top_corners15_background</item>
     </style>
 
     <style name="ProfileInfoField">
-        <item name="android:background">@drawable/rectangle_corners15_gray500_background</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingStart">15dp</item>
@@ -43,7 +43,8 @@
     </style>
 
     <style name="ProfileInfoField.FieldPrompt">
-        <item name="android:background">@drawable/rectangle_top_corners15_white_background</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:background">@drawable/rectangle_top_corners15_background</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">1dp</item>
         <item name="android:paddingStart">10dp</item>

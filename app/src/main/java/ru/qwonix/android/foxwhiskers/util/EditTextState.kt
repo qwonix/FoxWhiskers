@@ -9,7 +9,4 @@ enum class EditTextState(
     CORRECT(R.drawable.rectangle_green_stroke_corners15_gray500_background),
     INCORRECT(R.drawable.rectangle_red_stroke_corners15_gray500_background);
 
-    fun isCorrect(): Boolean {
-        return this == CORRECT
-    }
 }
