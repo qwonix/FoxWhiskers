@@ -1,6 +1,7 @@
 package ru.qwonix.android.foxwhiskers.entity
 
 data class PickUpLocation(
+    val id: Long,
     val title: String,
     val priority: Int,
     val cityName: String,

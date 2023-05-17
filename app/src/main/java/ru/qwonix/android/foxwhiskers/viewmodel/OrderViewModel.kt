@@ -1,11 +1,14 @@
 package ru.qwonix.android.foxwhiskers.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ru.qwonix.android.foxwhiskers.entity.Client
+import ru.qwonix.android.foxwhiskers.dto.OrderCreationItemDTO
+import ru.qwonix.android.foxwhiskers.dto.OrderCreationRequestDTO
+import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.Order
+import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
+import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
 import ru.qwonix.android.foxwhiskers.repository.OrderRepository
@@ -21,56 +24,37 @@ class OrderViewModel @Inject constructor(
     private val _orders = MutableLiveData<ApiResponse<List<Order>>>()
     val orders: LiveData<ApiResponse<List<Order>>> = _orders
 
-    private val _authenticatedClient = MutableLiveData<Client>()
-    val authenticatedClient: LiveData<Client> = _authenticatedClient
+    private val _orderCreationRequest = MutableLiveData<ApiResponse<Order>>()
+    val orderCreationRequest = _orderCreationRequest
 
-    private val _clientAuthenticationResponse = MutableLiveData<ApiResponse<Client?>>()
-    val clientAuthenticationResponse: LiveData<ApiResponse<Client?>> = _clientAuthenticationResponse
-
-    init {
-        clientAuthenticationResponse.observeForever {
-            when (it) {
-                is ApiResponse.Success -> {
-                    Log.i(TAG, "${it} ${it.data}")
-                    val data = it.data!!
-                    _authenticatedClient.postValue(data)
-                    loadOrders(object : CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            TODO("Not yet implemented $message")
-                        }
-                    })
-                }
-
-                else -> {}
-            }
-        }
-        tryLoadClient(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-
-    }
-
-    fun tryLoadClient(
-        coroutinesErrorHandler: CoroutinesErrorHandler
-    ) = baseRequest(
-        _clientAuthenticationResponse,
-        coroutinesErrorHandler
-    ) {
-        authenticationRepository.loadClient()
-    }
-
-
-    private fun loadOrders(
+    fun loadOrders(
+        phone_number: String,
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
         _orders,
         coroutinesErrorHandler
     ) {
-        Log.i(TAG, "client ${authenticatedClient.value}")
-        orderRepository.all(authenticatedClient.value!!.phoneNumber)
+        orderRepository.all(phone_number)
     }
 
+    fun createOrder(
+        phone_number: String,
+        cart: List<Dish>,
+        pickUpLocation: PickUpLocation,
+        paymentMethod: PaymentMethod,
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _orderCreationRequest,
+        coroutinesErrorHandler
+    ) {
+        val orderCreationRequestDTO = OrderCreationRequestDTO(
+            phone_number,
+            cart.map { OrderCreationItemDTO(it.id, it.count) },
+            pickUpLocation.id,
+            paymentMethod
+        )
+
+        orderRepository.create(orderCreationRequestDTO)
+    }
 
 }
