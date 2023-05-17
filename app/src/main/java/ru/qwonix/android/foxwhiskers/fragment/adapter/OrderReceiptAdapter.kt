@@ -17,6 +17,11 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
+    lateinit var onItemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(order: Order)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -30,12 +35,17 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder(
+    inner class ViewHolder(
         private val binding: ItemOrderReceiptBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(order: Order) {
             binding.order = order
             binding.priceFormat = Utils.DECIMAL_FORMAT
+            binding.openQrCodeButton.setOnClickListener {
+                onItemClickListener.onItemClick(order)
+            }
+
         }
     }
 }

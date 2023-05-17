@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderReceiptBinding
+import ru.qwonix.android.foxwhiskers.entity.Order
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderReceiptAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
@@ -45,6 +47,13 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         super.onViewCreated(view, savedInstanceState)
 
         val orderReceiptAdapter = OrderReceiptAdapter()
+        orderReceiptAdapter.onItemClickListener = object : OrderReceiptAdapter.OnItemClickListener {
+            override fun onItemClick(order: Order) {
+                val actionOrderReceiptFragmentToQrFragment =
+                    OrderReceiptFragmentDirections.actionOrderReceiptFragmentToQrFragment(order.id)
+                findNavController().navigate(actionOrderReceiptFragmentToQrFragment)
+            }
+        }
 
         binding.ordersRecycler.apply {
             adapter = orderReceiptAdapter
