@@ -27,7 +27,7 @@ import com.yandex.mapkit.map.PolygonMapObject
 import com.yandex.mapkit.map.PolylineMapObject
 import com.yandex.runtime.ui_view.ViewProvider
 import ru.qwonix.android.foxwhiskers.R
-import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderPickupLocationBinding
+import ru.qwonix.android.foxwhiskers.databinding.FragmentPickUpLocationBinding
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.Utils
@@ -35,12 +35,12 @@ import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
-class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_location) {
+class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
 
     private val TAG = "OderPickUpLocationFrag"
 
     companion object {
-        fun newInstance() = OderPickUpLocationFragment()
+        fun newInstance() = PickUpLocationFragment()
     }
 
     private val menuViewModel: MenuViewModel by activityViewModels()
@@ -50,7 +50,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
     private lateinit var unselectedPoint: ViewProvider
     private lateinit var selectedPoint: ViewProvider
 
-    private lateinit var binding: FragmentOrderPickupLocationBinding
+    private lateinit var binding: FragmentPickUpLocationBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,7 +70,7 @@ class OderPickUpLocationFragment : Fragment(R.layout.fragment_order_pickup_locat
         savedInstanceState: Bundle?
     ): View {
         binding =
-            FragmentOrderPickupLocationBinding.inflate(inflater, container, false)
+            FragmentPickUpLocationBinding.inflate(inflater, container, false)
 
         binding.apply {
             // FIXME: pass directly menuViewModel

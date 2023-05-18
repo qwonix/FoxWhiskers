@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.R
-import ru.qwonix.android.foxwhiskers.fragment.OderPickUpLocationFragment
+import ru.qwonix.android.foxwhiskers.fragment.PickUpLocationFragment
 import ru.qwonix.android.foxwhiskers.fragment.OrderConfirmationPaymentFragment
 
 class DemoBottomSheetDialogFragment(
@@ -60,8 +60,8 @@ class DemoBottomSheetDialogFragment(
         bottomSheetBehavior.isDraggable = false
     }
 
-    fun goToOrderPickUpLocationFragment() =
-        transitToFragment(OderPickUpLocationFragment.newInstance())
+    fun goToPickUpLocationFragment() =
+        transitToFragment(PickUpLocationFragment.newInstance())
 
     fun goToOrderConfirmationPaymentFragment() =
         transitToFragment(OrderConfirmationPaymentFragment.newInstance())

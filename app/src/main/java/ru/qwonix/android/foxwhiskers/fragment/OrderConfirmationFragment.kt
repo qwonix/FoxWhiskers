@@ -56,7 +56,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         super.onViewCreated(view, savedInstanceState)
 
         binding.optionPickupLocation.setOnClickListener {
-            withDemoBottomSheet { goToOrderPickUpLocationFragment() }
+            withDemoBottomSheet { goToPickUpLocationFragment() }
         }
 
         binding.optionPaymentMethod.setOnClickListener {
