@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/rubik_regular"
+                android:fontFamily="@font/rubik_medium"
                 android:gravity="start"
                 android:text="Способ оплаты"
                 android:textColor="@color/gray_900"
