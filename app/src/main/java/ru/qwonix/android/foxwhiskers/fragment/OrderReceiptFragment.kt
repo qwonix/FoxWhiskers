@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,9 +48,10 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         val orderReceiptAdapter = OrderReceiptAdapter()
         orderReceiptAdapter.onItemClickListener = object : OrderReceiptAdapter.OnItemClickListener {
             override fun onItemClick(order: Order) {
-                val actionOrderReceiptFragmentToQrFragment =
-                    OrderReceiptFragmentDirections.actionOrderReceiptFragmentToQrFragment(order.id)
-                findNavController().navigate(actionOrderReceiptFragmentToQrFragment)
+                QrBottomSheetDialogFragment(order.id).show(
+                    parentFragmentManager,
+                    "tag"
+                )
             }
         }
 

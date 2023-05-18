@@ -75,20 +75,5 @@
         android:id="@+id/orderReceiptFragment"
         android:name="ru.qwonix.android.foxwhiskers.fragment.OrderReceiptFragment"
         android:label="fragment_order_receipt"
-        tools:layout="@layout/fragment_order_receipt">
-        <action
-            android:id="@+id/action_orderReceiptFragment_to_qrFragment"
-            app:destination="@id/qrFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/qrFragment"
-        android:name="ru.qwonix.android.foxwhiskers.fragment.QrFragment"
-        android:label="QrFragment">
-
-        <argument
-            android:name="qrCodeData"
-            app:argType="string"
-            app:nullable="false"/>
-    </fragment>
-
+        tools:layout="@layout/fragment_order_receipt" />
 </navigation>
