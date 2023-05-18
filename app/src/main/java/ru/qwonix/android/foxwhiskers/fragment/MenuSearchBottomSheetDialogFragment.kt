@@ -1,5 +1,6 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
+import android.app.Dialog
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuSearchBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
@@ -21,16 +24,38 @@ import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
-class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
+class MenuSearchBottomSheetDialogFragment :
+    BottomSheetDialogFragment(R.layout.fragment_menu_search) {
 
-    private val TAG = "MenuSearchFragment"
-
-    companion object {
-        fun newInstance() = MenuSearchFragment()
-    }
+    private val TAG = "MenuSearchBottomSheet"
 
     private lateinit var binding: FragmentMenuSearchBinding
     private val menuViewModel: MenuViewModel by activityViewModels()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState)
+            .also { dialog ->
+                dialog.setOnShowListener {
+                    val viewBehavior = BottomSheetBehavior.from(
+                        dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet)
+                    )
+                    setupBehavior(viewBehavior)
+                }
+            }
+    }
+
+    private fun setupBehavior(bottomSheetBehavior: BottomSheetBehavior<View>) {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior.isHideable = true
+        bottomSheetBehavior.skipCollapsed = true
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +65,7 @@ class MenuSearchFragment : Fragment(R.layout.fragment_menu_search) {
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

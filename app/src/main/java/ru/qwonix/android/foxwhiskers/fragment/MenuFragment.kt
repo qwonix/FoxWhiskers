@@ -21,7 +21,6 @@ import ru.qwonix.android.foxwhiskers.entity.DishType
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
-import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
@@ -157,7 +156,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         }
 
         binding.searchBar.setOnClickListener {
-            DemoBottomSheetDialogFragment(MenuSearchFragment.newInstance()).show(
+            MenuSearchBottomSheetDialogFragment().show(
                 parentFragmentManager,
                 "tag"
             )
