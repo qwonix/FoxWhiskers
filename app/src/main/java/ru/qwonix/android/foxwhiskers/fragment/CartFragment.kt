@@ -69,6 +69,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             findNavController().navigate(R.id.action_cartFragment_to_orderReceiptFragment)
         }
 
+        binding.goToMenuButton.setOnClickListener {
+            findNavController().navigate(R.id.action_cartFragment_to_menuFragment)
+        }
+
 
         binding.checkoutButton.setOnClickListener {
             OrderConfirmationBottomSheetDialogFragment(OrderConfirmationFragment.newInstance()).show(
