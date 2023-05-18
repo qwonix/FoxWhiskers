@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.R
-import ru.qwonix.android.foxwhiskers.fragment.PickUpLocationFragment
 import ru.qwonix.android.foxwhiskers.fragment.OrderConfirmationPaymentFragment
+import ru.qwonix.android.foxwhiskers.fragment.PickUpLocationFragment
 
-class DemoBottomSheetDialogFragment(
+class OrderConfirmationBottomSheetDialogFragment(
     private var startFragment: Fragment
 ) : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,8 +87,8 @@ class DemoBottomSheetDialogFragment(
     }
 }
 
-fun Fragment.withDemoBottomSheet(action: DemoBottomSheetDialogFragment.() -> Unit) {
+fun Fragment.withDemoBottomSheet(action: OrderConfirmationBottomSheetDialogFragment.() -> Unit) {
     parentFragment
-        ?.let { it as? DemoBottomSheetDialogFragment }
+        ?.let { it as? OrderConfirmationBottomSheetDialogFragment }
         ?.also(action)
 }

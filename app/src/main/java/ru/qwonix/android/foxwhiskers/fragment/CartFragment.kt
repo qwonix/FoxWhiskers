@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentCartBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.CartDishAdapter
-import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
+import ru.qwonix.android.foxwhiskers.util.OrderConfirmationBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 import java.math.BigDecimal
@@ -71,7 +71,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
 
         binding.checkoutButton.setOnClickListener {
-            DemoBottomSheetDialogFragment(OrderConfirmationFragment.newInstance()).show(
+            OrderConfirmationBottomSheetDialogFragment(OrderConfirmationFragment.newInstance()).show(
                 parentFragmentManager,
                 "tag"
             )
