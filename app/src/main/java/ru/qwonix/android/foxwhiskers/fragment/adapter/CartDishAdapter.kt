@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.qwonix.android.foxwhiskers.databinding.ItemOrderDishBinding
+import ru.qwonix.android.foxwhiskers.databinding.ItemCartDishBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.util.Utils
 
 
-class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
+class CartDishAdapter : RecyclerView.Adapter<CartDishAdapter.ViewHolder>() {
     val data = mutableListOf<Dish>()
 
     fun setOrderDishes(orderDishes: List<Dish>) {
@@ -24,7 +24,7 @@ class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ItemOrderDishBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemCartDishBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -35,7 +35,7 @@ class OrderDishAdapter : RecyclerView.Adapter<OrderDishAdapter.ViewHolder>() {
     override fun getItemCount(): Int = data.size
 
     class ViewHolder(
-        private val binding: ItemOrderDishBinding
+        private val binding: ItemCartDishBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dish: Dish) {
             binding.dish = dish

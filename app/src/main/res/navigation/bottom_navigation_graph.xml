@@ -9,11 +9,11 @@
         android:name="ru.qwonix.android.foxwhiskers.fragment.MenuFragment"
         android:label="MenuFragment" />
     <fragment
-        android:id="@+id/orderFragment"
-        android:name="ru.qwonix.android.foxwhiskers.fragment.OrderFragment"
-        android:label="OrderFragment">
+        android:id="@+id/cartFragment"
+        android:name="ru.qwonix.android.foxwhiskers.fragment.CartFragment"
+        android:label="CartFragment">
         <action
-            android:id="@+id/action_orderFragment_to_orderReceiptFragment"
+            android:id="@+id/action_cartFragment_to_orderReceiptFragment"
             app:destination="@id/orderReceiptFragment" />
     </fragment>
 

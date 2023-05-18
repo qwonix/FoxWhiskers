@@ -11,23 +11,23 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.R
-import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderBinding
-import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderDishAdapter
+import ru.qwonix.android.foxwhiskers.databinding.FragmentCartBinding
+import ru.qwonix.android.foxwhiskers.fragment.adapter.CartDishAdapter
 import ru.qwonix.android.foxwhiskers.util.DemoBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 import java.math.BigDecimal
 
 
-class OrderFragment : Fragment(R.layout.fragment_order) {
+class CartFragment : Fragment(R.layout.fragment_cart) {
 
-    private lateinit var binding: FragmentOrderBinding
+    private lateinit var binding: FragmentCartBinding
     private val menuViewModel: MenuViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOrderBinding.inflate(inflater, container, false)
+        binding = FragmentCartBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             priceFormat = Utils.DECIMAL_FORMAT
@@ -40,16 +40,16 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orderDishAdapter = OrderDishAdapter()
+        val cartDishAdapter = CartDishAdapter()
         menuViewModel.orderCart.observe(viewLifecycleOwner) {
-            orderDishAdapter.setOrderDishes(it)
+            cartDishAdapter.setOrderDishes(it)
             binding.orderPrice =
                 (it.sumOf { dish -> BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count))) }).toDouble()
             binding.orderItemCount = it.sumOf { dish -> dish.count }
         }
 
         binding.recyclerOrderedDishes.apply {
-            adapter = orderDishAdapter
+            adapter = cartDishAdapter
             val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             layoutManager = manager
 
@@ -66,7 +66,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         }
 
         binding.currentOrderButton.setOnClickListener {
-            findNavController().navigate(R.id.action_orderFragment_to_orderReceiptFragment)
+            findNavController().navigate(R.id.action_cartFragment_to_orderReceiptFragment)
         }
 
 

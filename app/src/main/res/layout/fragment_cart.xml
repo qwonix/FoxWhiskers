@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.OrderFragment">
+    tools:context=".fragment.CartFragment">
 
     <data>
 
@@ -43,7 +43,7 @@
                 android:fontFamily="@font/rubik_medium"
                 android:paddingHorizontal="30dp"
                 android:paddingVertical="5dp"
-                android:text="Заказ"
+                android:text="Корзина"
                 android:textColor="@color/gray_900"
                 android:textSize="20sp" />
 
@@ -109,7 +109,7 @@
             android:paddingTop="10dp"
             tools:itemCount="3"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_order_dish"
+            tools:listitem="@layout/item_cart_dish"
             tools:orientation="vertical" />
 
         <LinearLayout

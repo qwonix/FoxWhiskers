@@ -11,7 +11,7 @@
         android:title="Меню" />
 
     <item
-        android:id="@+id/orderFragment"
+        android:id="@+id/cartFragment"
         android:icon="@drawable/ic_launcher_background"
-        android:title="Заказ" />
+        android:title="Корзина" />
 </menu>
