@@ -32,7 +32,30 @@ val Context.clientDataStore by preferencesDataStore(name = "Client")
 val Context.settingsDataStore by preferencesDataStore(name = "Settings")
 
 @[Module InstallIn(SingletonComponent::class)]
-object ServiceModule {
+object LocalServiceModule {
+    @Provides
+    @Singleton
+    fun provideLocalClientService(
+        @ApplicationContext context: Context
+    ) = LocalClientService(context)
+
+    @Provides
+    @Singleton
+    fun provideLocalTokenStorageService(
+        @ApplicationContext context: Context
+    ) = LocalTokenStorageService(context)
+
+    @Singleton
+    @Provides
+    fun provideLocalSettingsService(
+        @ApplicationContext context: Context
+    ): LocalSettingsService =
+        LocalSettingsService(context)
+}
+
+
+@[Module InstallIn(SingletonComponent::class)]
+object NetworkServiceModule {
 
     @Singleton
     @Provides
@@ -76,25 +99,6 @@ object ServiceModule {
         retrofit
             .build()
             .create(MenuService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideLocalClientService(
-        @ApplicationContext context: Context
-    ) = LocalClientService(context)
-
-    @Provides
-    @Singleton
-    fun provideLocalTokenStorageService(
-        @ApplicationContext context: Context
-    ) = LocalTokenStorageService(context)
-
-    @Singleton
-    @Provides
-    fun provideLocalSettingsService(
-        @ApplicationContext context: Context
-    ): LocalSettingsService =
-        LocalSettingsService(context)
 }
 
 @[Module InstallIn(SingletonComponent::class)]
