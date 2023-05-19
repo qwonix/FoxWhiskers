@@ -13,21 +13,23 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
+import ru.qwonix.android.foxwhiskers.repository.ClientRepository
 import ru.qwonix.android.foxwhiskers.repository.MenuRepository
 import ru.qwonix.android.foxwhiskers.repository.OrderRepository
-import ru.qwonix.android.foxwhiskers.repository.ClientRepository
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
-import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
+import ru.qwonix.android.foxwhiskers.service.ClientService
 import ru.qwonix.android.foxwhiskers.service.LocalClientService
+import ru.qwonix.android.foxwhiskers.service.LocalSettingsService
+import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import ru.qwonix.android.foxwhiskers.service.MenuService
 import ru.qwonix.android.foxwhiskers.service.OrderService
-import ru.qwonix.android.foxwhiskers.service.ClientService
 import ru.qwonix.android.foxwhiskers.util.AuthenticationAuthenticator
 import ru.qwonix.android.foxwhiskers.util.AuthenticationInterceptor
 import javax.inject.Singleton
 
 val Context.authenticationDataStore by preferencesDataStore(name = "AuthenticationDataStore")
 val Context.clientDataStore by preferencesDataStore(name = "Client")
+val Context.settingsDataStore by preferencesDataStore(name = "Settings")
 
 @[Module InstallIn(SingletonComponent::class)]
 object ServiceModule {
@@ -87,7 +89,12 @@ object ServiceModule {
         @ApplicationContext context: Context
     ) = LocalTokenStorageService(context)
 
-
+    @Singleton
+    @Provides
+    fun provideLocalSettingsService(
+        @ApplicationContext context: Context
+    ): LocalSettingsService =
+        LocalSettingsService(context)
 }
 
 @[Module InstallIn(SingletonComponent::class)]
