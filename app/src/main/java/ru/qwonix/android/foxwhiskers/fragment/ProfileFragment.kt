@@ -36,12 +36,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-
         profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
