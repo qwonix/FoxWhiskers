@@ -57,7 +57,6 @@ class OrderConfirmationBottomSheetDialogFragment(
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.skipCollapsed = true
-        bottomSheetBehavior.isDraggable = false
     }
 
     fun goToPickUpLocationFragment() =

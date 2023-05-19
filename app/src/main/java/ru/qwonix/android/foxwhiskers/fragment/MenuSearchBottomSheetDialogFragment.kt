@@ -20,7 +20,6 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSearch
-import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
@@ -54,6 +53,7 @@ class MenuSearchBottomSheetDialogFragment :
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior.isHideable = true
         bottomSheetBehavior.skipCollapsed = true
+        bottomSheetBehavior.isDraggable = false
     }
 
 
@@ -71,7 +71,7 @@ class MenuSearchBottomSheetDialogFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.backArrow.setOnClickListener {
-            withDemoBottomSheet { dismiss() }
+            dismiss()
         }
 
         val orderDishAdapter = MenuSearchDishAdapter()
