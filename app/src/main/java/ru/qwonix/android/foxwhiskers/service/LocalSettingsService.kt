@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.firstOrNull
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
-import ru.qwonix.android.foxwhiskers.entity.PickUpLocationSetting
+import ru.qwonix.android.foxwhiskers.entity.PickUpLocationSettings
 import ru.qwonix.android.foxwhiskers.entity.Settings
 import ru.qwonix.android.foxwhiskers.settingsDataStore
 
@@ -30,9 +30,9 @@ class LocalSettingsService(private val context: Context) {
             val title = preferences[PICK_UP_LOCATION_TITLE]
             val description = preferences[PICK_UP_LOCATION_DESCRIPTION]
 
-            val pickUpLocationSetting =
+            val pickUpLocationSettings =
                 if (pickUpLocationId != null && title != null && description != null) {
-                    PickUpLocationSetting(pickUpLocationId, title, description)
+                    PickUpLocationSettings(pickUpLocationId, title, description)
                 } else {
                     null
                 }
@@ -40,7 +40,7 @@ class LocalSettingsService(private val context: Context) {
             val paymentMethod = preferences[PAYMENT_METHOD]?.let { PaymentMethod.valueOf(it) }
 
             return Settings(
-                pickUpLocationSetting = pickUpLocationSetting,
+                pickUpLocationSettings = pickUpLocationSettings,
                 paymentMethod = paymentMethod
             )
         }
@@ -48,11 +48,11 @@ class LocalSettingsService(private val context: Context) {
 
     suspend fun saveSettings(settings: Settings) {
         context.settingsDataStore.edit { preferences ->
-            if (settings.pickUpLocationSetting != null) {
-                preferences[PICK_UP_LOCATION_ID] = settings.pickUpLocationSetting.pickUpLocationId
-                preferences[PICK_UP_LOCATION_TITLE] = settings.pickUpLocationSetting.title
-                preferences[PICK_UP_LOCATION_DESCRIPTION] =
-                    settings.pickUpLocationSetting.description
+            val pickUpLocationSettings = settings.pickUpLocationSettings
+            if (pickUpLocationSettings != null) {
+                preferences[PICK_UP_LOCATION_ID] = pickUpLocationSettings.pickUpLocationId
+                preferences[PICK_UP_LOCATION_TITLE] = pickUpLocationSettings.title
+                preferences[PICK_UP_LOCATION_DESCRIPTION] = pickUpLocationSettings.description
             }
             if (settings.paymentMethod != null) {
                 preferences[PAYMENT_METHOD] = settings.paymentMethod.toString()

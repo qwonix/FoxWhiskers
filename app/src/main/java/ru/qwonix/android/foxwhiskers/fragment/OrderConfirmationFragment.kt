@@ -47,7 +47,8 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                 BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count)))
             }.toDouble()
             paymentMethod = menuViewModel.selectedPaymentMethod.value
-            pickUpLocation = menuViewModel.selectedPickUpLocation.value
+            pickUpLocationTitle = menuViewModel.selectedPickUpLocation.value!!.title
+            pickUpLocationDescription = menuViewModel.selectedPickUpLocation.value!!.description
         }
         return binding.root
     }
@@ -67,7 +68,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             orderViewModel.createOrder(
                 (profileViewModel.clientAuthenticationResponse.value as ApiResponse.Success).data!!.phoneNumber,
                 menuViewModel.orderCart.value!!,
-                menuViewModel.selectedPickUpLocation.value!!,
+                menuViewModel.selectedPickUpLocation.value!!.id,
                 PaymentMethod.INAPP_ONLINE_CARD,
                 object : CoroutinesErrorHandler {
                     override fun onError(message: String) {

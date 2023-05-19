@@ -18,8 +18,12 @@
             type="ru.qwonix.android.foxwhiskers.entity.PaymentMethod" />
 
         <variable
-            name="pickUpLocation"
-            type="ru.qwonix.android.foxwhiskers.entity.PickUpLocation" />
+            name="pickUpLocationTitle"
+            type="String" />
+
+        <variable
+            name="pickUpLocationDescription"
+            type="String" />
 
     </data>
 
@@ -93,10 +97,20 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:fontFamily="@font/rubik_light"
-                                android:text='@{pickUpLocation.title + "\n" + pickUpLocation.streetName + ", " + pickUpLocation.houseData + ", " + pickUpLocation.cityName}'
+                                android:text='@{pickUpLocationTitle}'
                                 android:textColor="@color/gray_700"
                                 android:textSize="10sp"
-                                tools:text="ТРК Лиговъ\nСанкт-Петербург, Лиговский проспект, 153" />
+                                tools:text="ТРК Лиговъ" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/rubik_light"
+                                android:text='@{pickUpLocationDescription}'
+                                android:textColor="@color/gray_700"
+                                android:textSize="10sp"
+                                tools:text="Санкт-Петербург, Лиговский проспект, 153" />
 
                         </LinearLayout>
 

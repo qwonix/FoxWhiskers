@@ -1,14 +1,20 @@
 package ru.qwonix.android.foxwhiskers.entity
 
 data class Settings(
-    val pickUpLocationSetting: PickUpLocationSetting?,
-    val paymentMethod: PaymentMethod?
+    var pickUpLocationSettings: PickUpLocationSettings?,
+    var paymentMethod: PaymentMethod?
 ) {
     constructor() : this(null, null)
 }
 
-data class PickUpLocationSetting(
+data class PickUpLocationSettings(
     val pickUpLocationId: Long,
     val title: String,
     val description: String
-)
+) {
+    constructor(pickUpLocation: PickUpLocation) : this(
+        pickUpLocation.id,
+        pickUpLocation.title,
+        pickUpLocation.description
+    )
+}

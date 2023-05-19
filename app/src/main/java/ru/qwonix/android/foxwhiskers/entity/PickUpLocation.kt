@@ -9,5 +9,9 @@ data class PickUpLocation(
     val houseData: String,
     val additionalInformation: String,
     val latitude: Double,
-    val longitude: Double,
-)
+    val longitude: Double
+) {
+
+    val description: String
+        get() = "$streetName $houseData, $cityName"
+}

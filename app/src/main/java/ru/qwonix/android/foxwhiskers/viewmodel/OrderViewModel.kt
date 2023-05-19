@@ -8,15 +8,12 @@ import ru.qwonix.android.foxwhiskers.dto.OrderCreationRequestDTO
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.entity.Order
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
-import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
-import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
 import ru.qwonix.android.foxwhiskers.repository.OrderRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository,
     private val orderRepository: OrderRepository
 ) : BaseViewModel() {
     private val TAG = "OrderViewModel"
@@ -40,7 +37,7 @@ class OrderViewModel @Inject constructor(
     fun createOrder(
         phone_number: String,
         cart: List<Dish>,
-        pickUpLocation: PickUpLocation,
+        pickUpLocationId: Long,
         paymentMethod: PaymentMethod,
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
@@ -50,7 +47,7 @@ class OrderViewModel @Inject constructor(
         val orderCreationRequestDTO = OrderCreationRequestDTO(
             phone_number,
             cart.map { OrderCreationItemDTO(it.id, it.count) },
-            pickUpLocation.id,
+            pickUpLocationId,
             paymentMethod
         )
 

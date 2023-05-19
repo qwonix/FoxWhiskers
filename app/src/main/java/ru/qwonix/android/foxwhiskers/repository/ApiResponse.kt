@@ -28,6 +28,24 @@ data class ErrorResponse(
     val message: String
 )
 
+fun <T> requestFlow(call: suspend () -> T): Flow<ApiResponse<T>> = flow {
+    emit(ApiResponse.Loading)
+
+    withTimeoutOrNull(20000L) {
+        val response = call()
+
+        try {
+            if (response != null) {
+                emit(ApiResponse.Success(response))
+            } else {
+                emit(ApiResponse.Failure("response is null", 400))
+            }
+        } catch (e: Exception) {
+            emit(ApiResponse.Failure(e.message ?: e.toString(), 400))
+        }
+    } ?: emit(ApiResponse.Failure("Timeout! Please try again.", 408))
+}.flowOn(Dispatchers.IO)
+
 fun <T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = flow {
     emit(ApiResponse.Loading)
 
