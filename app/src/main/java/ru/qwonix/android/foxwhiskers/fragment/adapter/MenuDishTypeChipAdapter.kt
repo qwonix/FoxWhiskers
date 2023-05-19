@@ -15,6 +15,7 @@ class MenuDishTypeChipAdapter(private val recyclerView: RecyclerView) :
     fun setDishTypes(dishTypeOnClick: Map<DishType, Int>) {
         data.clear()
         data.addAll(dishTypeOnClick.toList())
+        notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
