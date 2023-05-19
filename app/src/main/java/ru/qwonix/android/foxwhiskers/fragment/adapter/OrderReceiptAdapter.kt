@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemOrderReceiptBinding
 import ru.qwonix.android.foxwhiskers.entity.Order
+import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.util.Utils
 
 
@@ -17,11 +18,17 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
-    lateinit var onItemClickListener: OnItemClickListener
-
-    interface OnItemClickListener {
-        fun onItemClick(order: Order)
+    interface OnQrCodeClickListener {
+        fun onQrClick(order: Order)
     }
+
+    lateinit var onQrCodeClickListener: OnQrCodeClickListener
+
+    interface OnPickUpLocationClickListener {
+        fun onPickUpLocationClick(pickUpLocation: PickUpLocation)
+    }
+
+    lateinit var onPickUpLocationClickListener: OnPickUpLocationClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -43,9 +50,11 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
             binding.order = order
             binding.priceFormat = Utils.DECIMAL_FORMAT
             binding.openQrCodeButton.setOnClickListener {
-                onItemClickListener.onItemClick(order)
+                onQrCodeClickListener.onQrClick(order)
             }
-
+            binding.pickUpLocationButton.setOnClickListener {
+                onPickUpLocationClickListener.onPickUpLocationClick(order.pickUpLocation)
+            }
         }
     }
 }

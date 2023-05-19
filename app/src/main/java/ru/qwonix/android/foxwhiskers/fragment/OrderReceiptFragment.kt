@@ -1,6 +1,8 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
+import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderReceiptBinding
 import ru.qwonix.android.foxwhiskers.entity.Order
+import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderReceiptAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
@@ -46,14 +49,31 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         super.onViewCreated(view, savedInstanceState)
 
         val orderReceiptAdapter = OrderReceiptAdapter()
-        orderReceiptAdapter.onItemClickListener = object : OrderReceiptAdapter.OnItemClickListener {
-            override fun onItemClick(order: Order) {
-                QrBottomSheetDialogFragment(order.id).show(
-                    parentFragmentManager,
-                    "tag"
-                )
+        orderReceiptAdapter.onQrCodeClickListener =
+            object : OrderReceiptAdapter.OnQrCodeClickListener {
+                override fun onQrClick(order: Order) {
+                    QrBottomSheetDialogFragment(order.id).show(
+                        parentFragmentManager,
+                        "tag"
+                    )
+                }
             }
-        }
+
+        orderReceiptAdapter.onPickUpLocationClickListener =
+            object : OrderReceiptAdapter.OnPickUpLocationClickListener {
+                override fun onPickUpLocationClick(pickUpLocation: PickUpLocation) {
+                    val mapIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("geo:${pickUpLocation.latitude}, ${pickUpLocation.longitude}?q=Усы+Лисы&z=18")
+                    )
+                    this@OrderReceiptFragment.startActivity(
+                        Intent.createChooser(
+                            mapIntent,
+                            "Где построить маршрут?"
+                        )
+                    )
+                }
+            }
 
         binding.ordersRecycler.apply {
             adapter = orderReceiptAdapter

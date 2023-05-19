@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.OrderReceiptFragment">
+    tools:context=".fragment.adapter.OrderReceiptAdapter">
 
     <data>
 
@@ -26,7 +26,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:paddingHorizontal="15dp"
             android:paddingVertical="10dp">
 
@@ -134,7 +133,6 @@
             android:background="@color/gray_300" />
 
         <FrameLayout
-            android:id="@+id/pickup_location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
@@ -190,6 +188,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/pick_up_location_button"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_gravity="center_vertical|end"
