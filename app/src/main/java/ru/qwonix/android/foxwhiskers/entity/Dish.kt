@@ -5,12 +5,12 @@ import androidx.databinding.Bindable
 import ru.qwonix.android.foxwhiskers.BR
 
 class Dish(
-    var id: Long,
-    var title: String,
-    var imageUrl: String,
-    var shortDescription: String,
-    var currencyPrice: Double,
-    var type: DishType
+    val id: Long,
+    val title: String,
+    val imageUrl: String,
+    val shortDescription: String,
+    val currencyPrice: Double,
+    val type: DishType
 ) : BaseObservable() {
 
     @Bindable
