@@ -48,40 +48,6 @@ class MenuViewModel @Inject constructor(
             }
         }
 
-        dishes.observeForever {
-            when (it) {
-                is ApiResponse.Failure -> {
-                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
-                }
-
-                ApiResponse.Loading -> Log.i(TAG, "loading")
-
-
-                is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful load dishes - ${it.data}")
-
-                    it.data.map { data ->
-                        data.addOnPropertyChangedCallback(object :
-                            Observable.OnPropertyChangedCallback() {
-                            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                                var newCart: List<Dish> = _orderCart.value!!
-                                val dish = sender as Dish
-
-                                if (dish.count == 1 && dish !in newCart) {
-                                    newCart = newCart.plus(sender)
-                                } else if ((sender.count == 0)) {
-                                    newCart = newCart.minus(sender)
-                                }
-
-                                _orderCart.postValue(newCart)
-                            }
-                        })
-                    }
-                }
-            }
-        }
-
-
         loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
