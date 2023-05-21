@@ -9,11 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuSearchBinding
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
@@ -23,13 +24,14 @@ import ru.qwonix.android.foxwhiskers.util.onSearch
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
+@AndroidEntryPoint
 class MenuSearchBottomSheetDialogFragment :
     BottomSheetDialogFragment(R.layout.fragment_menu_search) {
 
     private val TAG = "MenuSearchBottomSheet"
 
     private lateinit var binding: FragmentMenuSearchBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val menuViewModel: MenuViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +100,7 @@ class MenuSearchBottomSheetDialogFragment :
                 orderDishAdapter.setFoundDishes(emptyList())
                 binding.clearText.visibility = View.INVISIBLE
             } else {
-                when (val dishes = menuViewModel.dishes.value) {
+                when (val dishes = menuViewModel.menu.value) {
                     is ApiResponse.Failure -> {
                         Log.e(TAG, "code: ${dishes.code} – ${dishes.errorMessage}")
                     }
@@ -109,9 +111,13 @@ class MenuSearchBottomSheetDialogFragment :
                         Log.i(TAG, "Successful load dishes ${dishes.data}")
                         binding.clearText.visibility = View.VISIBLE
 
-                        val foundDishes = dishes.data.filter { dish ->
-                            dish.title.contains(it, true)
-                        }
+                        val foundDishes =
+                            dishes.data
+                                .map { menuItem -> menuItem.items }
+                                .flatten()
+                                .filter { dish ->
+                                    dish.title.contains(it, true)
+                                }
 
                         orderDishAdapter.setFoundDishes(foundDishes)
                     }

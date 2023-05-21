@@ -9,8 +9,8 @@
             type="Boolean" />
 
         <variable
-            name="dishType"
-            type="ru.qwonix.android.foxwhiskers.entity.DishType" />
+            name="title"
+            type="String" />
     </data>
 
     <TextView
@@ -21,7 +21,7 @@
         android:fontFamily="@font/rubik_regular"
         android:paddingHorizontal="20dp"
         android:paddingVertical="8dp"
-        android:text="@{dishType.title}"
+        android:text="@{title}"
         android:textColor="@color/gray_900"
         android:textSize="14sp"
         tools:text="Пицца 42см" />

@@ -4,17 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeChipBinding
-import ru.qwonix.android.foxwhiskers.entity.DishType
 
 
 class MenuDishTypeChipAdapter(private val recyclerView: RecyclerView) :
     RecyclerView.Adapter<MenuDishTypeChipAdapter.ViewHolder>() {
 
-    val data = mutableListOf<Pair<DishType, Int>>()
+    val data = mutableListOf<Pair<String, Int>>()
 
-    fun setDishTypes(dishTypeOnClick: Map<DishType, Int>) {
+    fun setDishTypes(dishTypeOnClick: List<Pair<String, Int>>) {
         data.clear()
-        data.addAll(dishTypeOnClick.toList())
+        data.addAll(dishTypeOnClick)
         notifyDataSetChanged()
     }
 
@@ -46,8 +45,8 @@ class MenuDishTypeChipAdapter(private val recyclerView: RecyclerView) :
             }
         }
 
-        fun bind(dishType: DishType) {
-            binding.dishType = dishType
+        fun bind(title: String) {
+            binding.title = title
             binding.isChecked = true
         }
     }

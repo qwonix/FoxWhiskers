@@ -1,90 +1,37 @@
 package ru.qwonix.android.foxwhiskers.viewmodel
 
-import android.util.Log
-import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ru.qwonix.android.foxwhiskers.entity.Dish
-import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
-import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
+import ru.qwonix.android.foxwhiskers.dao.MenuItem
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
-import ru.qwonix.android.foxwhiskers.repository.MenuRepository
+import ru.qwonix.android.foxwhiskers.repository.MenuCartRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
-    private val menuRepository: MenuRepository
+    private val menuCartRepository: MenuCartRepository
 ) : BaseViewModel() {
     private val TAG = "MenuViewModel"
 
-    val selectedPaymentMethod: MutableLiveData<PaymentMethod> =
-        MutableLiveData(PaymentMethod.INAPP_ONLINE_CARD)
-
-    val selectedPickUpLocation: MutableLiveData<PickUpLocation> = MutableLiveData()
-
-    private val _locations: MutableLiveData<ApiResponse<List<PickUpLocation>>> = MutableLiveData()
-    val locations: LiveData<ApiResponse<List<PickUpLocation>>> = _locations
-
-    private val _dishes: MutableLiveData<ApiResponse<List<Dish>>> = MutableLiveData()
-    val dishes: LiveData<ApiResponse<List<Dish>>> = _dishes
-
-    private val _orderCart: MutableLiveData<List<Dish>> = MutableLiveData(emptyList())
-    val orderCart: LiveData<List<Dish>> = _orderCart
+    private val _menu: MutableLiveData<ApiResponse<List<MenuItem>>> = MutableLiveData()
+    val menu: LiveData<ApiResponse<List<MenuItem>>> = _menu
 
     init {
-        locations.observeForever {
-            when (it) {
-                is ApiResponse.Failure -> {
-                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
-                }
-
-                is ApiResponse.Loading -> Log.i(TAG, "loading")
-
-                is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful load locations ${it.data}")
-                    selectedPickUpLocation.postValue(it.data.maxBy { it.priority })
-                }
-            }
-        }
-
         loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-
-        loadLocations(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
+                TODO("Not yet implemented $message")
             }
         })
     }
 
-    fun setSelectedLocation(pickUpLocation: PickUpLocation) {
-        this.selectedPickUpLocation.postValue(pickUpLocation)
-    }
-
-    fun setSelectedPaymentMethod(paymentMethod: PaymentMethod) {
-        this.selectedPaymentMethod.postValue(paymentMethod)
-    }
-
-    private fun loadDishes(
+    fun loadDishes(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _dishes,
+        _menu,
         coroutinesErrorHandler
     ) {
-        menuRepository.findAllDishes()
+        menuCartRepository.getAllDishes()
     }
 
-
-    fun loadLocations(
-        coroutinesErrorHandler: CoroutinesErrorHandler
-    ) = baseRequest(
-        _locations,
-        coroutinesErrorHandler
-    ) {
-        menuRepository.findAllLocations()
-    }
 }

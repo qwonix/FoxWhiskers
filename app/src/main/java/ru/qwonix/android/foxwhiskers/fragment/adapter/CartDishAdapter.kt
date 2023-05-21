@@ -9,10 +9,12 @@ import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.util.Utils
 
 
-class CartDishAdapter : RecyclerView.Adapter<CartDishAdapter.ViewHolder>() {
+class CartDishAdapter(
+    private val dishCountChangeListener: DishCountChangeListener
+) : RecyclerView.Adapter<CartDishAdapter.ViewHolder>() {
     val data = mutableListOf<Dish>()
 
-    fun setOrderDishes(orderDishes: List<Dish>) {
+    fun setCartDishes(orderDishes: List<Dish>) {
         val orderDishesDiffUtil = OrderDishesDiffUtil(data, orderDishes)
         val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
         diffResult.dispatchUpdatesTo(this)
@@ -34,12 +36,13 @@ class CartDishAdapter : RecyclerView.Adapter<CartDishAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder(
+    inner class ViewHolder(
         private val binding: ItemCartDishBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(dish: Dish) {
             binding.dish = dish
             binding.priceFormat = Utils.DECIMAL_FORMAT
+            binding.dishCountChangeListener = dishCountChangeListener
         }
     }
 

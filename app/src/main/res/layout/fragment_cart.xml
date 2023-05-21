@@ -13,7 +13,7 @@
 
         <variable
             name="orderPrice"
-            type="Double" />
+            type="java.math.BigDecimal" />
 
         <variable
             name="orderItemCount"

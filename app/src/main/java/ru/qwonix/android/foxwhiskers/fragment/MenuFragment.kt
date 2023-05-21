@@ -10,20 +10,25 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
-import ru.qwonix.android.foxwhiskers.entity.DishType
+import ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
+import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
+@AndroidEntryPoint
 class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     private val TAG = "MenuFragment"
@@ -50,8 +55,23 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         }
     }
 
+
+    private val onChipClickListener = object : MenuDishTypeChipAdapter.OnItemClickListener {
+        override fun onItemClick(recyclerView: RecyclerView, position: Int) {
+            val smoothScroller: SmoothScroller =
+                object : LinearSmoothScroller(context) {
+                    override fun getVerticalSnapPreference(): Int {
+                        return SNAP_TO_START
+                    }
+                }
+            smoothScroller.targetPosition = position
+            recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
+        }
+    }
+
     private lateinit var binding: FragmentMenuBinding
     private val menuViewModel: MenuViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,10 +83,22 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val menuDishAdapter = MenuDishAdapter()
-        val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
+        val menuDishAdapter = MenuDishAdapter(object : DishCountChangeListener {
+            override fun beforeCountChange(dish: Dish, newCount: Int) {
+                Log.i(TAG, "change count of \"$dish\" to $newCount")
+                dish.count = newCount
+                cartViewModel.changeDishCount(dish, newCount, object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }
+        })
 
-        menuViewModel.dishes.observe(viewLifecycleOwner) {
+        val menuDishTypeChipAdapter = MenuDishTypeChipAdapter(binding.recyclerDishes)
+        menuDishTypeChipAdapter.onItemClickListener = onChipClickListener
+
+        menuViewModel.menu.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -79,31 +111,12 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                     Log.i(TAG, "Successful load dishes ${it.data}")
                     menuDishAdapter.setDishes(it.data)
 
-                    val dishes: Map<DishType, List<Dish>> =
-                        it.data.groupBy { dish: Dish -> dish.type }
-
-                    val chips: MutableMap<DishType, Int> =
-                        mutableMapOf()
+                    val chips = mutableListOf<Pair<String, Int>>()
                     var i = 0
-                    for ((k, v) in dishes) {
-                        chips[k] = i
-                        i += v.count() + 1
+                    for ((k, v) in it.data) {
+                        chips.add(Pair(k, i))
+                        i += v.size + 1
                     }
-
-                    menuDishTypeChipAdapter.onItemClickListener =
-                        object : MenuDishTypeChipAdapter.OnItemClickListener {
-                            override fun onItemClick(recyclerView: RecyclerView, position: Int) {
-                                val smoothScroller: SmoothScroller =
-                                    object : LinearSmoothScroller(context) {
-                                        override fun getVerticalSnapPreference(): Int {
-                                            return SNAP_TO_START
-                                        }
-                                    }
-                                smoothScroller.targetPosition = position
-                                recyclerView.layoutManager?.startSmoothScroll(smoothScroller)
-                            }
-                        }
-
                     menuDishTypeChipAdapter.setDishTypes(chips)
                 }
             }
@@ -162,5 +175,11 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
             )
         }
 
+        Log.i(TAG, "menuViewModel.loadDishes from menu")
+        menuViewModel.loadDishes(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented $message")
+            }
+        })
     }
 }

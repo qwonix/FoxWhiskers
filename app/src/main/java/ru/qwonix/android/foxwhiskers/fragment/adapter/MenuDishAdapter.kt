@@ -3,26 +3,31 @@ package ru.qwonix.android.foxwhiskers.fragment.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.qwonix.android.foxwhiskers.dao.MenuItem
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishBinding
 import ru.qwonix.android.foxwhiskers.databinding.ItemMenuDishTypeBinding
-import ru.qwonix.android.foxwhiskers.entity.Dish
-import ru.qwonix.android.foxwhiskers.entity.DishType
 import ru.qwonix.android.foxwhiskers.util.Utils
 
 
-class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
+class MenuDishAdapter(
+    private val dishCountChangeListener: DishCountChangeListener
+) : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
 
     private val data: MutableList<DataModel> = mutableListOf()
 
-    fun setDishes(dishes: List<Dish>) {
-        val groupedDishes: Map<DishType, List<Dish>> = dishes.groupBy { dish: Dish -> dish.type }
+    fun setDishes(menuItems: List<MenuItem>) {
         val dishesAdapterDataModels = mutableListOf<DataModel>()
 
-        for ((dishType, dishesByType) in groupedDishes) {
-            dishesAdapterDataModels.add(DataModel.DishType(dishType))
-            dishesAdapterDataModels.addAll(dishesByType.map { DataModel.Dish(it) })
+        for ((title, dishes) in menuItems) {
+            dishesAdapterDataModels.add(DataModel.Title(title))
+            dishesAdapterDataModels.addAll(dishes.map { DataModel.Dish(it) })
         }
+
+        val menuDishesDiffUtil = MenuDishesDiffUtil(data, dishesAdapterDataModels)
+        val diffResult = DiffUtil.calculateDiff(menuDishesDiffUtil)
+        diffResult.dispatchUpdatesTo(this)
 
         data.clear()
         data.addAll(dishesAdapterDataModels)
@@ -63,24 +68,26 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         return when (data[position]) {
             is DataModel.Dish -> TYPE_DISH
-            is DataModel.DishType -> TYPE_DISH_TYPE
+            is DataModel.Title -> TYPE_DISH_TYPE
         }
     }
 
-    class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ViewDataBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         private fun bindDish(dish: DataModel.Dish) {
             (binding as ItemMenuDishBinding).dish = dish.value
             binding.priceFormat = Utils.DECIMAL_FORMAT
+            binding.dishCountChangeListener = dishCountChangeListener
         }
 
-        private fun bindDishType(dishType: DataModel.DishType) {
-            (binding as ItemMenuDishTypeBinding).dishType = dishType.value
+        private fun bindDishType(title: DataModel.Title) {
+            (binding as ItemMenuDishTypeBinding).title = title.value
         }
 
         fun bind(dataModel: DataModel) {
             when (dataModel) {
                 is DataModel.Dish -> bindDish(dataModel)
-                is DataModel.DishType -> bindDishType(dataModel)
+                is DataModel.Title -> bindDishType(dataModel)
             }
         }
     }
@@ -90,8 +97,48 @@ class MenuDishAdapter : RecyclerView.Adapter<MenuDishAdapter.ViewHolder>() {
             var value: ru.qwonix.android.foxwhiskers.entity.Dish
         ) : DataModel()
 
-        data class DishType(
-            val value: ru.qwonix.android.foxwhiskers.entity.DishType
+        data class Title(
+            val value: String
         ) : DataModel()
+    }
+
+    private class MenuDishesDiffUtil(
+        private val oldList: List<DataModel>,
+        private val newList: List<DataModel>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+
+            if (oldItem is DataModel.Dish && newItem is DataModel.Dish) {
+                return oldItem.value.id == newItem.value.id
+            }
+            if (oldItem is DataModel.Title && newItem is DataModel.Title) {
+                return oldItem.value == newItem.value
+            }
+            return false
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+
+            if (oldItem is DataModel.Title && newItem is DataModel.Title) {
+                return oldItem.value == newItem.value
+            }
+            if (oldItem is DataModel.Dish && newItem is DataModel.Dish) {
+                return oldItem.value.id == newItem.value.id && oldItem.value.count == newItem.value.count
+            }
+
+            return false
+        }
     }
 }

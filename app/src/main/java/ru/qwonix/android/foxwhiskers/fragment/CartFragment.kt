@@ -6,29 +6,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentCartBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.fragment.adapter.CartDishAdapter
+import ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.OrderConfirmationBottomSheetDialogFragment
 import ru.qwonix.android.foxwhiskers.util.Utils
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
-import java.math.BigDecimal
+import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 
-
+@AndroidEntryPoint
 class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private val TAG = "CartFragment"
 
     private lateinit var binding: FragmentCartBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,8 +38,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             priceFormat = Utils.DECIMAL_FORMAT
-            orderPrice = 0.0
-            orderItemCount = 0
+            orderPrice = cartViewModel.cartTotalPrice.value
+            orderItemCount = cartViewModel.cartTotalCount.value
         }
         return binding.root
     }
@@ -46,9 +47,26 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cartDishAdapter = CartDishAdapter()
+        cartViewModel.cartTotalPrice.observe(viewLifecycleOwner) {
+            binding.orderPrice = it
+        }
+        cartViewModel.cartTotalCount.observe(viewLifecycleOwner) {
+            binding.orderItemCount = it
+        }
 
-        menuViewModel.dishes.observe(viewLifecycleOwner) {
+        val cartDishAdapter = CartDishAdapter(object : DishCountChangeListener {
+            override fun beforeCountChange(dish: Dish, newCount: Int) {
+                dish.count = newCount
+
+                cartViewModel.changeDishCount(dish, newCount, object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }
+        })
+
+        cartViewModel.cart.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -58,48 +76,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
 
                 is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful load menu ${it.data}")
-                    val cartDishes = it.data.filter { it.count > 0 }.toMutableList()
-
-                    cartDishes.forEach {
-                        it.addOnPropertyChangedCallback(object :
-                            Observable.OnPropertyChangedCallback() {
-                            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                                val dish = sender as Dish
-
-                                if (dish.count == 1 && dish !in cartDishes) {
-                                    cartDishes.add(sender)
-                                } else if ((sender.count == 0)) {
-                                    cartDishes.remove(sender)
-                                }
-
-                                cartDishAdapter.setOrderDishes(cartDishes)
-
-                                binding.orderPrice = (cartDishes.sumOf { dish ->
-                                    BigDecimal(dish.currencyPrice).multiply(
-                                        (BigDecimal(
-                                            dish.count
-                                        ))
-                                    )
-                                }).toDouble()
-                                binding.orderItemCount = cartDishes.sumOf { dish -> dish.count }
-
-                            }
-                        })
-                    }
-                    cartDishAdapter.setOrderDishes(cartDishes)
-                    binding.orderPrice =
-                        (cartDishes.sumOf { dish ->
-                            BigDecimal(dish.currencyPrice).multiply(
-                                (BigDecimal(
-                                    dish.count
-                                ))
-                            )
-                        }).toDouble()
-                    binding.orderItemCount = cartDishes.sumOf { dish -> dish.count }
+                    Log.i(TAG, "Successful load dishes in cart ${it.data}")
+                    cartDishAdapter.setCartDishes(it.data.toList())
                 }
             }
-
         }
 
         binding.recyclerOrderedDishes.apply {
@@ -135,5 +115,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             )
         }
 
+        Log.i(TAG, "cartViewModel.load from cart")
+        cartViewModel.load(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented $message")
+            }
+        })
     }
 }

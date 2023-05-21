@@ -2,6 +2,7 @@ package ru.qwonix.android.foxwhiskers
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,25 +15,40 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
 import ru.qwonix.android.foxwhiskers.repository.ClientRepository
-import ru.qwonix.android.foxwhiskers.repository.MenuRepository
+import ru.qwonix.android.foxwhiskers.repository.MenuCartRepository
 import ru.qwonix.android.foxwhiskers.repository.OrderRepository
+import ru.qwonix.android.foxwhiskers.repository.PaymentMethodRepository
+import ru.qwonix.android.foxwhiskers.repository.PickUpLocationRepository
 import ru.qwonix.android.foxwhiskers.service.AuthenticationService
 import ru.qwonix.android.foxwhiskers.service.ClientService
+import ru.qwonix.android.foxwhiskers.service.LocalCartService
 import ru.qwonix.android.foxwhiskers.service.LocalClientService
 import ru.qwonix.android.foxwhiskers.service.LocalSettingsService
 import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import ru.qwonix.android.foxwhiskers.service.MenuService
 import ru.qwonix.android.foxwhiskers.service.OrderService
+import ru.qwonix.android.foxwhiskers.service.PaymentMethodService
+import ru.qwonix.android.foxwhiskers.service.PickUpLocationService
 import ru.qwonix.android.foxwhiskers.util.AuthenticationAuthenticator
 import ru.qwonix.android.foxwhiskers.util.AuthenticationInterceptor
 import javax.inject.Singleton
 
+val Context.menuDataStore by preferencesDataStore(name = "MenuDataStore")
 val Context.authenticationDataStore by preferencesDataStore(name = "AuthenticationDataStore")
 val Context.clientDataStore by preferencesDataStore(name = "Client")
 val Context.settingsDataStore by preferencesDataStore(name = "Settings")
 
 @[Module InstallIn(SingletonComponent::class)]
 object LocalServiceModule {
+
+    @Provides
+    @Singleton
+    fun provideLocalCartService(
+        gson: Gson,
+        @ApplicationContext context: Context
+    ) = LocalCartService(gson, context)
+
+
     @Provides
     @Singleton
     fun provideLocalClientService(
@@ -93,6 +109,24 @@ object NetworkServiceModule {
 
     @Singleton
     @Provides
+    fun providePickUpLocationService(
+        retrofit: Retrofit.Builder
+    ): PickUpLocationService =
+        retrofit
+            .build()
+            .create(PickUpLocationService::class.java)
+
+    @Singleton
+    @Provides
+    fun providePaymentMethodService(
+        retrofit: Retrofit.Builder
+    ): PaymentMethodService =
+        retrofit
+            .build()
+            .create(PaymentMethodService::class.java)
+
+    @Singleton
+    @Provides
     fun provideMenuService(
         retrofit: Retrofit.Builder
     ): MenuService =
@@ -104,6 +138,30 @@ object NetworkServiceModule {
 @[Module InstallIn(SingletonComponent::class)]
 object RepositoryModule {
 
+
+    @Provides
+    @Singleton
+    fun providePickUpLocationRepository(
+        pickUpLocationService: PickUpLocationService,
+        settingsService: LocalSettingsService
+
+    ) =
+        PickUpLocationRepository(
+            pickUpLocationService,
+            settingsService
+        )
+
+    @Provides
+    @Singleton
+    fun providePaymentMethodRepository(
+        paymentMethodService: PaymentMethodService,
+        settingsService: LocalSettingsService
+
+    ) =
+        PaymentMethodRepository(
+            paymentMethodService,
+            settingsService
+        )
 
     @Provides
     @Singleton
@@ -140,8 +198,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideMenuRepository(menuService: MenuService) =
-        MenuRepository(menuService)
+    fun provideMenuRepository(
+        menuService: MenuService,
+        localCartService: LocalCartService
+    ) =
+        MenuCartRepository(menuService, localCartService)
 
 }
 
@@ -154,7 +215,13 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideConverterFactory(): Converter.Factory = GsonConverterFactory.create()
+    fun provideGson(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    fun provideConverterFactory(
+        gson: Gson,
+    ): Converter.Factory = GsonConverterFactory.create(gson)
 
     @Provides
     @Singleton

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.adapter.CartDishAdapter">
 
     <data>
 
         <variable
             name="priceFormat"
             type="java.text.DecimalFormat" />
+
+        <variable
+            name="dishCountChangeListener"
+            type="ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener" />
 
         <variable
             name="dish"
@@ -86,7 +91,7 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/rectangle_corners13_background"
                     android:backgroundTint="@color/yellow_300"
-                    android:onClick="@{() -> dish.setCount(dish.count - 1)}"
+                    android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count - 1)}"
                     android:paddingHorizontal="2dp"
                     android:src="@drawable/ic_minus" />
 
@@ -109,7 +114,7 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/rectangle_corners13_background"
                     android:backgroundTint="@color/yellow_300"
-                    android:onClick="@{() -> dish.setCount(dish.count + 1)}"
+                    android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count + 1)}"
                     android:paddingHorizontal="2dp"
                     android:src="@drawable/ic_plus" />
             </LinearLayout>

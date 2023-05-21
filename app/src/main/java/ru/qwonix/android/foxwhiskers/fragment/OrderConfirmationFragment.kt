@@ -16,11 +16,10 @@ import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
+import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
-import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
-import java.math.BigDecimal
 
 @AndroidEntryPoint
 class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation) {
@@ -32,7 +31,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
     }
 
     private lateinit var binding: FragmentOrderConfirmationBinding
-    private val menuViewModel: MenuViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by viewModels()
     private val orderViewModel: OrderViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
     override fun onCreateView(
@@ -43,12 +42,10 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             priceFormat = Utils.DECIMAL_FORMAT
-            orderPrice = menuViewModel.orderCart.value!!.sumOf { dish ->
-                BigDecimal(dish.currencyPrice).multiply((BigDecimal(dish.count)))
-            }.toDouble()
-            paymentMethod = menuViewModel.selectedPaymentMethod.value
-            pickUpLocationTitle = menuViewModel.selectedPickUpLocation.value!!.title
-            pickUpLocationDescription = menuViewModel.selectedPickUpLocation.value!!.description
+            orderPrice = cartViewModel.cartTotalPrice.value
+            paymentMethod = PaymentMethod.CASH
+            pickUpLocationTitle = "menuViewModel.selectedPickUpLocation.value!!.title"
+            pickUpLocationDescription = "menuViewModel.selectedPickUpLocation.value!!.description"
         }
         return binding.root
     }
@@ -67,8 +64,8 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         binding.checkoutOrderButton.setOnClickListener {
             orderViewModel.createOrder(
                 (profileViewModel.clientAuthenticationResponse.value as ApiResponse.Success).data!!.phoneNumber,
-                menuViewModel.orderCart.value!!,
-                menuViewModel.selectedPickUpLocation.value!!.id,
+                cartViewModel.getDishesInCart(),
+                1,
                 PaymentMethod.INAPP_ONLINE_CARD,
                 object : CoroutinesErrorHandler {
                     override fun onError(message: String) {
