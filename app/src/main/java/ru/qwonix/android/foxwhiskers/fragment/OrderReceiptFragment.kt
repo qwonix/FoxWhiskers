@@ -19,6 +19,8 @@ import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderReceiptBinding
 import ru.qwonix.android.foxwhiskers.entity.Order
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderReceiptAdapter
+import ru.qwonix.android.foxwhiskers.fragment.adapter.PickUpLocationClickListener
+import ru.qwonix.android.foxwhiskers.fragment.adapter.QrCodeClickListener
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
@@ -49,8 +51,8 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         super.onViewCreated(view, savedInstanceState)
 
         val orderReceiptAdapter = OrderReceiptAdapter()
-        orderReceiptAdapter.onQrCodeClickListener =
-            object : OrderReceiptAdapter.OnQrCodeClickListener {
+        orderReceiptAdapter.qrCodeClickListener =
+            object : QrCodeClickListener {
                 override fun onQrClick(order: Order) {
                     QrBottomSheetDialogFragment(order.id).show(
                         parentFragmentManager,
@@ -59,8 +61,8 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
                 }
             }
 
-        orderReceiptAdapter.onPickUpLocationClickListener =
-            object : OrderReceiptAdapter.OnPickUpLocationClickListener {
+        orderReceiptAdapter.pickUpLocationClickListener =
+            object : PickUpLocationClickListener {
                 override fun onPickUpLocationClick(pickUpLocation: PickUpLocation) {
                     val mapIntent = Intent(
                         Intent.ACTION_VIEW,

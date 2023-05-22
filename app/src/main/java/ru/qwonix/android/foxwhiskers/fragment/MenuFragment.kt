@@ -13,7 +13,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
@@ -58,7 +57,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     private val onChipClickListener = object : MenuDishTypeChipAdapter.OnItemClickListener {
         override fun onItemClick(recyclerView: RecyclerView, position: Int) {
-            val smoothScroller: SmoothScroller =
+            val smoothScroller: RecyclerView.SmoothScroller =
                 object : LinearSmoothScroller(context) {
                     override fun getVerticalSnapPreference(): Int {
                         return SNAP_TO_START
@@ -109,7 +108,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful load dishes ${it.data}")
-                    menuDishAdapter.setDishes(it.data)
+                    menuDishAdapter.setMenuDishes(it.data)
 
                     val chips = mutableListOf<Pair<String, Int>>()
                     var i = 0
@@ -117,7 +116,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                         chips.add(Pair(k, i))
                         i += v.size + 1
                     }
-                    menuDishTypeChipAdapter.setDishTypes(chips)
+                    menuDishTypeChipAdapter.setMenuDishTypes(chips)
                 }
             }
         }

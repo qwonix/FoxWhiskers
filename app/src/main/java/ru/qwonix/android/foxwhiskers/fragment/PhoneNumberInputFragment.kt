@@ -12,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
-import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.tinkoff.decoro.FormattedTextChangeListener

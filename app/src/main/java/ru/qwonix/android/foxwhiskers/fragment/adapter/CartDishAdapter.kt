@@ -14,13 +14,13 @@ class CartDishAdapter(
 ) : RecyclerView.Adapter<CartDishAdapter.ViewHolder>() {
     val data = mutableListOf<Dish>()
 
-    fun setCartDishes(orderDishes: List<Dish>) {
-        val orderDishesDiffUtil = OrderDishesDiffUtil(data, orderDishes)
+    fun setCartDishes(cartDishes: List<Dish>) {
+        val orderDishesDiffUtil = OrderDishesDiffUtil(data, cartDishes)
         val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
         diffResult.dispatchUpdatesTo(this)
 
         data.clear()
-        data.addAll(orderDishes)
+        data.addAll(cartDishes)
     }
 
 

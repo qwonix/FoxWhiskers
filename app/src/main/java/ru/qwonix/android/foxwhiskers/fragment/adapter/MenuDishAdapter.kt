@@ -17,7 +17,7 @@ class MenuDishAdapter(
 
     private val data: MutableList<DataModel> = mutableListOf()
 
-    fun setDishes(menuItems: List<MenuItem>) {
+    fun setMenuDishes(menuItems: List<MenuItem>) {
         val dishesAdapterDataModels = mutableListOf<DataModel>()
 
         for ((title, dishes) in menuItems) {
@@ -60,7 +60,7 @@ class MenuDishAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], dishCountChangeListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -72,9 +72,12 @@ class MenuDishAdapter(
         }
     }
 
-    inner class ViewHolder(private val binding: ViewDataBinding) :
+    class ViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private fun bindDish(dish: DataModel.Dish) {
+        private fun bindDish(
+            dish: DataModel.Dish,
+            dishCountChangeListener: DishCountChangeListener
+        ) {
             (binding as ItemMenuDishBinding).dish = dish.value
             binding.priceFormat = Utils.DECIMAL_FORMAT
             binding.dishCountChangeListener = dishCountChangeListener
@@ -84,9 +87,9 @@ class MenuDishAdapter(
             (binding as ItemMenuDishTypeBinding).title = title.value
         }
 
-        fun bind(dataModel: DataModel) {
+        fun bind(dataModel: DataModel, dishCountChangeListener: DishCountChangeListener) {
             when (dataModel) {
-                is DataModel.Dish -> bindDish(dataModel)
+                is DataModel.Dish -> bindDish(dataModel, dishCountChangeListener)
                 is DataModel.Title -> bindDishType(dataModel)
             }
         }

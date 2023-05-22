@@ -12,9 +12,9 @@ import ru.qwonix.android.foxwhiskers.util.Utils
 class MenuSearchDishAdapter : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHolder>() {
     var data = mutableListOf<Dish>()
 
-    fun setFoundDishes(foundDishes: List<Dish>) {
-        val orderDishesDiffUtil = OrderDishesDiffUtil(data, foundDishes)
-        val diffResult = DiffUtil.calculateDiff(orderDishesDiffUtil)
+    fun setFoundedDishes(foundDishes: List<Dish>) {
+        val foundedDishesDiffUtil = FoundedDishesDiffUtil(data, foundDishes)
+        val diffResult = DiffUtil.calculateDiff(foundedDishesDiffUtil)
         diffResult.dispatchUpdatesTo(this)
 
         data.clear()
@@ -43,7 +43,7 @@ class MenuSearchDishAdapter : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHol
         }
     }
 
-    private class OrderDishesDiffUtil(
+    private class FoundedDishesDiffUtil(
         private val oldList: List<Dish>,
         private val newList: List<Dish>
     ) : DiffUtil.Callback() {

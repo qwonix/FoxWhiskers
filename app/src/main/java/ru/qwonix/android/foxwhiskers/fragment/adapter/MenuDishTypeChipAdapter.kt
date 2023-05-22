@@ -10,8 +10,7 @@ class MenuDishTypeChipAdapter(private val recyclerView: RecyclerView) :
     RecyclerView.Adapter<MenuDishTypeChipAdapter.ViewHolder>() {
 
     val data = mutableListOf<Pair<String, Int>>()
-
-    fun setDishTypes(dishTypeOnClick: List<Pair<String, Int>>) {
+    fun setMenuDishTypes(dishTypeOnClick: List<Pair<String, Int>>) {
         data.clear()
         data.addAll(dishTypeOnClick)
         notifyDataSetChanged()

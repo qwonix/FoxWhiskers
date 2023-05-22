@@ -35,7 +35,7 @@ class PickUpLocationViewModel @Inject constructor(
             }
         })
 
-        tryLoadPickUpLocations (object : CoroutinesErrorHandler {
+        tryLoadPickUpLocations(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }

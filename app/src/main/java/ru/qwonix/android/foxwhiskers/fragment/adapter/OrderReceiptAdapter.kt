@@ -9,7 +9,19 @@ import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.util.Utils
 
 
+interface QrCodeClickListener {
+    fun onQrClick(order: Order)
+}
+
+interface PickUpLocationClickListener {
+    fun onPickUpLocationClick(pickUpLocation: PickUpLocation)
+}
+
 class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>() {
+
+    lateinit var qrCodeClickListener: QrCodeClickListener
+    lateinit var pickUpLocationClickListener: PickUpLocationClickListener
+
     private val data = mutableListOf<Order>()
 
     fun setOrders(orders: List<Order>) {
@@ -18,18 +30,6 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
-    interface OnQrCodeClickListener {
-        fun onQrClick(order: Order)
-    }
-
-    lateinit var onQrCodeClickListener: OnQrCodeClickListener
-
-    interface OnPickUpLocationClickListener {
-        fun onPickUpLocationClick(pickUpLocation: PickUpLocation)
-    }
-
-    lateinit var onPickUpLocationClickListener: OnPickUpLocationClickListener
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemOrderReceiptBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -37,24 +37,24 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], qrCodeClickListener, pickUpLocationClickListener)
     }
 
     override fun getItemCount(): Int = data.size
 
-    inner class ViewHolder(
+    class ViewHolder(
         private val binding: ItemOrderReceiptBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(order: Order) {
+        fun bind(
+            order: Order,
+            qrCodeClickListener: QrCodeClickListener,
+            pickUpLocationClickListener: PickUpLocationClickListener
+        ) {
             binding.order = order
             binding.priceFormat = Utils.DECIMAL_FORMAT
-            binding.openQrCodeButton.setOnClickListener {
-                onQrCodeClickListener.onQrClick(order)
-            }
-            binding.pickUpLocationButton.setOnClickListener {
-                onPickUpLocationClickListener.onPickUpLocationClick(order.pickUpLocation)
-            }
+            binding.qrCodeClickListener = qrCodeClickListener
+            binding.pickUpLocationClickListener = pickUpLocationClickListener
         }
     }
 }

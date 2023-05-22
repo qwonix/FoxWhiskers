@@ -97,7 +97,7 @@ class MenuSearchBottomSheetDialogFragment :
 
         binding.searchBarTextView.addTextChangedListener {
             if (it.isNullOrBlank()) {
-                orderDishAdapter.setFoundDishes(emptyList())
+                orderDishAdapter.setFoundedDishes(emptyList())
                 binding.clearText.visibility = View.INVISIBLE
             } else {
                 when (val dishes = menuViewModel.menu.value) {
@@ -119,7 +119,7 @@ class MenuSearchBottomSheetDialogFragment :
                                     dish.title.contains(it, true)
                                 }
 
-                        orderDishAdapter.setFoundDishes(foundDishes)
+                        orderDishAdapter.setFoundedDishes(foundDishes)
                     }
 
                     else -> {

@@ -31,7 +31,8 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
     }
 
     private lateinit var binding: FragmentOrderConfirmationBinding
-    private val cartViewModel: CartViewModel by viewModels()
+
+    private val cartViewModel: CartViewModel by activityViewModels()
     private val orderViewModel: OrderViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
     override fun onCreateView(

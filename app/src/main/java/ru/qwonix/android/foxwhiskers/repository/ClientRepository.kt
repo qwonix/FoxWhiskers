@@ -2,9 +2,9 @@ package ru.qwonix.android.foxwhiskers.repository
 
 import retrofit2.Response
 import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
-import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
-import ru.qwonix.android.foxwhiskers.service.LocalClientService
 import ru.qwonix.android.foxwhiskers.service.ClientService
+import ru.qwonix.android.foxwhiskers.service.LocalClientService
+import ru.qwonix.android.foxwhiskers.service.LocalTokenStorageService
 import javax.inject.Inject
 
 class ClientRepository @Inject constructor(

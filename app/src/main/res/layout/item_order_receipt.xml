@@ -13,6 +13,15 @@
             name="order"
             type="ru.qwonix.android.foxwhiskers.entity.Order" />
 
+        <variable
+            name="qrCodeClickListener"
+            type="ru.qwonix.android.foxwhiskers.fragment.adapter.QrCodeClickListener" />
+
+        <variable
+            name="pickUpLocationClickListener"
+            type="ru.qwonix.android.foxwhiskers.fragment.adapter.PickUpLocationClickListener" />
+
+
     </data>
 
 
@@ -93,12 +102,12 @@
             </LinearLayout>
 
             <FrameLayout
-                android:id="@+id/open_qr_code_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:background="@drawable/rectangle_corners15_background"
                 android:backgroundTint="@color/yellow_300"
+                android:onClick="@{() -> qrCodeClickListener.onQrClick(order)}"
                 android:paddingHorizontal="15dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="5dp">
@@ -188,7 +197,6 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/pick_up_location_button"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_gravity="center_vertical|end"
@@ -196,6 +204,7 @@
                 android:background="@drawable/rectangle_corners13_background"
                 android:backgroundTint="@color/yellow_300"
                 android:elevation="1dp"
+                android:onClick="@{() -> pickUpLocationClickListener.onPickUpLocationClick(order.pickUpLocation)}"
                 android:padding="10dp"
                 android:src="@drawable/ic_map_point" />
 

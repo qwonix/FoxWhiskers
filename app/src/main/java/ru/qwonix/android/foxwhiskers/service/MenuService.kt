@@ -10,7 +10,4 @@ interface MenuService {
     @GET("dish")
     suspend fun findAllDishes(): Response<List<MenuItem>>
 
-    @GET("location")
-    suspend fun findAllLocations(): Response<List<PickUpLocation>>
-
 }
