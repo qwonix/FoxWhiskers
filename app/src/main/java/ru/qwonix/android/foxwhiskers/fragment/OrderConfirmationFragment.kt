@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationBinding
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.Utils
@@ -35,7 +36,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
 
     private val cartViewModel: CartViewModel by activityViewModels()
     private val orderViewModel: OrderViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private val pickUpLocationViewModel: PickUpLocationViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +59,6 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             binding.pickUpLocation = it
         }
 
-
         binding.optionPickupLocation.setOnClickListener {
             withDemoBottomSheet { goToPickUpLocationFragment() }
         }
@@ -68,20 +68,33 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         }
 
         binding.checkoutOrderButton.setOnClickListener {
-            orderViewModel.createOrder(
-                (profileViewModel.clientAuthenticationResponse.value as ApiResponse.Success).data!!.phoneNumber,
-                cartViewModel.getDishesInCart(),
-                pickUpLocationViewModel.selectedPickUpLocation.value!!.id,
-                PaymentMethod.INAPP_ONLINE_CARD,
-                object : CoroutinesErrorHandler {
-                    override fun onError(message: String) {
-                        TODO("Not yet implemented")
-                    }
+            when (val client = profileViewModel.getAuthenticatedClient()) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${client.code} – ${client.errorMessage}")
                 }
-            )
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load dishes in cart ${client.data}")
+                    orderViewModel.createOrder(
+                        client.data!!.phoneNumber,
+                        cartViewModel.getDishesInCart(),
+                        pickUpLocationViewModel.selectedPickUpLocation.value!!.id,
+                        PaymentMethod.INAPP_ONLINE_CARD,
+                        object : CoroutinesErrorHandler {
+                            override fun onError(message: String) {
+                                TODO("Not yet implemented")
+                            }
+                        }
+                    )
+                }
+            }
         }
 
-        orderViewModel.orderCreationRequest.observe(viewLifecycleOwner) {
+        orderViewModel.orderCreationRequest.observe(viewLifecycleOwner)
+        {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -92,9 +105,22 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful create order ${it.data}")
-                    findNavController().navigate(R.id.orderReceiptFragment)
+                    if (profileViewModel.getAuthenticatedClient() is ApiResponse.Success) {
+                        val directions = CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
+                            (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!
+                        )
+                        findNavController().navigate(
+                            directions
+                        )
+                    }
                 }
             }
         }
+
+        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

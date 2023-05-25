@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentCartBinding
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.fragment.adapter.CartDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener
@@ -22,6 +24,7 @@ import ru.qwonix.android.foxwhiskers.util.OrderConfirmationBottomSheetDialogFrag
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
+import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
 @AndroidEntryPoint
 class CartFragment : Fragment(R.layout.fragment_cart) {
@@ -30,6 +33,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by activityViewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,7 +104,14 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }
 
         binding.currentOrderButton.setOnClickListener {
-            findNavController().navigate(R.id.action_cartFragment_to_orderReceiptFragment)
+            if (profileViewModel.getAuthenticatedClient() is ApiResponse.Success) {
+                val directions = CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
+                    (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!
+                )
+                findNavController().navigate(
+                    directions
+                )
+            }
         }
 
         binding.goToMenuButton.setOnClickListener {
@@ -115,10 +126,15 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             )
         }
 
-        Log.i(TAG, "cartViewModel.load from cart")
         cartViewModel.load(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented $message")
+            }
+        })
+
+        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
             }
         })
     }

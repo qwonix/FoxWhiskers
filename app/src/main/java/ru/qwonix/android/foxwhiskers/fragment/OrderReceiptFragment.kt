@@ -9,13 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderReceiptBinding
+import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.entity.Order
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderReceiptAdapter
@@ -32,9 +33,12 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
 
     private val TAG = "OrderReceiptFragment"
 
-    private lateinit var binding: FragmentOrderReceiptBinding
+    private val args: ProfileEditingFragmentArgs by navArgs()
+    private lateinit var client: Client
+
     private val orderViewModel: OrderViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by activityViewModels()
+
+    private lateinit var binding: FragmentOrderReceiptBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +53,7 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.client = args.client
 
         val orderReceiptAdapter = OrderReceiptAdapter()
         orderReceiptAdapter.qrCodeClickListener =
@@ -110,7 +115,7 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
             }
         }
 
-        orderViewModel.loadOrders((profileViewModel.clientAuthenticationResponse.value as ApiResponse.Success).data!!.phoneNumber,
+        orderViewModel.loadOrders(client.phoneNumber,
             object : CoroutinesErrorHandler {
                 override fun onError(message: String) {
                     TODO("Not yet implemented")

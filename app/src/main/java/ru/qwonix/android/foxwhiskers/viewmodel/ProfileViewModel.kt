@@ -28,6 +28,10 @@ class ProfileViewModel @Inject constructor(
         })
     }
 
+    fun getAuthenticatedClient(): ApiResponse<Client?> {
+        return clientAuthenticationResponse.value!!
+    }
+
     fun tryLoadClient(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(

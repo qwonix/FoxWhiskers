@@ -21,8 +21,8 @@ class LocalCartService(private val gson: Gson, private val context: Context) {
         return if (preferences == null || !preferences.contains(CART)) {
             emptyList()
         } else {
-            val listType = object : TypeToken<List<Dish>>() {}.type
-            return gson.fromJson(preferences[CART], listType)
+            val type = object : TypeToken<List<Dish>>() {}.type
+            return gson.fromJson(preferences[CART], type)
         }
     }
 
