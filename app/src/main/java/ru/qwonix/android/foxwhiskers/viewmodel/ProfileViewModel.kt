@@ -20,14 +20,6 @@ class ProfileViewModel @Inject constructor(
     private val _clientAuthenticationResponse = MutableLiveData<ApiResponse<Client?>>()
     val clientAuthenticationResponse: LiveData<ApiResponse<Client?>> = _clientAuthenticationResponse
 
-    init {
-        tryLoadClient(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-
     fun getAuthenticatedClient(): ApiResponse<Client?> {
         return clientAuthenticationResponse.value!!
     }

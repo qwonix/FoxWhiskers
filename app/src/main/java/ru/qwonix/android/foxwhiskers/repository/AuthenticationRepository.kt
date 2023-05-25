@@ -41,6 +41,9 @@ class AuthenticationRepository @Inject constructor(
                 if (body != loadedClient)
                     loadedClient = body
             }
+            else {
+                return@apiRequestFlow response
+            }
         } else {
             return@apiRequestFlow Response.error(404, EMPTY_RESPONSE)
         }

@@ -21,6 +21,7 @@ class CartViewModel @Inject constructor(
     private val _cartTotalCount = MutableLiveData<Int>(0)
     val cartTotalCount: LiveData<Int> = _cartTotalCount
 
+    // TODO: fix init load in CartFragment
     private val _cart = MutableLiveData<ApiResponse<List<Dish>>>(ApiResponse.Success(emptyList()))
     val cart: LiveData<ApiResponse<List<Dish>>> = _cart
 

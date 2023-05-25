@@ -84,5 +84,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 )
             )
         }
+
+        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

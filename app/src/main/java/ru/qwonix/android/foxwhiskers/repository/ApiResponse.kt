@@ -24,8 +24,8 @@ sealed class ApiResponse<out T> {
 
 
 data class ErrorResponse(
-    val code: Int,
-    val message: String
+    val status: Int,
+    val error: String
 )
 
 fun <T> requestFlow(call: suspend () -> T): Flow<ApiResponse<T>> = flow {
@@ -65,7 +65,7 @@ fun <T> apiRequestFlow(call: suspend () -> Response<T>): Flow<ApiResponse<T>> = 
                         emit(ApiResponse.Failure("response error message parsing error", 400))
                     } else {
                         val parsedError: ErrorResponse = fromJson
-                        emit(ApiResponse.Failure(parsedError.message, parsedError.code))
+                        emit(ApiResponse.Failure(parsedError.error, parsedError.status))
                     }
                 }
             }

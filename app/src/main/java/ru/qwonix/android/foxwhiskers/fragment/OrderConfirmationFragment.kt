@@ -106,9 +106,10 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful create order ${it.data}")
                     if (profileViewModel.getAuthenticatedClient() is ApiResponse.Success) {
-                        val directions = CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
-                            (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!
-                        )
+                        val directions =
+                            CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
+                                (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!
+                            )
                         findNavController().navigate(
                             directions
                         )

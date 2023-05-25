@@ -244,12 +244,25 @@ object OkHttpModule {
 
     @Singleton
     @Provides
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+    @Singleton
+    @Provides
     fun provideAuthenticationAuthenticator(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
         localTokenStorageService: LocalTokenStorageService,
         retrofit: Retrofit.Builder
     ): AuthenticationAuthenticator {
 
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+
         val authenticationService = retrofit
+            .client(okHttpClient)
             .build()
             .create(AuthenticationService::class.java)
 
@@ -259,15 +272,14 @@ object OkHttpModule {
     @Singleton
     @Provides
     fun provideAuthenticationOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
         authInterceptor: AuthenticationInterceptor,
         authAuthenticator: AuthenticationAuthenticator,
     ): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .authenticator(authAuthenticator)
             .build()
     }
