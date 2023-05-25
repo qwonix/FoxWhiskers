@@ -42,7 +42,10 @@ class PickUpLocationViewModel @Inject constructor(
         })
     }
 
-    fun setPickUpLocation(pickUpLocation: PickUpLocation) {
+    fun setSelectedPickUpLocation(
+        coroutinesErrorHandler: CoroutinesErrorHandler,
+        pickUpLocation: PickUpLocation
+    ) = baseRequest(coroutinesErrorHandler) {
         _selectedPickUpLocation.postValue(pickUpLocation)
         pickUpLocationRepository.setSelected(pickUpLocation)
     }

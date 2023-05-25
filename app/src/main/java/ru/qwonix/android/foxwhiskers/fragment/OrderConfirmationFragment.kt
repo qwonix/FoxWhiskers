@@ -19,6 +19,7 @@ import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.PickUpLocationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
 @AndroidEntryPoint
@@ -35,6 +36,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
     private val cartViewModel: CartViewModel by activityViewModels()
     private val orderViewModel: OrderViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val pickUpLocationViewModel: PickUpLocationViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,14 +47,17 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             priceFormat = Utils.DECIMAL_FORMAT
             orderPrice = cartViewModel.cartTotalPrice.value
             paymentMethod = PaymentMethod.CASH
-            pickUpLocationTitle = "menuViewModel.selectedPickUpLocation.value!!.title"
-            pickUpLocationDescription = "menuViewModel.selectedPickUpLocation.value!!.description"
         }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        pickUpLocationViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
+            binding.pickUpLocation = it
+        }
+
 
         binding.optionPickupLocation.setOnClickListener {
             withDemoBottomSheet { goToPickUpLocationFragment() }
@@ -66,7 +71,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             orderViewModel.createOrder(
                 (profileViewModel.clientAuthenticationResponse.value as ApiResponse.Success).data!!.phoneNumber,
                 cartViewModel.getDishesInCart(),
-                1,
+                pickUpLocationViewModel.selectedPickUpLocation.value!!.id,
                 PaymentMethod.INAPP_ONLINE_CARD,
                 object : CoroutinesErrorHandler {
                     override fun onError(message: String) {

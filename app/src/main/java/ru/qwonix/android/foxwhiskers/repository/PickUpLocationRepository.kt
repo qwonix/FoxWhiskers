@@ -23,7 +23,7 @@ class PickUpLocationRepository @Inject constructor(
     }
 
     fun setSelected(pickUpLocation: PickUpLocation) = requestFlow {
-        settingsService.saveSelectedPickUpLocation(pickUpLocation)
+        settingsService.save(pickUpLocation)
     }
 
     fun findAllLocations() = apiRequestFlow {

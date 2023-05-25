@@ -18,12 +18,8 @@
             type="ru.qwonix.android.foxwhiskers.entity.PaymentMethod" />
 
         <variable
-            name="pickUpLocationTitle"
-            type="String" />
-
-        <variable
-            name="pickUpLocationDescription"
-            type="String" />
+            name="pickUpLocation"
+            type="ru.qwonix.android.foxwhiskers.entity.PickUpLocation" />
 
     </data>
 
@@ -97,7 +93,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:fontFamily="@font/rubik_light"
-                                android:text='@{pickUpLocationTitle}'
+                                android:text='@{pickUpLocation.title}'
                                 android:textColor="@color/gray_700"
                                 android:textSize="10sp"
                                 tools:text="ТРК Лиговъ" />
@@ -107,7 +103,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:fontFamily="@font/rubik_light"
-                                android:text='@{pickUpLocationDescription}'
+                                android:text='@{pickUpLocation.description}'
                                 android:textColor="@color/gray_700"
                                 android:textSize="10sp"
                                 tools:text="Санкт-Петербург, Лиговский проспект, 153" />

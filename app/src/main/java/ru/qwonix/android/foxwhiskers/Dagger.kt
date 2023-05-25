@@ -64,9 +64,10 @@ object LocalServiceModule {
     @Singleton
     @Provides
     fun provideLocalSettingsService(
+        gson: Gson,
         @ApplicationContext context: Context
     ): LocalSettingsService =
-        LocalSettingsService(context)
+        LocalSettingsService(gson, context)
 }
 
 

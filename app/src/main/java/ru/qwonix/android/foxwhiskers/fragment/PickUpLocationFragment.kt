@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -33,6 +33,7 @@ import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
+import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.PickUpLocationViewModel
 
 
@@ -45,7 +46,7 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
         fun newInstance() = PickUpLocationFragment()
     }
 
-    private val pickUpLocationViewModel: PickUpLocationViewModel by viewModels()
+    private val pickUpLocationViewModel: PickUpLocationViewModel by activityViewModels()
 
     private val iconStyle = IconStyle().apply { anchor = PointF(0.5f, 1.0f) }
 
@@ -113,21 +114,6 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
             withDemoBottomSheet { goBack() }
         }
 
-        // smooth move camera to current selected
-        pickUpLocationViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
-            binding.apply {
-                mapview.map.move(
-                    CameraPosition(
-                        Point(
-                            it.latitude,
-                            it.longitude
-                        ), 14.0f, 0.0f, 10.0f
-                    ), Animation(Animation.Type.SMOOTH, 1f)
-                ) { }
-                pickupLocation = it
-            }
-        }
-
         pickUpLocationViewModel.pickUpLocations.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
@@ -140,34 +126,28 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
                     Log.i(TAG, "Successful load locations ${it.data}")
                     binding.mapview.map.mapObjects.clear()
                     addLocationsToMap(it.data)
+
+                    pickUpLocationViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
+                        Log.i(TAG, "set $it as selected")
+                        binding.apply {
+                            // smooth move camera to current selected
+                            mapview.map.move(
+                                CameraPosition(
+                                    Point(
+                                        it.latitude,
+                                        it.longitude
+                                    ), 14.0f, 0.0f, 10.0f
+                                ), Animation(Animation.Type.SMOOTH, 1f)
+                            ) { }
+                            // set content of current selected
+                            pickupLocation = it
+                            // set icon for current selected
+                            setViewByUserData(it, selectedPoint)
+                        }
+                    }
                 }
             }
         }
-        setViewByUserData(pickUpLocationViewModel.selectedPickUpLocation.value!!, selectedPoint)
-    }
-
-    private fun setViewByUserData(userData: Any, viewProvider: ViewProvider) {
-        val changeViewByUserDataVisitor = ChangeViewByUserDataVisitor(userData, viewProvider)
-        binding.mapview.map.mapObjects.traverse(changeViewByUserDataVisitor)
-    }
-
-
-    private val changePlacemarkViewTapListener = MapObjectTapListener { tappedMapObject, _ ->
-        tappedMapObject as PlacemarkMapObject
-
-        // if current selected
-        if (pickUpLocationViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
-            return@MapObjectTapListener true
-        }
-
-        // set tapped object as selected
-        tappedMapObject.setView(selectedPoint, iconStyle)
-        pickUpLocationViewModel.setPickUpLocation(tappedMapObject.userData as PickUpLocation)
-
-        // set previous selected as default
-        setViewByUserData(pickUpLocationViewModel.selectedPickUpLocation.value!!, unselectedPoint)
-
-        true
     }
 
     private fun addLocationsToMap(pickUpLocations: List<PickUpLocation>) {
@@ -182,6 +162,36 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
             userData = pickUpLocation
             addTapListener(changePlacemarkViewTapListener)
         }
+    }
+
+
+    private val changePlacemarkViewTapListener = MapObjectTapListener { tappedMapObject, _ ->
+        tappedMapObject as PlacemarkMapObject
+
+        // if current selected
+        if (pickUpLocationViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
+            return@MapObjectTapListener true
+        }
+
+        // set previous selected as default
+        setViewByUserData(pickUpLocationViewModel.selectedPickUpLocation.value!!, unselectedPoint)
+
+        // set tapped object as selected
+        tappedMapObject.setView(selectedPoint, iconStyle)
+        pickUpLocationViewModel.setSelectedPickUpLocation(
+            object : CoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    TODO("Not yet implemented")
+                }
+            }
+            , tappedMapObject.userData as PickUpLocation)
+
+        true
+    }
+
+    private fun setViewByUserData(userData: Any, viewProvider: ViewProvider) {
+        val changeViewByUserDataVisitor = ChangeViewByUserDataVisitor(userData, viewProvider)
+        binding.mapview.map.mapObjects.traverse(changeViewByUserDataVisitor)
     }
 
     override fun onStart() {
