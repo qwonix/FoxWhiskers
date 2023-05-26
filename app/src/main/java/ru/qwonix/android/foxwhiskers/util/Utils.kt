@@ -44,15 +44,15 @@ class Utils {
 
 
 fun EditText.onSearch(callback: () -> Unit) {
-    onImeAction(callback, EditorInfo.IME_ACTION_SEARCH)
+    onImeAction(EditorInfo.IME_ACTION_SEARCH, callback)
 }
 
 fun EditText.onSend(callback: () -> Unit) {
-    onImeAction(callback, EditorInfo.IME_ACTION_SEND)
+    onImeAction(EditorInfo.IME_ACTION_SEND, callback)
 }
 
 
-fun EditText.onImeAction(callback: () -> Unit, imeAction: Int) {
+fun EditText.onImeAction(imeAction: Int, callback: () -> Unit) {
     setOnEditorActionListener { _, actionId, _ ->
         // hide keyboard
         post {

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPhoneNumberInputBinding
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
+import ru.qwonix.android.foxwhiskers.util.onImeAction
 import ru.qwonix.android.foxwhiskers.viewmodel.AuthenticationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.tinkoff.decoro.FormattedTextChangeListener
@@ -91,6 +93,7 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
         }
 
         binding.sendCodeButton.setOnClickListener {
+            Log.i(TAG, "")
             if (binding.hasError == false && binding.isMaskFilled == true) {
                 val phoneNumber = binding.phoneNumberTextView.text.toString()
 
@@ -103,6 +106,10 @@ class PhoneNumberInputFragment : Fragment(R.layout.fragment_phone_number_input) 
             } else {
                 binding.hasError = true
             }
+        }
+
+        binding.phoneNumberTextView.onImeAction(EditorInfo.IME_ACTION_DONE) {
+            binding.sendCodeButton.callOnClick()
         }
     }
 }

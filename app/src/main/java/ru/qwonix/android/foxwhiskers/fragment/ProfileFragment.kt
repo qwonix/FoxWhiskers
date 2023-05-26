@@ -29,7 +29,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        Log.i(TAG, "onCreateView")
         return binding.root
     }
 

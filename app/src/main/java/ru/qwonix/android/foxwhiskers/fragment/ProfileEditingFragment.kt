@@ -55,8 +55,6 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
         binding.lastnameFieldState = EditTextState.IN_PROGRESS
         binding.emailFieldState = EditTextState.IN_PROGRESS
 
-        Log.i(TAG, "onCreateView")
-
         return binding.root
     }
 

@@ -17,14 +17,6 @@ class MenuViewModel @Inject constructor(
     private val _menu: MutableLiveData<ApiResponse<List<MenuItem>>> = MutableLiveData()
     val menu: LiveData<ApiResponse<List<MenuItem>>> = _menu
 
-    init {
-        loadDishes(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented $message")
-            }
-        })
-    }
-
     fun loadDishes(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(

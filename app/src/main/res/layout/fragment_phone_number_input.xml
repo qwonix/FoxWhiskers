@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.PhoneNumberInputFragment">
 
     <data>
 
@@ -60,15 +61,15 @@
                     android:id="@+id/phone_number_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:autofillHints="phone"
                     android:background="@null"
                     android:fontFamily="@font/rubik_light"
                     android:hint="Ваш номер телефона"
-                    android:imeOptions="actionSearch"
+                    android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:text="+7 "
+                    tools:text="+7 (999) 123-45-67"
                     android:textColor="@color/gray_900"
                     android:textColorHint="@color/gray_700"
                     android:textCursorDrawable="@drawable/cursor"
@@ -94,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
+            android:clickable="@{isMaskFilled}"
             android:background="@{isMaskFilled ? @drawable/rectangle_corners15_yellow300_background : @drawable/rectangle_stroke1_corners15_yellow300_background}"
             android:fontFamily="@font/rubik_regular"
             android:paddingHorizontal="60dp"

@@ -70,6 +70,12 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         binding.checkoutOrderButton.setOnClickListener {
             when (val client = profileViewModel.getAuthenticatedClient()) {
                 is ApiResponse.Failure -> {
+                    when (client.code) {
+                        401 -> {
+                            withDemoBottomSheet { dismiss() }
+                            findNavController().navigate(R.id.action_cartFragment_to_profileNavigation)
+                        }
+                    }
                     Log.e(TAG, "code: ${client.code} – ${client.errorMessage}")
                 }
 
@@ -106,6 +112,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful create order ${it.data}")
                     if (profileViewModel.getAuthenticatedClient() is ApiResponse.Success) {
+                        withDemoBottomSheet { dismiss() }
                         val directions =
                             CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
                                 (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!

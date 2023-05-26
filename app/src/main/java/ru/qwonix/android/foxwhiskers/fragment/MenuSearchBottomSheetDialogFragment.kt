@@ -21,6 +21,7 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSearch
+import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
 
@@ -131,5 +132,11 @@ class MenuSearchBottomSheetDialogFragment :
 
         binding.searchBarTextView.focusAndShowKeyboard()
         binding.searchBarTextView.onSearch { }
+
+        menuViewModel.loadDishes(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented $message")
+            }
+        })
     }
 }

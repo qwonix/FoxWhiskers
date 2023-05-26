@@ -60,7 +60,6 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
         }
         countDownTimer.start()
 
-        Log.i(TAG, "onCreateView")
 
         return binding.root
     }
