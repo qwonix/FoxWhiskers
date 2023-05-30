@@ -21,22 +21,14 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:background="@drawable/rectangle_corners15_background"
-            android:backgroundTint="@color/yellow_300"
-            android:fontFamily="@font/rubik_medium"
-            android:paddingHorizontal="30dp"
-            android:paddingVertical="5dp"
-            android:text="Вход"
-            android:textColor="@color/gray_900"
-            android:textSize="20sp" />
+            android:text="Вход" />
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_corners15_gray500_background}"
             android:clipToPadding="true"
@@ -81,7 +73,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/rubik_light"
             android:gravity="center"
@@ -93,7 +84,6 @@
             android:id="@+id/send_code_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:clickable="@{isMaskFilled}"
             android:background="@{isMaskFilled ? @drawable/rectangle_corners15_yellow300_background : @drawable/rectangle_stroke1_corners15_yellow300_background}"

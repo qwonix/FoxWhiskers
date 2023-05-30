@@ -32,28 +32,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".fragment.ProfileFragment">
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+            <TextView
+                style="@style/Title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rectangle_corners15_background"
-                    android:backgroundTint="@color/yellow_300"
-                    android:fontFamily="@font/rubik_medium"
-                    android:paddingHorizontal="30dp"
-                    android:paddingVertical="5dp"
-                    android:text="Редактирование профиля"
-                    android:textColor="@color/gray_900"
-                    android:textSize="20sp" />
-
-            </FrameLayout>
+                android:text="Редактирование профиля" />
 
 
             <LinearLayout

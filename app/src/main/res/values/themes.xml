@@ -32,6 +32,18 @@
         <item name="android:background">@drawable/rectangle_top_corners15_background</item>
     </style>
 
+    <style name="Title">
+        <item name="android:paddingStart">30dp</item>
+        <item name="android:paddingEnd">30dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/gray_900</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+        <item name="android:backgroundTint">@color/yellow_300</item>
+        <item name="android:background">@drawable/rectangle_corners15_background</item>
+    </style>
+
     <style name="ProfileInfoField">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>

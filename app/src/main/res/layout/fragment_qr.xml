@@ -50,13 +50,12 @@
                     tools:text="01.01.1970 12:00:00" />
 
                 <TextView
+                    style="@style/Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/rubik_medium"
                     android:text="Получение заказа"
-                    android:textColor="@color/gray_900"
                     android:textSize="24sp" />
 
                 <TextView
