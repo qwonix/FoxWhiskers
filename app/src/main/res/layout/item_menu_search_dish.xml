@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="dishCountChangeListener"
+            type="ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener" />
+
+        <variable
             name="priceFormat"
             type="java.text.DecimalFormat" />
 
@@ -91,7 +95,7 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/rectangle_corners13_background"
                     android:backgroundTint="@color/yellow_300"
-                    android:onClick="@{() -> dish.setCount(dish.count - 1)}"
+                    android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count - 1)}"
                     android:paddingHorizontal="2dp"
                     android:src="@drawable/ic_minus" />
 
@@ -114,7 +118,7 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/rectangle_corners13_background"
                     android:backgroundTint="@color/yellow_300"
-                    android:onClick="@{() -> dish.setCount(dish.count + 1)}"
+                    android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count + 1)}"
                     android:paddingHorizontal="2dp"
                     android:src="@drawable/ic_plus" />
             </LinearLayout>
@@ -128,7 +132,7 @@
                 android:backgroundTint="@color/gray_100"
                 android:fontFamily="@font/rubik_regular"
                 android:gravity="center"
-                android:onClick="@{() -> dish.setCount(dish.count + 1)}"
+                android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count + 1)}"
                 android:paddingHorizontal="40dp"
                 android:paddingVertical="10dp"
                 android:text="@{priceFormat.format(dish.currencyPrice)}"

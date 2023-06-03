@@ -9,7 +9,9 @@ import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.util.Utils
 
 
-class MenuSearchDishAdapter : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHolder>() {
+class MenuSearchDishAdapter(
+    private val dishCountChangeListener: DishCountChangeListener
+) : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHolder>() {
     var data = mutableListOf<Dish>()
 
     fun setFoundedDishes(foundDishes: List<Dish>) {
@@ -29,7 +31,7 @@ class MenuSearchDishAdapter : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHol
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], dishCountChangeListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -37,9 +39,12 @@ class MenuSearchDishAdapter : RecyclerView.Adapter<MenuSearchDishAdapter.ViewHol
     class ViewHolder(
         private val binding: ItemMenuSearchDishBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(dish: Dish) {
+        fun bind(
+            dish: Dish, dishCountChangeListener: DishCountChangeListener
+        ) {
             binding.dish = dish
             binding.priceFormat = Utils.DECIMAL_FORMAT
+            binding.dishCountChangeListener = dishCountChangeListener
         }
     }
 

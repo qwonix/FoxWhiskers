@@ -17,10 +17,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentMenuSearchBinding
+import ru.qwonix.android.foxwhiskers.entity.Dish
+import ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuSearchDishAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.focusAndShowKeyboard
 import ru.qwonix.android.foxwhiskers.util.onSearch
+import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
 
@@ -33,6 +36,7 @@ class MenuSearchBottomSheetDialogFragment :
 
     private lateinit var binding: FragmentMenuSearchBinding
     private val menuViewModel: MenuViewModel by viewModels()
+    private val cartViewModel: CartViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +81,17 @@ class MenuSearchBottomSheetDialogFragment :
             dismiss()
         }
 
-        val orderDishAdapter = MenuSearchDishAdapter()
+        val orderDishAdapter = MenuSearchDishAdapter(object : DishCountChangeListener {
+            override fun beforeCountChange(dish: Dish, newCount: Int) {
+                Log.i(TAG, "change count of \"$dish\" to $newCount")
+                dish.count = newCount
+                cartViewModel.changeDishCount(dish, newCount, object : CoroutinesErrorHandler {
+                    override fun onError(message: String) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }
+        })
 
         binding.recyclerSearchedDishes.apply {
             adapter = orderDishAdapter
