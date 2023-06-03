@@ -74,6 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/rectangle_corners15_background"
                     android:backgroundTint="@{order.status.colorId}"
                     android:fontFamily="@font/rubik_regular"
@@ -82,22 +83,37 @@
                     android:text="@{order.status.title}"
                     android:textColor="@color/gray_900"
                     android:textSize="14sp"
-                    tools:background="@drawable/rectangle_corners15_background"
                     tools:backgroundTint="@color/green"
                     tools:text="Готов к получению" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_corners15_background"
-                    android:backgroundTint="@color/yellow_300"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="5dp"
-                    android:text="@{priceFormat.format(order.totalPrice)}"
-                    android:textColor="@color/gray_900"
-                    android:textSize="14sp"
-                    tools:text="3 543 ₽" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Стоимость: "
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_corners15_background"
+                        android:backgroundTint="@color/yellow_300"
+                        android:fontFamily="@font/rubik_regular"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="5dp"
+                        android:text="@{priceFormat.format(order.totalPrice)}"
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp"
+                        tools:text="3 543 ₽" />
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -179,7 +195,7 @@
                         android:fontFamily="@font/rubik_medium"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="5dp"
-                        android:text='@{order.expectedReceiptTime.toLocalTime().hour + ":" + order.expectedReceiptTime.toLocalTime().minute}'
+                        android:text="@{order.expectedReceiptTime}"
                         android:textColor="@color/gray_900"
                         android:textSize="14sp"
                         tools:text="12:38" />

@@ -9,15 +9,15 @@ enum class OrderStatus(val title: String, val colorId: Int) {
     ),
     CREATED(
         "Создан",
-        R.color.gray_300
+        R.color.gray_500
     ),
     IN_PROGRESS(
         "Готовится",
-        R.color.gray_500
+        R.color.orange
     ),
     READY_FOR_PICKUP(
         "Готов к получению",
-        R.color.green
+        R.color.yellow_300
     ),
     CANCELLED(
         "Отменен",
@@ -25,7 +25,7 @@ enum class OrderStatus(val title: String, val colorId: Int) {
     ),
     RECEIVED(
         "Получен",
-        R.color.yellow_300
+        R.color.green
     )
 
 }

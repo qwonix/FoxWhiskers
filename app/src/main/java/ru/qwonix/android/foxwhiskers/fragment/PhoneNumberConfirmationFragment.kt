@@ -33,7 +33,7 @@ class PhoneNumberConfirmationFragment : Fragment(R.layout.fragment_phone_number_
     private lateinit var binding: FragmentPhoneNumberConfirmationBinding
 
     private var countDownTimer: CountDownTimer =
-        object : CountDownTimer(((3 * 2 * 1000).toLong()), 1000) {
+        object : CountDownTimer(((90 * 1000).toLong()), 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
                 val seconds =

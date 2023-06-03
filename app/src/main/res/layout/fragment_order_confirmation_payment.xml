@@ -10,6 +10,10 @@
         <import type="ru.qwonix.android.foxwhiskers.entity.PaymentMethod" />
 
         <variable
+            name="mail"
+            type="String" />
+
+        <variable
             name="viewModel"
             type="ru.qwonix.android.foxwhiskers.viewmodel.PaymentMethodViewModel" />
 
@@ -289,7 +293,7 @@
             android:background="@drawable/rectangle_corners15_background"
             android:backgroundTint="@color/white"
             android:paddingHorizontal="15dp"
-            android:paddingVertical="10dp">
+            android:paddingVertical="15dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -306,17 +310,24 @@
                     android:textColor="@color/gray_900"
                     android:textSize="14sp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_light"
+                    android:text="@{mail}"
+                    android:textColor="@color/gray_700"
+                    android:textSize="10sp"
+                    tools:text="example@mail.com" />
+
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/payment_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center_vertical|end"
-                android:adjustViewBounds="true"
-                android:contentDescription="map point icon"
                 android:elevation="1dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/ic_mail" />
         </FrameLayout>
     </LinearLayout>
 </layout>

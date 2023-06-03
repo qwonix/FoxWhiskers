@@ -10,7 +10,7 @@ data class Order(
     val pickUpLocation: PickUpLocation,
     val paymentMethod: PaymentMethod,
     val totalPrice: Double,
-    val expectedReceiptTime: LocalDateTime?,
+    val expectedReceiptTime: String,
     val created: LocalDateTime
 )
 
