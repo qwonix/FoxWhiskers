@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentCartBinding
-import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.entity.Dish
 import ru.qwonix.android.foxwhiskers.fragment.adapter.CartDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener
@@ -54,6 +53,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartViewModel.cartTotalPrice.observe(viewLifecycleOwner) {
             binding.orderPrice = it
         }
+
         cartViewModel.cartTotalCount.observe(viewLifecycleOwner) {
             binding.orderItemCount = it
         }
@@ -62,11 +62,12 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             override fun beforeCountChange(dish: Dish, newCount: Int) {
                 dish.count = newCount
 
-                cartViewModel.changeDishCount(dish, newCount, object : CoroutinesErrorHandler {
-                    override fun onError(message: String) {
-                        TODO("Not yet implemented")
-                    }
-                })
+                cartViewModel.changeDishCount(dish, newCount,
+                    object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            TODO("Not yet implemented")
+                        }
+                    })
             }
         })
 
@@ -103,16 +104,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             })
         }
 
-        binding.currentOrderButton.setOnClickListener {
-            if (profileViewModel.getAuthenticatedClient() is ApiResponse.Success) {
-                val directions = CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
-                    (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!
-                )
-                findNavController().navigate(
-                    directions
-                )
-            }
-        }
 
         binding.goToMenuButton.setOnClickListener {
             findNavController().navigate(R.id.action_cartFragment_to_menuFragment)

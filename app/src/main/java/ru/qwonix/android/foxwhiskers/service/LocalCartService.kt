@@ -32,8 +32,9 @@ class LocalCartService(private val gson: Gson, private val context: Context) {
         }
     }
 
-    suspend fun clear() {
+    suspend fun clear(): List<Dish> {
         context.menuDataStore.edit { preferences -> preferences.clear() }
+        return getDishesInCart()
     }
 
 }

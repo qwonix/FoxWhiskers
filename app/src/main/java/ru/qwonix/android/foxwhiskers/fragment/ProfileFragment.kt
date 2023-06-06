@@ -28,17 +28,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i(TAG, "open ProfileFragment")
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
-                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                    Log.e(TAG, "fail to load profile code: ${it.code} – ${it.errorMessage}")
                     findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
                 }
 
@@ -57,11 +52,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         }
                         binding.client = it.data
                     }
-
                 }
             }
         }
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
 
         binding.logoutButton.setOnClickListener {
             Log.i(TAG, "logout – ${binding.client}")
@@ -83,11 +88,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 )
             )
         }
-
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
     }
 }

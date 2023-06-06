@@ -75,6 +75,11 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                             withDemoBottomSheet { dismiss() }
                             findNavController().navigate(R.id.action_cartFragment_to_profileNavigation)
                         }
+
+                        400 -> {
+                            withDemoBottomSheet { dismiss() }
+                            findNavController().navigate(R.id.action_cartFragment_to_profileNavigation)
+                        }
                     }
                     Log.e(TAG, "code: ${client.code} – ${client.errorMessage}")
                 }
@@ -95,6 +100,11 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                             }
                         }
                     )
+                    cartViewModel.clearCart(object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            TODO("Not yet implemented")
+                        }
+                    })
                 }
             }
         }

@@ -64,4 +64,13 @@ class CartViewModel @Inject constructor(
     ) {
         menuCartRepository.getDishesInCart()
     }
+
+    fun clearCart(
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _cart,
+        coroutinesErrorHandler
+    ) {
+        menuCartRepository.clear()
+    }
 }
