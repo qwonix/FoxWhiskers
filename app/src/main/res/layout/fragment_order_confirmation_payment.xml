@@ -14,8 +14,12 @@
             type="String" />
 
         <variable
-            name="viewModel"
-            type="ru.qwonix.android.foxwhiskers.viewmodel.PaymentMethodViewModel" />
+            name="selectedPaymentMethod"
+            type="ru.qwonix.android.foxwhiskers.entity.PaymentMethod" />
+
+        <variable
+            name="paymentMethodChangeListener"
+            type="ru.qwonix.android.foxwhiskers.fragment.OrderConfirmationPaymentFragment.PaymentMethodChangeListener" />
 
     </data>
 
@@ -80,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:onClick="@{() -> viewModel.setPaymentMethod(PaymentMethod.GOOGLE_PAY)}"
+                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.GOOGLE_PAY)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="10dp">
@@ -114,7 +118,7 @@
                         android:layout_gravity="center"
                         android:adjustViewBounds="true"
                         android:src="@drawable/ic_selected"
-                        android:visibility="@{viewModel.selectedPaymentMethod == PaymentMethod.GOOGLE_PAY ? View.VISIBLE : View.INVISIBLE}" />
+                        android:visibility="@{selectedPaymentMethod == PaymentMethod.GOOGLE_PAY ? View.VISIBLE : View.INVISIBLE}" />
 
                 </LinearLayout>
 
@@ -126,7 +130,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.setPaymentMethod(PaymentMethod.INAPP_ONLINE_CARD)}"
+                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.INAPP_ONLINE_CARD)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="10dp">
@@ -166,7 +170,7 @@
                         android:layout_gravity="center"
                         android:adjustViewBounds="true"
                         android:src="@drawable/ic_selected"
-                        android:visibility="@{viewModel.selectedPaymentMethod == PaymentMethod.INAPP_ONLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
+                        android:visibility="@{selectedPaymentMethod == PaymentMethod.INAPP_ONLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -188,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:onClick="@{() -> viewModel.setPaymentMethod(PaymentMethod.OFFLINE_CARD)}"
+                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.OFFLINE_CARD)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="10dp">
@@ -227,7 +231,7 @@
                         android:layout_gravity="center"
                         android:adjustViewBounds="true"
                         android:src="@drawable/ic_selected"
-                        android:visibility="@{viewModel.selectedPaymentMethod == PaymentMethod.OFFLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
+                        android:visibility="@{selectedPaymentMethod == PaymentMethod.OFFLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
 
                 </LinearLayout>
 
@@ -241,7 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:onClick="@{() -> viewModel.setPaymentMethod(PaymentMethod.CASH)}"
+                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.CASH)}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="10dp">
@@ -279,7 +283,7 @@
                         android:layout_gravity="center"
                         android:adjustViewBounds="true"
                         android:src="@drawable/ic_selected"
-                        android:visibility="@{viewModel.selectedPaymentMethod == PaymentMethod.CASH ? View.VISIBLE : View.INVISIBLE}" />
+                        android:visibility="@{selectedPaymentMethod == PaymentMethod.CASH ? View.VISIBLE : View.INVISIBLE}" />
 
                 </LinearLayout>
             </LinearLayout>

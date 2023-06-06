@@ -23,7 +23,8 @@ class PaymentMethodRepository @Inject constructor(
     }
 
     fun setSelected(paymentMethod: PaymentMethod) = requestFlow {
-        settingsService.saveSelectedPaymentMethod(paymentMethod)
+        settingsService.save(paymentMethod)
+        settingsService.loadSelectedPaymentMethod()
     }
 
 }

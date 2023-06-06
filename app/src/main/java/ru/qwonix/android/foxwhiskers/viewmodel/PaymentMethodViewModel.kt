@@ -1,6 +1,5 @@
 package ru.qwonix.android.foxwhiskers.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
@@ -13,35 +12,23 @@ class PaymentMethodViewModel @Inject constructor(
     private val paymentMethodRepository: PaymentMethodRepository
 ) : BaseViewModel() {
 
+    val selectedPaymentMethodResponse = MutableLiveData<ApiResponse<PaymentMethod?>>()
 
-    private val _selectedPaymentMethod = MutableLiveData<PaymentMethod>()
-    val selectedPaymentMethod: LiveData<PaymentMethod> = _selectedPaymentMethod
-
-    private val _selectedPaymentMethodResponse = MutableLiveData<ApiResponse<PaymentMethod?>>()
-
-    init {
-        _selectedPaymentMethodResponse.observeForever {
-            if (it is ApiResponse.Success) {
-                _selectedPaymentMethod.postValue(it.data!!)
-            }
+    fun setPaymentMethod(
+        paymentMethod: PaymentMethod,
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) {
+        baseRequest(selectedPaymentMethodResponse, coroutinesErrorHandler) {
+            paymentMethodRepository.setSelected(paymentMethod)
         }
-
-        tryLoadSelectedPaymentMethod(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
     }
 
-    fun setPaymentMethod(paymentMethod: PaymentMethod) {
-        _selectedPaymentMethod.postValue(paymentMethod)
-        paymentMethodRepository.setSelected(paymentMethod)
-    }
 
-    private fun tryLoadSelectedPaymentMethod(
+    fun tryLoadSelectedPaymentMethod(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _selectedPaymentMethodResponse, coroutinesErrorHandler
+        selectedPaymentMethodResponse,
+        coroutinesErrorHandler
     ) {
         paymentMethodRepository.selected()
     }

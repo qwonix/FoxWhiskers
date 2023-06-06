@@ -44,7 +44,7 @@ class LocalSettingsService(private val gson: Gson, private val context: Context)
         }
     }
 
-    suspend fun saveSelectedPaymentMethod(paymentMethod: PaymentMethod) {
+    suspend fun save(paymentMethod: PaymentMethod) {
         context.settingsDataStore.edit { preferences ->
             preferences[PAYMENT_METHOD] = paymentMethod.toString()
         }
