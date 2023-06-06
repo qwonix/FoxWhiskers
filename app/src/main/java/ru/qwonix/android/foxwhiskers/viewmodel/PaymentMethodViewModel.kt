@@ -23,7 +23,6 @@ class PaymentMethodViewModel @Inject constructor(
         }
     }
 
-
     fun tryLoadSelectedPaymentMethod(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(

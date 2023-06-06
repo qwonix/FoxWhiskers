@@ -20,6 +20,7 @@ import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.PaymentMethodViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.PickUpLocationViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
@@ -38,6 +39,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
     private val orderViewModel: OrderViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by viewModels()
     private val pickUpLocationViewModel: PickUpLocationViewModel by activityViewModels()
+    private val paymentMethodViewModel: PaymentMethodViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,13 +49,28 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             lifecycleOwner = viewLifecycleOwner
             priceFormat = Utils.DECIMAL_FORMAT
             orderPrice = cartViewModel.cartTotalPrice.value
-            paymentMethod = PaymentMethod.CASH
         }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        paymentMethodViewModel.selectedPaymentMethodResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "fail to load: ${it.code} – ${it.errorMessage}")
+
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    binding.paymentMethod = it.data
+                }
+            }
+        }
 
         pickUpLocationViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
             binding.pickUpLocation = it
@@ -136,6 +153,12 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         }
 
         profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
+
+        paymentMethodViewModel.tryLoadSelectedPaymentMethod(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }
