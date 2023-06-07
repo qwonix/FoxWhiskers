@@ -52,6 +52,7 @@ class OrderReceiptAdapter : RecyclerView.Adapter<OrderReceiptAdapter.ViewHolder>
             pickUpLocationClickListener: PickUpLocationClickListener
         ) {
             binding.order = order
+//            binding.orderStatusTextView.setBackgroundResource(order.status.colorId)
             binding.priceFormat = Utils.DECIMAL_FORMAT
             binding.qrCodeClickListener = qrCodeClickListener
             binding.pickUpLocationClickListener = pickUpLocationClickListener

@@ -1,6 +1,7 @@
 package ru.qwonix.android.foxwhiskers.fragment
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -25,11 +28,19 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.QrCodeClickListener
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
-import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
 
 @AndroidEntryPoint
 class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
+
+    companion object {
+
+        @JvmStatic
+        @BindingAdapter("backgroundTintBinding")
+        fun backgroundTintBinding(view: View, @ColorRes colorId: Int) {
+            view.backgroundTintList = ColorStateList.valueOf(view.resources.getColor(colorId))
+        }
+    }
 
     private val TAG = "OrderReceiptFragment"
 

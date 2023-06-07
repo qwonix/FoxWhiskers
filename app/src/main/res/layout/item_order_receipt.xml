@@ -71,12 +71,13 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/orderStatusTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/rectangle_corners15_background"
-                    android:backgroundTint="@{order.status.colorId}"
+                    backgroundTintBinding="@{order.status.colorId}"
                     android:fontFamily="@font/rubik_regular"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="5dp"
