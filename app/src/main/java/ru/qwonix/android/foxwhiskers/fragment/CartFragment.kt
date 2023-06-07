@@ -41,8 +41,9 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             priceFormat = Utils.DECIMAL_FORMAT
-            orderPrice = cartViewModel.cartTotalPrice.value
-            orderItemCount = cartViewModel.cartTotalCount.value
+            cartItemsPrice = cartViewModel.cartTotalPrice.value
+            cartItemsCount = cartViewModel.cartTotalCount.value
+            showGoToOrdersButton = false
         }
         return binding.root
     }
@@ -50,12 +51,23 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.goToOrdersButton.setOnClickListener {
+            val client = profileViewModel.getAuthenticatedClient()
+            if (client is ApiResponse.Success) {
+                findNavController().navigate(
+                    CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
+                        client.data!!
+                    )
+                )
+            }
+        }
+
         cartViewModel.cartTotalPrice.observe(viewLifecycleOwner) {
-            binding.orderPrice = it
+            binding.cartItemsPrice = it
         }
 
         cartViewModel.cartTotalCount.observe(viewLifecycleOwner) {
-            binding.orderItemCount = it
+            binding.cartItemsCount = it
         }
 
         val cartDishAdapter = CartDishAdapter(object : DishCountChangeListener {
