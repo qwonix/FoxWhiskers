@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.qwonix.android.foxwhiskers.ProfileNavigationDirections
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentProfileBinding
 import ru.qwonix.android.foxwhiskers.entity.Client
@@ -67,6 +68,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 TODO("Not yet implemented")
             }
         })
+
+        binding.goToOrdersButton.setOnClickListener {
+            val client: Client = binding.client!!
+            findNavController().navigate(ProfileNavigationDirections.actionGlobalOrderReceiptFragment(client))
+        }
 
         binding.logoutButton.setOnClickListener {
             Log.i(TAG, "logout – ${binding.client}")

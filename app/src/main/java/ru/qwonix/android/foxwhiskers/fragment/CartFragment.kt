@@ -23,6 +23,7 @@ import ru.qwonix.android.foxwhiskers.util.OrderConfirmationBottomSheetDialogFrag
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
+import ru.qwonix.android.foxwhiskers.viewmodel.OrderViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
 @AndroidEntryPoint
@@ -33,6 +34,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by activityViewModels()
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val orderViewModel: OrderViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +46,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             priceFormat = Utils.DECIMAL_FORMAT
             cartItemsPrice = cartViewModel.cartTotalPrice.value
             cartItemsCount = cartViewModel.cartTotalCount.value
-            showGoToOrdersButton = false
         }
         return binding.root
     }
@@ -59,6 +61,21 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                         client.data!!
                     )
                 )
+            }
+        }
+
+        orderViewModel.orders.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load orders ${it.data}")
+                    binding.showGoToOrdersButton = it.data.isNotEmpty()
+                }
             }
         }
 
@@ -140,5 +157,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 TODO("Not yet implemented")
             }
         })
+
     }
 }

@@ -76,6 +76,9 @@
                 app:destination="@id/profileFragment" />
 
         </fragment>
+        <action
+            android:id="@+id/action_global_orderReceiptFragment"
+            app:destination="@id/orderReceiptFragment" />
     </navigation>
     <fragment
         android:id="@+id/orderReceiptFragment"
