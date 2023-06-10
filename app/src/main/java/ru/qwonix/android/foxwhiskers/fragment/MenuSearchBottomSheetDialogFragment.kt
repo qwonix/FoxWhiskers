@@ -77,7 +77,7 @@ class MenuSearchBottomSheetDialogFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backArrow.setOnClickListener {
+        binding.goBackButton.setOnClickListener {
             dismiss()
         }
 
@@ -110,10 +110,10 @@ class MenuSearchBottomSheetDialogFragment :
             })
         }
 
-        binding.searchBarTextView.addTextChangedListener {
+        binding.searchBarEditText.addTextChangedListener {
             if (it.isNullOrBlank()) {
                 orderDishAdapter.setFoundedDishes(emptyList())
-                binding.clearText.visibility = View.INVISIBLE
+                binding.clearTextButton.visibility = View.INVISIBLE
             } else {
                 when (val dishes = menuViewModel.menu.value) {
                     is ApiResponse.Failure -> {
@@ -124,7 +124,7 @@ class MenuSearchBottomSheetDialogFragment :
 
                     is ApiResponse.Success -> {
                         Log.i(TAG, "Successful load dishes ${dishes.data}")
-                        binding.clearText.visibility = View.VISIBLE
+                        binding.clearTextButton.visibility = View.VISIBLE
 
                         val foundDishes =
                             dishes.data
@@ -144,8 +144,8 @@ class MenuSearchBottomSheetDialogFragment :
             }
         }
 
-        binding.searchBarTextView.focusAndShowKeyboard()
-        binding.searchBarTextView.onSearch { }
+        binding.searchBarEditText.focusAndShowKeyboard()
+        binding.searchBarEditText.onSearch { }
 
         menuViewModel.loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {

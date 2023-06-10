@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragment.OrderReceiptFragment">
 
-    <data>
-
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,11 +13,11 @@
         android:transitionName="@string/transition_name">
 
         <TextView
-            style="@style/Title"
+            style="@style/Title.Background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Получение заказов" />
+            android:text="Заказы" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/orders_recycler"

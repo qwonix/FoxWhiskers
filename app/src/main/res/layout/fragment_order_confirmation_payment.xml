@@ -26,7 +26,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         android:paddingBottom="10dp"
@@ -43,11 +42,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/back_arrow"
+                android:id="@+id/go_back_button"
                 android:layout_width="35dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
@@ -58,280 +56,273 @@
                 android:src="@drawable/ic_back_arrow" />
 
             <TextView
-                android:layout_width="match_parent"
+                style="@style/Title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/rubik_medium"
-                android:gravity="start"
-                android:text="Способ оплаты"
-                android:textColor="@color/gray_900"
-                android:textSize="24sp" />
+                android:text="Способ оплаты" />
         </LinearLayout>
 
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_corners15_background"
-            android:backgroundTint="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.GOOGLE_PAY)}"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:adjustViewBounds="true"
-                            android:src="@{PaymentMethod.GOOGLE_PAY.drawableId}"
-                            tools:src="@drawable/ic_google_pay_payment" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="@{PaymentMethod.GOOGLE_PAY.title}"
-                            android:textColor="@color/gray_900"
-                            tools:text="" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_selected"
-                        android:visibility="@{selectedPaymentMethod == PaymentMethod.GOOGLE_PAY ? View.VISIBLE : View.INVISIBLE}" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_300" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.INAPP_ONLINE_CARD)}"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/rectangle_corners13_background"
-                            android:backgroundTint="@color/yellow_300"
-                            android:paddingHorizontal="5dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="3dp"
-                            android:src="@{PaymentMethod.INAPP_ONLINE_CARD.drawableId}"
-                            tools:src="@drawable/ic_online_card_payment" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="@{PaymentMethod.INAPP_ONLINE_CARD.title}"
-                            android:textColor="@color/gray_900"
-                            tools:text="Картой в приложении" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_selected"
-                        android:visibility="@{selectedPaymentMethod == PaymentMethod.INAPP_ONLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/rectangle_corners15_background"
-            android:backgroundTint="@color/white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.OFFLINE_CARD)}"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/rectangle_corners13_background"
-                            android:backgroundTint="@color/yellow_300"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="8dp"
-                            android:src="@{PaymentMethod.OFFLINE_CARD.drawableId}"
-                            tools:src="@drawable/ic_offline_card_payment" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="@{PaymentMethod.OFFLINE_CARD.title}"
-                            android:textColor="@color/gray_900"
-                            tools:text="Картой на кассе" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_selected"
-                        android:visibility="@{selectedPaymentMethod == PaymentMethod.OFFLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
-
-                </LinearLayout>
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_300" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.CASH)}"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/rectangle_corners13_background"
-                            android:backgroundTint="@color/yellow_300"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="5dp"
-                            android:src="@{PaymentMethod.CASH.drawableId}"
-                            tools:src="@drawable/ic_cash_payment" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="@{PaymentMethod.CASH.title}"
-                            android:textColor="@color/gray_900"
-                            tools:text="Наличными" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_selected"
-                        android:visibility="@{selectedPaymentMethod == PaymentMethod.CASH ? View.VISIBLE : View.INVISIBLE}" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
-
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rectangle_corners15_background"
-            android:backgroundTint="@color/white"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="15dp">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/white">
 
-                <TextView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.GOOGLE_PAY)}"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:adjustViewBounds="true"
+                                android:src="@{PaymentMethod.GOOGLE_PAY.drawableId}"
+                                tools:src="@drawable/ic_google_pay_payment" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="@{PaymentMethod.GOOGLE_PAY.title}"
+                                android:textColor="@color/gray_900"
+                                tools:text="" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_selected"
+                            android:visibility="@{selectedPaymentMethod == PaymentMethod.GOOGLE_PAY ? View.VISIBLE : View.INVISIBLE}" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray_300" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.INAPP_ONLINE_CARD)}"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="45dp"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rectangle_corners13_background"
+                                android:backgroundTint="@color/yellow_300"
+                                android:paddingHorizontal="5dp"
+                                android:paddingTop="4dp"
+                                android:paddingBottom="3dp"
+                                android:src="@{PaymentMethod.INAPP_ONLINE_CARD.drawableId}"
+                                tools:src="@drawable/ic_online_card_payment" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="@{PaymentMethod.INAPP_ONLINE_CARD.title}"
+                                android:textColor="@color/gray_900"
+                                tools:text="Картой в приложении" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_selected"
+                            android:visibility="@{selectedPaymentMethod == PaymentMethod.INAPP_ONLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.OFFLINE_CARD)}"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="45dp"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rectangle_corners13_background"
+                                android:backgroundTint="@color/yellow_300"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="8dp"
+                                android:src="@{PaymentMethod.OFFLINE_CARD.drawableId}"
+                                tools:src="@drawable/ic_offline_card_payment" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="@{PaymentMethod.OFFLINE_CARD.title}"
+                                android:textColor="@color/gray_900"
+                                tools:text="Картой на кассе" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_selected"
+                            android:visibility="@{selectedPaymentMethod == PaymentMethod.OFFLINE_CARD ? View.VISIBLE : View.INVISIBLE}" />
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray_300" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:onClick="@{() -> paymentMethodChangeListener.onSelectedPaymentMethodChange(PaymentMethod.CASH)}"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="45dp"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rectangle_corners13_background"
+                                android:backgroundTint="@color/yellow_300"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="5dp"
+                                android:src="@{PaymentMethod.CASH.drawableId}"
+                                tools:src="@drawable/ic_cash_payment" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="@{PaymentMethod.CASH.title}"
+                                android:textColor="@color/gray_900"
+                                tools:text="Наличными" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_selected"
+                            android:visibility="@{selectedPaymentMethod == PaymentMethod.CASH ? View.VISIBLE : View.INVISIBLE}" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/white"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="Почта для чеков"
-                    android:textColor="@color/gray_900"
-                    android:textSize="14sp" />
+                    android:orientation="vertical">
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Почта для чеков"
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/Description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{mail}"
+                        tools:text="example@mail.com" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/payment_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_light"
-                    android:text="@{mail}"
-                    android:textColor="@color/gray_700"
-                    android:textSize="10sp"
-                    tools:text="example@mail.com" />
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/payment_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical|end"
-                android:elevation="1dp"
-                android:src="@drawable/ic_mail" />
-        </FrameLayout>
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:src="@drawable/ic_mail" />
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

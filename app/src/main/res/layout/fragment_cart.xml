@@ -20,7 +20,11 @@
             type="Integer" />
 
         <variable
-            name="showGoToOrdersButton"
+            name="isGoToOrdersButtonShown"
+            type="Boolean" />
+
+        <variable
+            name="isCheckoutButtonShown"
             type="Boolean" />
 
     </data>
@@ -29,46 +33,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_300"
+        android:gravity="center"
         android:orientation="vertical">
+
+        <TextView
+            style="@style/Title.Background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Корзина" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:visibility="@{!isCheckoutButtonShown ? View.VISIBLE : View.GONE}">
 
             <TextView
-                style="@style/Title"
+                style="@style/Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Корзина" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:visibility="@{cartItemsCount == 0 ? View.VISIBLE : View.GONE}">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik_regular"
                 android:gravity="center"
                 android:text="Ваша корзина пуста, откройте Меню\nи выберите понравившийся товар"
-                android:textColor="@color/gray_700"
                 android:textSize="14sp" />
-
 
             <TextView
                 android:id="@+id/go_to_menu_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/rectangle_corners15_background"
                 android:backgroundTint="@color/yellow_300"
@@ -81,9 +75,8 @@
 
         </LinearLayout>
 
-
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_ordered_dishes"
+            android:id="@+id/cart_dishes_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center"
@@ -101,84 +94,67 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingHorizontal="20dp">
+
+            <ImageView
+                android:id="@+id/go_to_orders_button"
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_marginEnd="10dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/rectangle_corners13_background"
+                android:backgroundTint="@color/yellow_300"
+                android:paddingVertical="8dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:src="@drawable/ic_order_list"
+                android:visibility="@{isGoToOrdersButtonShown ? View.VISIBLE : View.GONE}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="@{isCheckoutButtonShown ? View.VISIBLE : View.GONE}">
 
-                <ImageView
-                    android:id="@+id/go_to_orders_button"
-                    android:layout_width="50dp"
+                <TextView
+                    style="@style/ProfileInfoField.FieldPrompt"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|start"
-                    android:layout_marginEnd="10dp"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/rectangle_corners13_background"
-                    android:backgroundTint="@color/yellow_300"
-                    android:paddingVertical="8dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="10dp"
-                    android:src="@drawable/ic_order_list"
-                    android:visibility="@{showGoToOrdersButton ? View.VISIBLE : View.GONE}" />
+                    android:layout_marginStart="20dp"
+                    android:text='@{String.valueOf(cartItemsCount) + " товаров"}'
+                    tools:text="3 товара" />
 
-                <LinearLayout
+                <FrameLayout
+                    android:id="@+id/checkout_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="@{cartItemsCount != 0 ? View.VISIBLE : View.GONE}">
+                    android:background="@drawable/rectangle_corners15_background"
+                    android:backgroundTint="@color/yellow_300"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/rectangle_top_corners15_background"
-                        android:backgroundTint="@color/white"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="2dp"
-                        android:text='@{String.valueOf(cartItemsCount) + " товаров"}'
-                        android:textColor="@color/gray_700"
-                        android:textSize="12sp"
-                        tools:text="3 товара" />
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Оформить заказ"
+                        android:textColor="@color/gray_900"
+                        android:textSize="14sp" />
 
-                    <FrameLayout
-                        android:id="@+id/checkout_button"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle_corners15_background"
-                        android:backgroundTint="@color/yellow_300"
-                        android:paddingHorizontal="5dp"
-                        android:paddingVertical="5dp">
+                        android:layout_gravity="end"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="@{priceFormat.format(cartItemsPrice)}"
+                        android:textColor="@color/gray_900"
+                        android:textSize="16sp"
+                        tools:text="669.28 ₽" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginHorizontal="12dp"
-                            android:layout_marginVertical="6dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="Оформить заказ"
-                            android:textColor="@color/gray_900"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginHorizontal="12dp"
-                            android:layout_marginVertical="6dp"
-                            android:fontFamily="@font/rubik_medium"
-                            android:text="@{priceFormat.format(cartItemsPrice)}"
-                            android:textColor="@color/gray_900"
-                            android:textSize="16sp"
-                            tools:text="669.28 ₽" />
-
-                    </FrameLayout>
-                </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </layout>

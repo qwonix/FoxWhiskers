@@ -21,72 +21,67 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/Title"
+            style="@style/Title.Background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Вход" />
 
-        <FrameLayout
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_corners15_gray500_background}"
             android:clipToPadding="true"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:paddingVertical="15dp"
             android:paddingStart="25dp"
             android:paddingEnd="30dp"
             tools:background="@drawable/rectangle_corners15_background"
             tools:backgroundTint="@color/gray_500">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_phone_call" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_phone_call" />
+            <EditText
+                android:id="@+id/phone_number_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:autofillHints="phone"
+                android:background="@null"
+                android:fontFamily="@font/rubik_light"
+                android:hint="Ваш номер телефона"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:text="+7 "
+                android:textColor="@color/gray_900"
+                android:textColorHint="@color/gray_700"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="14sp"
+                tools:text="+7 (999) 123-45-67" />
 
-                <EditText
-                    android:id="@+id/phone_number_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:autofillHints="phone"
-                    android:background="@null"
-                    android:fontFamily="@font/rubik_light"
-                    android:hint="Ваш номер телефона"
-                    android:imeOptions="actionDone"
-                    android:inputType="phone"
-                    android:text="+7 "
-                    tools:text="+7 (999) 123-45-67"
-                    android:textColor="@color/gray_900"
-                    android:textColorHint="@color/gray_700"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-        </FrameLayout>
+        </LinearLayout>
 
         <TextView
+            style="@style/Description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/rubik_light"
             android:gravity="center"
-            android:text="Нажимая на кнопку «Получить код»\nпринимаю условия политики конфиденциальности\nи даю согласие на обработку данных"
-            android:textColor="@color/gray_700"
-            android:textSize="12sp" />
+            android:text="Нажимая на кнопку «Получить код»\nпринимаю условия политики конфиденциальности\nи даю согласие на обработку данных" />
 
         <TextView
             android:id="@+id/send_code_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:clickable="@{isMaskFilled}"
             android:background="@{isMaskFilled ? @drawable/rectangle_corners15_yellow300_background : @drawable/rectangle_stroke1_corners15_yellow300_background}"
+            android:clickable="@{isMaskFilled}"
             android:fontFamily="@font/rubik_regular"
             android:paddingHorizontal="60dp"
             android:paddingVertical="15dp"

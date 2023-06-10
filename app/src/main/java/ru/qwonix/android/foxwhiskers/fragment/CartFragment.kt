@@ -74,7 +74,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful load orders ${it.data}")
-                    binding.showGoToOrdersButton = it.data.isNotEmpty()
+                    binding.isGoToOrdersButtonShown = it.data.isNotEmpty()
                 }
             }
         }
@@ -85,6 +85,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         cartViewModel.cartTotalCount.observe(viewLifecycleOwner) {
             binding.cartItemsCount = it
+            binding.isGoToOrdersButtonShown = it == 0
+            binding.isCheckoutButtonShown = it != 0
         }
 
         val cartDishAdapter = CartDishAdapter(object : DishCountChangeListener {
@@ -116,7 +118,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             }
         }
 
-        binding.recyclerOrderedDishes.apply {
+        binding.cartDishesRecycler.apply {
             adapter = cartDishAdapter
             val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             layoutManager = manager

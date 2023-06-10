@@ -23,97 +23,56 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/Title"
+            style="@style/Title.Background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Вход" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/pinCode_digit_1"
+                android:id="@+id/pin_code_digit_1"
+                style="@style/PinCodeDigit"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                android:fontFamily="@font/rubik_medium"
-                android:gravity="center"
                 android:hint="×"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="1"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="20dp"
-                android:textColor="@color/gray_900"
-                android:textColorHint="@color/gray_700"
-
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="32sp"
                 tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
 
             <EditText
-                android:id="@+id/pinCode_digit_2"
+                android:id="@+id/pin_code_digit_2"
+                style="@style/PinCodeDigit"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
                 android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                android:fontFamily="@font/rubik_medium"
-                android:gravity="center"
                 android:hint="×"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="1"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="20dp"
-                android:textColor="@color/gray_900"
-                android:textColorHint="@color/gray_700"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="32sp"
                 tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
 
             <EditText
-                android:id="@+id/pinCode_digit_3"
+                android:id="@+id/pin_code_digit_3"
+                style="@style/PinCodeDigit"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
                 android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                android:fontFamily="@font/rubik_medium"
-                android:gravity="center"
                 android:hint="×"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="1"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="20dp"
-                android:textColor="@color/gray_900"
-                android:textColorHint="@color/gray_700"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="32sp"
                 tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
 
             <EditText
-                android:id="@+id/pinCode_digit_4"
+                android:id="@+id/pin_code_digit_4"
+                style="@style/PinCodeDigit"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
                 android:background="@{hasError ? @drawable/rectangle_red_stroke_corners15_gray500_background : @drawable/rectangle_stroke1_corners15_gray300_background}"
-                android:fontFamily="@font/rubik_medium"
-                android:gravity="center"
                 android:hint="×"
-                android:imeOptions="actionSend"
-                android:inputType="number"
-                android:maxLength="1"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="20dp"
-                android:textColor="@color/gray_900"
-                android:textColorHint="@color/gray_700"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="32sp"
                 tools:background="@drawable/rectangle_stroke1_corners15_gray300_background" />
 
         </LinearLayout>
@@ -142,44 +101,32 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="@{isTimerExpired ? View.GONE : View.VISIBLE}">
 
                 <TextView
+                    style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="Повторить отправку кода можно"
-                    android:textColor="@color/gray_700"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:fontFamily="@font/rubik_light"
-                    android:text="через"
-                    android:textColor="@color/gray_700"
-                    android:textSize="12sp" />
+                    android:text="Повторить отправку кода можно через" />
 
                 <TextView
                     android:id="@+id/countdown"
+                    style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginHorizontal="3dp"
                     android:fontFamily="@font/rubik_medium"
                     android:textColor="@color/gray_700"
                     android:textSize="12sp"
                     tools:text="1:42" />
 
                 <TextView
+                    style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:fontFamily="@font/rubik_light"
-                    android:text="сек."
-                    android:textColor="@color/gray_700"
-                    android:textSize="12sp" />
+                    android:text="сек." />
             </LinearLayout>
 
             <TextView
@@ -187,7 +134,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_stroke1_corners15_yellow300_background"
-                android:clickable="@{isTimerExpired}"
                 android:fontFamily="@font/rubik_light"
                 android:paddingHorizontal="50dp"
                 android:paddingVertical="10dp"

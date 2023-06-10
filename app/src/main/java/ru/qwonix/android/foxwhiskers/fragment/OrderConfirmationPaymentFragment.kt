@@ -79,7 +79,7 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
             }
         }
 
-        binding.backArrow.setOnClickListener {
+        binding.goBackButton.setOnClickListener {
             withDemoBottomSheet { goBack() }
         }
 

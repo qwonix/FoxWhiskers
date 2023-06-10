@@ -10,177 +10,164 @@
             type="ru.qwonix.android.foxwhiskers.entity.Client" />
     </data>
 
-    <FrameLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_300">
+        android:background="@color/gray_300"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                style="@style/Title.Background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Профиль" />
+
+            <ImageView
+                android:id="@+id/logout_button"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/rectangle_corners13_background"
+                android:backgroundTint="@color/yellow_300"
+                android:gravity="center"
+                android:paddingHorizontal="5dp"
+                android:src="@drawable/ic_logout" />
+
+            <ImageView
+                android:id="@+id/edit_button"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rectangle_corners13_background"
+                android:backgroundTint="@color/yellow_300"
+                android:paddingHorizontal="7dp"
+                android:src="@drawable/ic_edit" />
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".fragment.ProfileFragment">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                style="@style/Title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:text='@{client.firstName + " " + client.lastName}'
+                tools:text="Имя Фамилия" />
+        </LinearLayout>
 
-                <TextView
-                    style="@style/Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Профиль" />
-
-                <ImageView
-                    android:id="@+id/logout_button"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/rectangle_corners13_background"
-                    android:backgroundTint="@color/yellow_300"
-                    android:gravity="center"
-                    android:paddingHorizontal="5dp"
-                    android:src="@drawable/ic_logout" />
-
-                <ImageView
-                    android:id="@+id/edit_button"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/rectangle_corners13_background"
-                    android:backgroundTint="@color/yellow_300"
-                    android:paddingHorizontal="7dp"
-                    android:src="@drawable/ic_edit" />
-            </FrameLayout>
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    style="@style/ProfileInfoField.FieldPrompt"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_marginHorizontal="20dp"
+                    android:text="Электронная почта" />
 
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:src="@drawable/logo" />
+                <TextView
+                    style="@style/ProfileInfoField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="180dp"
+                    android:text='@{client.email}'
+                    android:textSize="16sp"
+                    tools:text="example@mail.com" />
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:gravity="center"
-                        android:text='@{client.firstName + " " + client.lastName}'
-                        android:textColor="@color/gray_900"
-                        android:textSize="20sp"
-                        tools:text="Имя Фамилия" />
-                </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    style="@style/ProfileInfoField.FieldPrompt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
+                    android:text="Телефон" />
 
-                    <TextView
-                        style="@style/ProfileInfoField.FieldPrompt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp"
-                        android:text="Электронная почта" />
-
-                    <TextView
-                        style="@style/ProfileInfoField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle_corners15_background"
-                        android:backgroundTint="@color/gray_500"
-                        android:minWidth="170dp"
-                        android:text='@{client.email}'
-                        android:textSize="16sp"
-                        tools:text="example@mail.com" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    style="@style/ProfileInfoField"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="20dp">
-
-                    <TextView
-                        style="@style/ProfileInfoField.FieldPrompt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="Телефон" />
-
-                    <TextView
-                        style="@style/ProfileInfoField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle_corners15_background"
-                        android:backgroundTint="@color/gray_500"
-                        android:text='@{client.phoneNumber}'
-                        tools:text="+7 (999) 123-45-67" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="20dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle_corners15_background"
-                        android:backgroundTint="@color/yellow_300"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingEnd="10dp">
-
-                        <ImageView
-                            android:id="@+id/go_to_orders_button"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom|start"
-                            android:adjustViewBounds="true"
-                            android:paddingVertical="8dp"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="10dp"
-                            android:src="@drawable/ic_order_list" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="Ваши заказы"
-                            android:textColor="@color/gray_900"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
+                    android:text='@{client.phoneNumber}'
+                    tools:text="+7 (999) 123-45-67" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
+
+            <LinearLayout
+                android:id="@+id/go_to_orders_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_corners15_background"
+                android:backgroundTint="@color/yellow_300"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="10dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:adjustViewBounds="true"
+                    android:paddingVertical="8dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="10dp"
+                    android:src="@drawable/ic_order_list" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Ваши заказы"
+                    android:textColor="@color/gray_900"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </layout>

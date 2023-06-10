@@ -94,7 +94,7 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
         )
 
         // onclick open a point in the map application
-        binding.planRoute.setOnClickListener {
+        binding.buildRouteButton.setOnClickListener {
             val mapIntent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(
@@ -106,11 +106,11 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
             this.startActivity(Intent.createChooser(mapIntent, "Где построить маршрут?"))
         }
 
-        binding.selectLocation.setOnClickListener {
+        binding.selectLocationButton.setOnClickListener {
             withDemoBottomSheet { goBack() }
         }
 
-        binding.backArrow.setOnClickListener {
+        binding.goBackButton.setOnClickListener {
             withDemoBottomSheet { goBack() }
         }
 

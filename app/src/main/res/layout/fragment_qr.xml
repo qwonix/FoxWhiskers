@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         tools:background="@color/gray_300">
@@ -28,85 +28,66 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
             android:background="@drawable/rectangle_corners15_background"
             android:backgroundTint="@color/white"
-            android:orientation="vertical">
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <LinearLayout
+
+            <TextView
+                style="@style/Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{openTime}"
+                tools:text="01.01.1970 12:00:00" />
+
+            <TextView
+                style="@style/Title.Background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:text="Получение заказа"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Покажите QR-код кассиру для получения заказа"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/qr_code_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="@{openTime}"
-                    android:textColor="@color/gray_700"
-                    tools:text="01.01.1970 12:00:00" />
-
-                <TextView
-                    style="@style/Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Получение заказа"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_regular"
-                    android:gravity="center"
-                    android:text="Покажите QR-код кассиру для получения заказа"
-                    android:textColor="@color/gray_700" />
-
-            </LinearLayout>
-
+                android:layout_gravity="center"
+                android:layout_marginVertical="10dp"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_launcher_background" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Если QR-код не считывается" />
 
                 <ImageView
-                    android:id="@+id/qr_code_image_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginStart="5dp"
                     android:adjustViewBounds="true"
-                    tools:src="@drawable/ic_launcher_background" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/rubik_light"
-                        android:text="Если QR-код не считывается"
-                        android:textColor="@color/gray_900" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_info"
-                        app:tint="@color/gray_900" />
-                </LinearLayout>
+                    android:src="@drawable/ic_info"
+                    app:tint="@color/gray_900" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

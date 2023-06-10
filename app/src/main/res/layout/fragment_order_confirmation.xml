@@ -25,10 +25,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
+        android:paddingBottom="10dp"
         android:transitionName="@string/transition_name"
         tools:background="@color/gray_300">
 
@@ -40,19 +40,17 @@
             android:src="@drawable/peek_drag" />
 
         <TextView
-            android:layout_width="match_parent"
+            style="@style/Title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/rubik_medium"
-            android:gravity="start"
             android:text="Оформление заказа"
-            android:textColor="@color/gray_900"
-            android:textSize="24sp"
             tools:text="Оформление заказа" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <FrameLayout
@@ -70,42 +68,36 @@
                         android:id="@+id/option_pickup_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginHorizontal="15dp"
-                        android:layout_marginVertical="10dp"
-                        android:background="@color/white">
+                        android:layout_marginVertical="10dp">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
 
                             <TextView
+                                style="@style/Mark"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/rubik_regular"
-                                android:text="Заберу здесь"
-                                android:textColor="@color/gray_900"
-                                android:textSize="14sp" />
+                                android:text="Заберу здесь" />
 
                             <TextView
+                                style="@style/Description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:fontFamily="@font/rubik_light"
                                 android:text='@{pickUpLocation.title}'
-                                android:textColor="@color/gray_700"
-                                android:textSize="10sp"
                                 tools:text="ТРК Лиговъ" />
 
                             <TextView
+                                style="@style/Description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:fontFamily="@font/rubik_light"
                                 android:text='@{pickUpLocation.description}'
-                                android:textColor="@color/gray_700"
-                                android:textSize="10sp"
                                 tools:text="Санкт-Петербург, Лиговский проспект, 153" />
 
                         </LinearLayout>
@@ -138,13 +130,11 @@
                         android:paddingVertical="10dp">
 
                         <TextView
+                            style="@style/Mark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="Приготовить как можно скорее"
-                            android:textColor="@color/gray_900"
-                            android:textSize="14sp" />
+                            android:text="Приготовить как можно скорее" />
 
                         <ImageView
                             android:layout_width="45dp"
@@ -153,20 +143,17 @@
                             android:adjustViewBounds="true"
                             android:background="@drawable/rectangle_corners13_background"
                             android:backgroundTint="@color/yellow_300"
-                            android:elevation="1dp"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="8dp"
                             android:src="@drawable/ic_timer" />
                     </FrameLayout>
                 </LinearLayout>
-
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/option_payment_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle_corners15_background"
                 android:backgroundTint="@color/white"
@@ -180,20 +167,16 @@
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Mark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="Способ оплаты"
-                        android:textColor="@color/gray_900"
-                        android:textSize="14sp" />
+                        android:text="Способ оплаты" />
 
                     <TextView
+                        style="@style/Description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/rubik_light"
                         android:text="@{paymentMethod.title}"
-                        android:textColor="@color/gray_700"
-                        android:textSize="10sp"
                         tools:text="Картой в приложении" />
                 </LinearLayout>
 
@@ -214,7 +197,6 @@
                 android:id="@+id/checkout_order_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle_corners15_background"
                 android:backgroundTint="@color/yellow_300"
@@ -241,6 +223,4 @@
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
-
-
 </layout>
