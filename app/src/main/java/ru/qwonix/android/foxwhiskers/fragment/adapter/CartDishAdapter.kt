@@ -72,10 +72,6 @@ class CartDishAdapter(
                     false
                 }
 
-                oldList[oldItemPosition].count != newList[newItemPosition].count -> {
-                    false
-                }
-
                 else -> {
                     true
                 }
