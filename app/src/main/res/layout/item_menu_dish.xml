@@ -37,70 +37,71 @@
             android:src="@drawable/dish_example"
             app:imageUrl="@{dish.imageUrl}" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/card_dish_image"
             android:layout_marginTop="-45dp"
             android:background="@drawable/rectangle_corners15_background"
             android:backgroundTint="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:paddingHorizontal="20dp"
-            android:paddingVertical="15dp">
+            android:paddingTop="50dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="15dp">
+
+            <TextView
+                style="@style/Dish.Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@{dish.title}"
+                tools:text="Пицца" />
+
+            <TextView
+                style="@style/Dish.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@{dish.shortDescription}"
+                tools:text="целая, 42 см, 1350 гр" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/Dish.Name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:text="@{dish.title}"
-                    tools:text="Пицца" />
-
-                <TextView
-                    style="@style/Dish.Description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@{dish.shortDescription}"
-                    tools:text="целая, 42 см, 1350 гр" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
                     android:gravity="center_vertical"
                     android:visibility="@{dish.count != 0 ? View.VISIBLE : View.GONE}"
                     tools:visibility="visible">
 
                     <ImageView
                         style="@style/Dish.Count.Control"
-                        android:layout_width="30dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count - 1)}"
                         android:src="@drawable/ic_minus" />
 
                     <TextView
                         style="@style/Dish.Count"
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="5dp"
                         android:text="@{String.valueOf(dish.count)}"
                         tools:text="1" />
 
                     <ImageView
                         style="@style/Dish.Count.Control"
-                        android:layout_width="30dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count + 1)}"
                         android:src="@drawable/ic_plus" />
@@ -110,14 +111,12 @@
                 <TextView
                     style="@style/Dish.Price"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="match_parent"
                     android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count + 1)}"
                     android:text="@{priceFormat.format(dish.currencyPrice)}"
                     android:visibility="@{dish.count == 0 ? View.VISIBLE : View.GONE}"
                     tools:text="669 ₽" />
-
             </LinearLayout>
-        </FrameLayout>
+        </LinearLayout>
     </RelativeLayout>
 </layout>
