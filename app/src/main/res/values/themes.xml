@@ -111,6 +111,7 @@
 
 
     <style name="PinCodeDigit">
+        <item name="android:minWidth">65dp</item>
         <item name="android:textSize">32sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/gray_900</item>
@@ -122,8 +123,8 @@
         <item name="android:fontFamily">@font/rubik_medium</item>
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
-        <item name="android:paddingStart">17dp</item>
-        <item name="android:paddingEnd">17dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
     </style>
 
     <style name="ProfileInfoField">
