@@ -76,6 +76,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMenuBinding.inflate(inflater, container, false)
+        binding.isLoading = true
         return binding.root
     }
 
@@ -117,6 +118,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                         i += v.size + 1
                     }
                     menuDishTypeChipAdapter.setMenuDishTypes(chips)
+                    binding.isLoading = false
                 }
             }
         }

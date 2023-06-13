@@ -31,6 +31,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     ): View {
         Log.i(TAG, "open ProfileFragment")
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding.isLoading = true
         profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
@@ -52,6 +53,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             )
                         }
                         binding.client = it.data
+                        binding.isLoading = false
                     }
                 }
             }
@@ -71,7 +73,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         binding.goToOrdersButton.setOnClickListener {
             val client: Client = binding.client!!
-            findNavController().navigate(ProfileNavigationDirections.actionGlobalOrderReceiptFragment(client))
+            findNavController().navigate(
+                ProfileNavigationDirections.actionGlobalOrderReceiptFragment(
+                    client
+                )
+            )
         }
 
         binding.logoutButton.setOnClickListener {
