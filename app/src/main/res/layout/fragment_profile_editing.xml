@@ -28,7 +28,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:background="@color/gray_300"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -37,6 +36,7 @@
             style="@style/Title.Background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Редактирование профиля" />
 
 
@@ -44,6 +44,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:src="@drawable/logo" />
 
 
@@ -74,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="name"
                     android:hint="Не указано"
+                    android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:text='@{client.firstName}'
                     tools:background="@drawable/rectangle_corners15_background"
@@ -101,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="username"
                     android:hint="Не указана"
+                    android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:text='@{client.lastName}'
                     tools:background="@drawable/rectangle_corners15_background"
@@ -128,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="emailAddress"
                     android:hint="Не указана"
+                    android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:text='@{client.email}'
                     tools:background="@drawable/rectangle_corners15_background"
@@ -148,10 +152,9 @@
                     android:text="Телефон" />
 
                 <TextView
-                    style="@style/ProfileInfoField"
+                    style="@style/ProfileInfo.Field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_corners15_background"
                     android:text='@{client.phoneNumber}'
                     tools:text="+7 (999) 123-45-67" />
             </LinearLayout>

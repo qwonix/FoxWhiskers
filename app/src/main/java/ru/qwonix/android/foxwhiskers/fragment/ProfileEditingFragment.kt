@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
@@ -20,6 +21,7 @@ import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.EditTextState
 import ru.qwonix.android.foxwhiskers.util.Utils
+import ru.qwonix.android.foxwhiskers.util.onImeAction
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.ProfileEditingViewModel
 
@@ -157,6 +159,14 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 binding.emailFieldState = EditTextState.CORRECT
             } else {
                 binding.emailFieldState = EditTextState.IN_PROGRESS
+            }
+        }
+
+        binding.emailEditText.onImeAction(EditorInfo.IME_ACTION_DONE) {
+            if (Utils.isValidEmail(binding.emailEditText.text.toString())) {
+                binding.emailFieldState = EditTextState.CORRECT
+            } else {
+                binding.emailFieldState = EditTextState.INCORRECT
             }
         }
     }

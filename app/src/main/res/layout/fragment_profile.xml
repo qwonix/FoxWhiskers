@@ -115,7 +115,7 @@
                     android:text="Электронная почта" />
 
                 <TextView
-                    style="@style/ProfileInfoField"
+                    style="@style/ProfileInfo.Field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="180dp"
@@ -138,7 +138,7 @@
                     android:text="Телефон" />
 
                 <TextView
-                    style="@style/ProfileInfoField"
+                    style="@style/ProfileInfo.Field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text='@{client.phoneNumber}'
