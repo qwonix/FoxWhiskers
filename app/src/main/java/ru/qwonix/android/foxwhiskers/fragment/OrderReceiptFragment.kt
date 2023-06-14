@@ -58,6 +58,7 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         binding = FragmentOrderReceiptBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            isLoading = true
         }
         return binding.root
     }
@@ -121,7 +122,12 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful load client orders ${it.data}")
-                    orderReceiptAdapter.setOrders(it.data)
+                    if (it.data.isEmpty()) {
+                        binding.message = "Вы не оформили ни одного заказа :("
+                    } else {
+                        orderReceiptAdapter.setOrders(it.data)
+                    }
+                    binding.isLoading = false
                 }
             }
         }

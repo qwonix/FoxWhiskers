@@ -85,7 +85,6 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         cartViewModel.cartTotalCount.observe(viewLifecycleOwner) {
             binding.cartItemsCount = it
-            binding.isGoToOrdersButtonShown = it == 0
             binding.isCheckoutButtonShown = it != 0
         }
 
