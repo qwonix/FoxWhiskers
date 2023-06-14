@@ -20,7 +20,7 @@ class Utils {
             })
 
         // Saint-Petersburg
-        val primaryCityPoint = Point(59.939096, 30.315871)
+        val mapInitPosition = Point(59.939096, 30.315871)
 
         // simple email regex
         val EMAIL_REGEX = Regex("^[A-z0-9._%+-]+@[A-z0-9.-]+\\.[A-z]{2,}\$")

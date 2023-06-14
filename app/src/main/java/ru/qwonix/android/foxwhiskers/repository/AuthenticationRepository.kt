@@ -32,16 +32,24 @@ class AuthenticationRepository @Inject constructor(
         return@apiRequestFlow authenticate
     }
 
+    fun loadClientFromLocalStorage() = apiRequestFlow {
+        val loadedClient: Client? = localClientService.loadClientProfile()
+        if (loadedClient != null) {
+            return@apiRequestFlow Response.success(loadedClient)
+        } else {
+            return@apiRequestFlow Response.error(404, EMPTY_RESPONSE)
+        }
+    }
+
     fun loadClient() = apiRequestFlow {
-        var loadedClient: Client? = localClientService.loadUserProfile()
+        var loadedClient: Client? = localClientService.loadClientProfile()
         if (loadedClient != null) {
             val response = clientService.one(loadedClient.phoneNumber)
             val body = response.body()
             if (response.isSuccessful && body != null) {
                 if (body != loadedClient)
                     loadedClient = body
-            }
-            else {
+            } else {
                 return@apiRequestFlow response
             }
         } else {

@@ -13,47 +13,25 @@ class PickUpLocationViewModel @Inject constructor(
     private val pickUpLocationRepository: PickUpLocationRepository
 ) : BaseViewModel() {
 
-
-    private val _selectedPickUpLocation = MutableLiveData<PickUpLocation>()
-    val selectedPickUpLocation: LiveData<PickUpLocation> = _selectedPickUpLocation
-
     private val _pickUpLocations = MutableLiveData<ApiResponse<List<PickUpLocation>>>()
     val pickUpLocations: LiveData<ApiResponse<List<PickUpLocation>>> = _pickUpLocations
 
     private val _selectedPickUpLocationResponse = MutableLiveData<ApiResponse<PickUpLocation?>>()
-
-    init {
-        _selectedPickUpLocationResponse.observeForever {
-            if (it is ApiResponse.Success) {
-                _selectedPickUpLocation.postValue(it.data!!)
-            }
-        }
-
-        tryLoadSelectedPickUpLocation(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-
-        tryLoadPickUpLocations(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
+    val selectedPickUpLocationResponse: LiveData<ApiResponse<PickUpLocation?>> = _selectedPickUpLocationResponse
 
     fun setSelectedPickUpLocation(
-        coroutinesErrorHandler: CoroutinesErrorHandler,
-        pickUpLocation: PickUpLocation
+        pickUpLocation: PickUpLocation,
+        coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(coroutinesErrorHandler) {
-        _selectedPickUpLocation.postValue(pickUpLocation)
+        _selectedPickUpLocationResponse.postValue(ApiResponse.Success(pickUpLocation))
         pickUpLocationRepository.setSelected(pickUpLocation)
     }
 
-    private fun tryLoadSelectedPickUpLocation(
+    fun tryLoadSelectedPickUpLocation(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _selectedPickUpLocationResponse, coroutinesErrorHandler
+        _selectedPickUpLocationResponse,
+        coroutinesErrorHandler
     ) {
         pickUpLocationRepository.selected()
     }
@@ -61,7 +39,8 @@ class PickUpLocationViewModel @Inject constructor(
     fun tryLoadPickUpLocations(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
-        _pickUpLocations, coroutinesErrorHandler
+        _pickUpLocations,
+        coroutinesErrorHandler
     ) {
         pickUpLocationRepository.findAllLocations()
     }

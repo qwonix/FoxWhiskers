@@ -18,7 +18,7 @@ class LocalClientService(private val context: Context) {
     }
 
 
-    suspend fun loadUserProfile(): Client? {
+    suspend fun loadClientProfile(): Client? {
         val preferences = context.clientDataStore.data.firstOrNull()
         return if (preferences == null || !preferences.contains(FIRST_NAME)) {
             null

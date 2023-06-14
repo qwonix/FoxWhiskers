@@ -12,82 +12,88 @@
         <import type="android.view.View" />
     </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray_300"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/gray_300"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="25dp"
-                android:background="@drawable/rectangle_corners15_background"
-                android:backgroundTint="@color/gray_500"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="25dp">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="15dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_search" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="Искать"
-                    android:textColor="@color/gray_700"
-                    android:textSize="14sp"
-                    tools:text="Искать" />
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:background="@drawable/rectangle_corners15_background"
+                    android:backgroundTint="@color/gray_500"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="25dp">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_search" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Искать"
+                        android:textColor="@color/gray_700"
+                        android:textSize="14sp"
+                        tools:text="Искать" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_dish_type_chip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:paddingStart="15dp"
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_menu_dish_type_chip"
+                    tools:orientation="horizontal" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_dish_type_chip"
-                android:layout_width="match_parent"
+            <ProgressBar
+                style="@style/LoadingProgressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:clipToPadding="false"
-                android:paddingStart="15dp"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_menu_dish_type_chip"
-                tools:orientation="horizontal" />
+                android:visibility="@{isLoading ? View.VISIBLE : View.GONE}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_dishes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:clipToPadding="true"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_menu_dish"
+                tools:orientation="vertical"
+                tools:spanCount="2" />
+
         </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <ProgressBar
-            style="@style/LoadingProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:visibility="@{isLoading ? View.VISIBLE : View.GONE}" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_dishes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:clipToPadding="true"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_menu_dish"
-            tools:orientation="vertical"
-            tools:spanCount="2" />
-
-    </LinearLayout>
 </layout>

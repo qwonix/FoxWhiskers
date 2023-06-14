@@ -12,25 +12,22 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.snackbar.Snackbar
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.CircleMapObject
-import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.IconStyle
-import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
-import com.yandex.mapkit.map.MapObjectVisitor
 import com.yandex.mapkit.map.PlacemarkMapObject
-import com.yandex.mapkit.map.PolygonMapObject
-import com.yandex.mapkit.map.PolylineMapObject
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentPickUpLocationBinding
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
+import ru.qwonix.android.foxwhiskers.util.ForEachMapObjectVisitor
+import ru.qwonix.android.foxwhiskers.util.FoxWhiskersSnackBar
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
@@ -48,12 +45,38 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
 
     private val pickUpLocationViewModel: PickUpLocationViewModel by activityViewModels()
 
-    private val iconStyle = IconStyle().apply { anchor = PointF(0.5f, 1.0f) }
+    private val bottomCenter = IconStyle().apply { anchor = PointF(0.5f, 1.0f) }
 
     private lateinit var unselectedPoint: ViewProvider
     private lateinit var selectedPoint: ViewProvider
 
     private lateinit var binding: FragmentPickUpLocationBinding
+
+    private val changePlacemarkViewTapListener = MapObjectTapListener { tappedMapObject, _ ->
+        tappedMapObject as PlacemarkMapObject
+
+        // if current selected
+        if (binding.pickupLocation == tappedMapObject.userData) {
+            return@MapObjectTapListener true
+        }
+
+        // set previous selected as default
+        setViewToMapObject(binding.pickupLocation!!, unselectedPoint, bottomCenter)
+
+        // set tapped object as selected
+        tappedMapObject.setView(selectedPoint, bottomCenter)
+
+        pickUpLocationViewModel.setSelectedPickUpLocation(
+            tappedMapObject.userData as PickUpLocation,
+            object : CoroutinesErrorHandler {
+                override fun onError(message: String) {
+                    TODO("Not yet implemented")
+                }
+            }
+        )
+
+        true
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,8 +99,7 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
             FragmentPickUpLocationBinding.inflate(inflater, container, false)
 
         binding.apply {
-            // FIXME: pass directly menuViewModel
-            pickupLocation = pickUpLocationViewModel.selectedPickUpLocation.value
+            lifecycleOwner = viewLifecycleOwner
         }
 
         return binding.root
@@ -89,22 +111,9 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
         // move camera to init position
         binding.mapview.map.move(
             CameraPosition(
-                Utils.primaryCityPoint, 10.0f, 0.0f, 0.0f
+                Utils.mapInitPosition, 10.0f, 0.0f, 0.0f
             )
         )
-
-        // onclick open a point in the map application
-        binding.buildRouteButton.setOnClickListener {
-            val mapIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(
-                    "geo:${pickUpLocationViewModel.selectedPickUpLocation.value?.latitude ?: Utils.primaryCityPoint.latitude}," +
-                            "${pickUpLocationViewModel.selectedPickUpLocation.value?.longitude ?: Utils.primaryCityPoint.longitude}?q=Усы+Лисы&z=15"
-                )
-            )
-            // suggest selection of an application
-            this.startActivity(Intent.createChooser(mapIntent, "Где построить маршрут?"))
-        }
 
         binding.selectLocationButton.setOnClickListener {
             withDemoBottomSheet { goBack() }
@@ -124,74 +133,151 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful load locations ${it.data}")
-                    binding.mapview.map.mapObjects.clear()
-                    addLocationsToMap(it.data)
-
-                    pickUpLocationViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
-                        Log.i(TAG, "set $it as selected")
-                        binding.apply {
-                            // smooth move camera to current selected
-                            mapview.map.move(
-                                CameraPosition(
-                                    Point(
-                                        it.latitude,
-                                        it.longitude
-                                    ), 14.0f, 0.0f, 10.0f
-                                ), Animation(Animation.Type.SMOOTH, 1f)
-                            ) { }
-                            // set content of current selected
-                            pickupLocation = it
-                            // set icon for current selected
-                            setViewByUserData(it, selectedPoint)
+                    it.data.forEach { location ->
+                        if (binding.pickupLocation != location) {
+                            addLocationToMap(
+                                location,
+                                unselectedPoint,
+                                bottomCenter,
+                                changePlacemarkViewTapListener
+                            )
+                        } else {
+                            addLocationToMap(
+                                location,
+                                selectedPoint,
+                                bottomCenter,
+                                changePlacemarkViewTapListener
+                            )
                         }
                     }
                 }
             }
         }
-    }
 
-    private fun addLocationsToMap(pickUpLocations: List<PickUpLocation>) {
-        pickUpLocations.forEach { addLocationToMap(it) }
-    }
+        pickUpLocationViewModel.selectedPickUpLocationResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
 
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
 
-    private fun addLocationToMap(pickUpLocation: PickUpLocation) {
-        binding.mapview.map.mapObjects.addPlacemark(
-            Point(pickUpLocation.latitude, pickUpLocation.longitude), unselectedPoint
-        ).apply {
-            userData = pickUpLocation
-            addTapListener(changePlacemarkViewTapListener)
-        }
-    }
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load orders ${it.data}")
+                    Log.i(TAG, "set $it as selected")
+                    binding.apply {
+                        // smooth move camera to current selected
+                        mapview.map.move(
+                            CameraPosition(
+                                Point(
+                                    it.data!!.latitude,
+                                    it.data.longitude
+                                ), 14.0f, 0.0f, 10.0f
+                            ), Animation(Animation.Type.SMOOTH, 1f)
+                        ) { }
+                        // set content of current selected
+                        pickupLocation = it.data
 
+                        addLocationToMap(
+                            it.data,
+                            selectedPoint,
+                            bottomCenter,
+                            changePlacemarkViewTapListener
+                        )
 
-    private val changePlacemarkViewTapListener = MapObjectTapListener { tappedMapObject, _ ->
-        tappedMapObject as PlacemarkMapObject
-
-        // if current selected
-        if (pickUpLocationViewModel.selectedPickUpLocation.value == tappedMapObject.userData) {
-            return@MapObjectTapListener true
-        }
-
-        // set previous selected as default
-        setViewByUserData(pickUpLocationViewModel.selectedPickUpLocation.value!!, unselectedPoint)
-
-        // set tapped object as selected
-        tappedMapObject.setView(selectedPoint, iconStyle)
-        pickUpLocationViewModel.setSelectedPickUpLocation(
-            object : CoroutinesErrorHandler {
-                override fun onError(message: String) {
-                    TODO("Not yet implemented")
+                        // set icon for current selected
+                        setViewToMapObject(it.data, selectedPoint, bottomCenter)
+                    }
                 }
             }
-            , tappedMapObject.userData as PickUpLocation)
+        }
 
-        true
+        // onclick open a point in the map application
+        binding.buildRouteButton.setOnClickListener {
+            when (val apiResponse =
+                pickUpLocationViewModel.selectedPickUpLocationResponse.value) {
+                is ApiResponse.Failure -> {
+                    Log.e(
+                        TAG,
+                        "fail to load profile code: ${apiResponse.code} – ${apiResponse.errorMessage}"
+                    )
+                    FoxWhiskersSnackBar.make(
+                        view,
+                        "Не удалось открыть приложение для карт :( ",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    val mapIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            "geo:${apiResponse.data!!.latitude}," +
+                                    "${apiResponse.data.longitude}?q=Усы+Лисы&z=15"
+                        )
+                    )
+                    // suggest selection of an application
+                    this.startActivity(
+                        Intent.createChooser(
+                            mapIntent,
+                            "Где построить маршрут в Усы Лисы?"
+                        )
+                    )
+                }
+
+                null -> TODO()
+            }
+        }
+
+        pickUpLocationViewModel.tryLoadPickUpLocations(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                FoxWhiskersSnackBar.make(
+                    view,
+                    "Нет подключения к интернету :( ",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        })
+
+        pickUpLocationViewModel.tryLoadSelectedPickUpLocation(object :
+            CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
-    private fun setViewByUserData(userData: Any, viewProvider: ViewProvider) {
-        val changeViewByUserDataVisitor = ChangeViewByUserDataVisitor(userData, viewProvider)
-        binding.mapview.map.mapObjects.traverse(changeViewByUserDataVisitor)
+    private fun addLocationToMap(
+        pickUpLocation: PickUpLocation,
+        viewProvider: ViewProvider,
+        iconStyle: IconStyle,
+        tapListener: MapObjectTapListener
+    ) {
+        binding.mapview.map.mapObjects.addPlacemark(
+            Point(pickUpLocation.latitude, pickUpLocation.longitude), viewProvider, iconStyle
+        ).apply {
+            userData = pickUpLocation
+            addTapListener(tapListener)
+        }
+    }
+
+    private fun setViewToMapObject(
+        mapObjectUserData: Any,
+        viewProvider: ViewProvider,
+        iconStyle: IconStyle
+    ) {
+        val forEachMapObjectVisitor =
+            object : ForEachMapObjectVisitor() {
+                override fun onPlacemarkVisited(placemarkMapObject: PlacemarkMapObject) {
+                    if (placemarkMapObject.userData == mapObjectUserData) {
+                        placemarkMapObject.setView(viewProvider, iconStyle)
+                    }
+                }
+            }
+
+        binding.mapview.map.mapObjects.traverse(forEachMapObjectVisitor)
     }
 
     override fun onStart() {
@@ -204,35 +290,5 @@ class PickUpLocationFragment : Fragment(R.layout.fragment_pick_up_location) {
         super.onStop()
         binding.mapview.onStop()
         MapKitFactory.getInstance().onStop()
-    }
-
-
-    inner class ChangeViewByUserDataVisitor(
-        private val userData: Any,
-        private val viewProvider: ViewProvider
-    ) : MapObjectVisitor {
-        override fun onPlacemarkVisited(placemarkMapObject: PlacemarkMapObject) {
-            if (placemarkMapObject.userData == this.userData) {
-                placemarkMapObject.setView(this.viewProvider, iconStyle)
-            }
-        }
-
-        override fun onPolylineVisited(p0: PolylineMapObject) {}
-
-        override fun onPolygonVisited(p0: PolygonMapObject) {}
-
-        override fun onCircleVisited(p0: CircleMapObject) {}
-
-        override fun onCollectionVisitStart(p0: MapObjectCollection): Boolean {
-            return true
-        }
-
-        override fun onCollectionVisitEnd(p0: MapObjectCollection) {}
-
-        override fun onClusterizedCollectionVisitStart(p0: ClusterizedPlacemarkCollection): Boolean {
-            return true
-        }
-
-        override fun onClusterizedCollectionVisitEnd(p0: ClusterizedPlacemarkCollection) {}
     }
 }

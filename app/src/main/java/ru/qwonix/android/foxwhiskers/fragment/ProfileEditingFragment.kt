@@ -23,7 +23,7 @@ import ru.qwonix.android.foxwhiskers.util.EditTextState
 import ru.qwonix.android.foxwhiskers.util.Utils
 import ru.qwonix.android.foxwhiskers.util.onImeAction
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
-import ru.qwonix.android.foxwhiskers.viewmodel.ProfileEditingViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
 @AndroidEntryPoint
 class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
@@ -33,7 +33,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     private val args: ProfileEditingFragmentArgs by navArgs()
     private lateinit var client: Client
 
-    private val profileEditingViewModel: ProfileEditingViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     private lateinit var binding: FragmentProfileEditingBinding
 
@@ -66,7 +66,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
         binding.client = this.client
 
-        profileEditingViewModel.clientUpdateResponse.observe(viewLifecycleOwner) {
+        profileViewModel.clientUpdateResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
@@ -108,7 +108,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                 canUpdate = false
             }
             if (canUpdate) {
-                profileEditingViewModel.update(
+                profileViewModel.update(
                     phoneNumber,
                     firstName,
                     lastName,

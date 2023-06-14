@@ -182,8 +182,11 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         Log.i(TAG, "menuViewModel.loadDishes from menu")
         menuViewModel.loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                FoxWhiskersSnackBar.make(view, "Не работает интернет. Проверьте подключение", Snackbar.LENGTH_LONG)
-                    .show()
+                FoxWhiskersSnackBar.make(
+                    view,
+                    "Не работает интернет. Проверьте подключение",
+                    Snackbar.LENGTH_INDEFINITE
+                ).show()
             }
         })
     }

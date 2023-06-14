@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderConfirmationBinding
-import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.entity.PaymentMethod
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.Utils
@@ -72,8 +72,19 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             }
         }
 
-        pickUpLocationViewModel.selectedPickUpLocation.observe(viewLifecycleOwner) {
-            binding.pickUpLocation = it
+        pickUpLocationViewModel.selectedPickUpLocationResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    Log.i(TAG, "Successful load orders ${it.data}")
+                    binding.pickUpLocation = it.data
+                }
+            }
         }
 
         binding.optionPickupLocation.setOnClickListener {
@@ -85,9 +96,9 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         }
 
         binding.checkoutOrderButton.setOnClickListener {
-            when (val client = profileViewModel.getAuthenticatedClient()) {
+            when (val clientResponse = profileViewModel.clientAuthenticationResponse.value) {
                 is ApiResponse.Failure -> {
-                    when (client.code) {
+                    when (clientResponse.code) {
                         401 -> {
                             withDemoBottomSheet { dismiss() }
                             findNavController().navigate(R.id.action_cartFragment_to_profileNavigation)
@@ -98,31 +109,42 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                             findNavController().navigate(R.id.action_cartFragment_to_profileNavigation)
                         }
                     }
-                    Log.e(TAG, "code: ${client.code} – ${client.errorMessage}")
+                    Log.e(TAG, "code: ${clientResponse.code} – ${clientResponse.errorMessage}")
                 }
 
                 is ApiResponse.Loading -> Log.i(TAG, "loading")
 
 
                 is ApiResponse.Success -> {
-                    Log.i(TAG, "Successful load dishes in cart ${client.data}")
-                    orderViewModel.createOrder(
-                        client.data!!.phoneNumber,
-                        cartViewModel.getDishesInCart(),
-                        pickUpLocationViewModel.selectedPickUpLocation.value!!.id,
-                        PaymentMethod.INAPP_ONLINE_CARD,
-                        object : CoroutinesErrorHandler {
-                            override fun onError(message: String) {
-                                TODO("Not yet implemented")
-                            }
+                    Log.i(TAG, "Successful load dishes in cart ${clientResponse.data}")
+                    val client = clientResponse.data!!
+
+                    when (val selectedPickUpLocation =
+                        pickUpLocationViewModel.selectedPickUpLocationResponse.value) {
+                        is ApiResponse.Failure -> {}
+                        is ApiResponse.Loading -> Log.i(TAG, "loading")
+                        is ApiResponse.Success -> {
+                            val pickUpLocation = selectedPickUpLocation.data!!
+
+                            orderViewModel.createOrder(
+                                client.phoneNumber,
+                                cartViewModel.getDishesInCart(),
+                                pickUpLocation.id,
+                                PaymentMethod.INAPP_ONLINE_CARD,
+                                object : CoroutinesErrorHandler {
+                                    override fun onError(message: String) {
+                                        withDemoBottomSheet { dismiss() }
+                                        Toast.makeText(context, "Нет подключения к интернету :(", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            )
                         }
-                    )
-                    cartViewModel.clearCart(object : CoroutinesErrorHandler {
-                        override fun onError(message: String) {
-                            TODO("Not yet implemented")
-                        }
-                    })
+
+                        else -> {}
+                    }
                 }
+
+                else -> {}
             }
         }
 
@@ -138,16 +160,38 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
 
                 is ApiResponse.Success -> {
                     Log.i(TAG, "Successful create order ${it.data}")
-                    if (profileViewModel.getAuthenticatedClient() is ApiResponse.Success) {
-                        withDemoBottomSheet { dismiss() }
-                        val directions =
-                            CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
-                                (profileViewModel.getAuthenticatedClient() as ApiResponse.Success<Client?>).data!!
+
+                    cartViewModel.clearCart(object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+
+                    when (val clientResponse =
+                        profileViewModel.clientAuthenticationResponse.value) {
+                        is ApiResponse.Failure -> {
+                            Log.e(
+                                TAG,
+                                "code: ${clientResponse.code} – ${clientResponse.errorMessage}"
                             )
-                        findNavController().navigate(
-                            directions
-                        )
+                        }
+
+                        is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                        is ApiResponse.Success -> {
+                            withDemoBottomSheet { dismiss() }
+                            val directions =
+                                CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
+                                    clientResponse.data!!
+                                )
+                            findNavController().navigate(
+                                directions
+                            )
+                        }
+
+                        else -> {}
                     }
+
                 }
             }
         }
@@ -159,6 +203,12 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
         })
 
         paymentMethodViewModel.tryLoadSelectedPaymentMethod(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
+
+        pickUpLocationViewModel.tryLoadSelectedPickUpLocation(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }

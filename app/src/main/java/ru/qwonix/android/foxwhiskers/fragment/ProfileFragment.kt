@@ -31,7 +31,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     ): View {
         Log.i(TAG, "open ProfileFragment")
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+
         binding.isLoading = true
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented $message")
+            }
+        })
+
         profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is ApiResponse.Failure -> {
@@ -59,25 +73,25 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
-            override fun onError(message: String) {
-                TODO("Not yet implemented")
-            }
-        })
-
         binding.goToOrdersButton.setOnClickListener {
-            val client: Client = binding.client!!
-            findNavController().navigate(
-                ProfileNavigationDirections.actionGlobalOrderReceiptFragment(
-                    client
-                )
-            )
+            when (val clientResponse = profileViewModel.clientAuthenticationResponse.value) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${clientResponse.code} – ${clientResponse.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    findNavController().navigate(
+                        ProfileNavigationDirections.actionGlobalOrderReceiptFragment(
+                            clientResponse.data!!
+                        )
+                    )
+                }
+
+                else -> {}
+            }
+
         }
 
         binding.logoutButton.setOnClickListener {

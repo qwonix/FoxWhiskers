@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import ru.qwonix.android.foxwhiskers.ProfileNavigationDirections
 import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentCartBinding
 import ru.qwonix.android.foxwhiskers.entity.Dish
@@ -54,13 +55,22 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.goToOrdersButton.setOnClickListener {
-            val client = profileViewModel.getAuthenticatedClient()
-            if (client is ApiResponse.Success) {
-                findNavController().navigate(
-                    CartFragmentDirections.actionCartFragmentToOrderReceiptFragment(
-                        client.data!!
+            when (val clientResponse = profileViewModel.clientAuthenticationResponse.value) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "code: ${clientResponse.code} – ${clientResponse.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    findNavController().navigate(
+                        ProfileNavigationDirections.actionGlobalOrderReceiptFragment(
+                            clientResponse.data!!
+                        )
                     )
-                )
+                }
+
+                else -> {}
             }
         }
 

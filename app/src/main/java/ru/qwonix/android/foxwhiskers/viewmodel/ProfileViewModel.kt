@@ -3,6 +3,7 @@ package ru.qwonix.android.foxwhiskers.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.qwonix.android.foxwhiskers.dto.UpdateClientDTO
 import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.repository.AuthenticationRepository
@@ -20,8 +21,21 @@ class ProfileViewModel @Inject constructor(
     private val _clientAuthenticationResponse = MutableLiveData<ApiResponse<Client?>>()
     val clientAuthenticationResponse: LiveData<ApiResponse<Client?>> = _clientAuthenticationResponse
 
-    fun getAuthenticatedClient(): ApiResponse<Client?> {
-        return clientAuthenticationResponse.value!!
+    private val _clientUpdateResponse = MutableLiveData<ApiResponse<Client?>>()
+    val clientUpdateResponse: LiveData<ApiResponse<Client?>> = _clientUpdateResponse
+
+    fun update(
+        phoneNumber: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _clientUpdateResponse,
+        coroutinesErrorHandler
+    ) {
+        val updateClientDTO = UpdateClientDTO(phoneNumber, firstName, lastName, email)
+        clientRepository.update(updateClientDTO)
     }
 
     fun tryLoadClient(
@@ -30,7 +44,7 @@ class ProfileViewModel @Inject constructor(
         _clientAuthenticationResponse,
         coroutinesErrorHandler
     ) {
-        authenticationRepository.loadClient()
+        authenticationRepository.loadClientFromLocalStorage()
     }
 
 
