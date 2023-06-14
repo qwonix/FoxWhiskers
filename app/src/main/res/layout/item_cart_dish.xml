@@ -33,24 +33,23 @@
             android:id="@+id/card_dish_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:adjustViewBounds="true"
             android:contentDescription="dish image"
-            android:src="@drawable/dish_example"
-            app:imageUrl="@{dish.imageUrl}" />
+            app:imageUrl="@{dish.imageUrl}"
+            tools:src="@drawable/dish_example" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="3dp"
-            android:layout_weight="1"
-            android:paddingVertical="10dp">
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:orientation="vertical">
 
                 <TextView
@@ -75,7 +74,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 tools:visibility="visible">
 
@@ -83,7 +82,7 @@
                     style="@style/Dish.Count.Control"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
                     android:onClick="@{() -> dishCountChangeListener.beforeCountChange(dish, dish.count - 1)}"
@@ -94,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
                     android:text="@{String.valueOf(dish.count)}"
                     tools:text="1" />
 
@@ -108,15 +108,14 @@
                     android:src="@drawable/ic_plus" />
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             style="@style/Dish.Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:ems="5"
-            android:paddingHorizontal="0dp"
+            android:ems="4"
             android:text="@{priceFormat.format(dish.currencyPrice * dish.count)}"
             android:textSize="20sp"
             tools:text="669 ₽" />

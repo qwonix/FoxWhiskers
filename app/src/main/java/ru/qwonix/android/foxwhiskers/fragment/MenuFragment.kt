@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
@@ -22,6 +23,7 @@ import ru.qwonix.android.foxwhiskers.fragment.adapter.DishCountChangeListener
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.MenuDishTypeChipAdapter
 import ru.qwonix.android.foxwhiskers.repository.ApiResponse
+import ru.qwonix.android.foxwhiskers.util.FoxWhiskersSnackBar
 import ru.qwonix.android.foxwhiskers.viewmodel.CartViewModel
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.MenuViewModel
@@ -180,7 +182,8 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
         Log.i(TAG, "menuViewModel.loadDishes from menu")
         menuViewModel.loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                TODO("Not yet implemented $message")
+                FoxWhiskersSnackBar.make(view, "Не работает интернет. Проверьте подключение", Snackbar.LENGTH_LONG)
+                    .show()
             }
         })
     }
