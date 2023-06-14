@@ -25,31 +25,17 @@
         android:layout_height="wrap_content"
         tools:background="@color/gray_300">
 
-        <FrameLayout
+        <ImageView
             android:id="@+id/card_dish_image"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
-            android:elevation="1dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="dish image"
-                android:scaleType="fitCenter"
-                android:src="@drawable/dish_example"
-                app:imageUrl="@{dish.imageUrl}" />
-
-            <ProgressBar
-                android:id="@+id/dish_image_progress_bar"
-                style="@style/LoadingProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-        </FrameLayout>
-
+            android:adjustViewBounds="true"
+            android:contentDescription="dish image"
+            android:elevation="1dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/dish_example"
+            app:imageUrl="@{dish.imageUrl}" />
 
         <LinearLayout
             android:layout_width="match_parent"
