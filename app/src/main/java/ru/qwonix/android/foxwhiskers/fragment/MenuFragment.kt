@@ -163,6 +163,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                     parent: RecyclerView,
                     state: RecyclerView.State
                 ) {
+                    // TODO: extra space is added when the element is the last in the line
                     outRect.bottom = 30
                     outRect.right = 30
                 }
