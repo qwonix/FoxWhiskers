@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -69,7 +70,7 @@ class MenuSearchBottomSheetDialogFragment :
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMenuSearchBinding.inflate(inflater, container, false)
-
+        binding.isLoading = true
         return binding.root
     }
 
@@ -124,6 +125,8 @@ class MenuSearchBottomSheetDialogFragment :
 
                     is ApiResponse.Success -> {
                         Log.i(TAG, "Successful load dishes ${dishes.data}")
+                        binding.isLoading = false
+
                         binding.clearTextButton.visibility = View.VISIBLE
 
                         val foundDishes =
@@ -149,7 +152,11 @@ class MenuSearchBottomSheetDialogFragment :
 
         menuViewModel.loadDishes(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                TODO("Not yet implemented $message")
+                Toast.makeText(
+                    context,
+                    "Нет подключения к интернету :(",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }
