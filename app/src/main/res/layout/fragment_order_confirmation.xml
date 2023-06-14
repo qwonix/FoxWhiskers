@@ -85,6 +85,7 @@
                                 android:text="Заберу здесь" />
 
                             <TextView
+                                android:id="@+id/pick_up_location_title"
                                 style="@style/Description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

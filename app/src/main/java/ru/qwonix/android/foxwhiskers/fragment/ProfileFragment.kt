@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -40,9 +41,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+        profileViewModel.tryLoadClientAndAuthenticate(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                TODO("Not yet implemented $message")
+                Toast.makeText(
+                    context,
+                    "Нет подключения к интернету :(",
+                    Toast.LENGTH_LONG
+                ).show()
+                findNavController().navigate(R.id.action_profileFragment_to_phoneNumberInputFragment)
             }
         })
 

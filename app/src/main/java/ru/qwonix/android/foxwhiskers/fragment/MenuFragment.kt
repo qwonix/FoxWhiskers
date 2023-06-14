@@ -191,7 +191,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
             override fun onError(message: String) {
                 FoxWhiskersSnackBar.make(
                     view,
-                    "Не работает интернет. Проверьте подключение",
+                    "Нет подключения к интернету :(",
                     Snackbar.LENGTH_INDEFINITE
                 ).show()
             }

@@ -199,7 +199,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             }
         }
 
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+        profileViewModel.tryLoadClientFromLocalStorage(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }
@@ -207,13 +207,20 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
 
         paymentMethodViewModel.tryLoadSelectedPaymentMethod(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                TODO("Not yet implemented")
+                paymentMethodViewModel.setPaymentMethod(
+                    PaymentMethod.CASH,
+                    object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            TODO("Not yet implemented")
+                        }
+                    })
             }
         })
 
         pickUpLocationViewModel.tryLoadSelectedPickUpLocation(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
-                TODO("Not yet implemented")
+                binding.pickUpLocationTitle.text = "Нет подключения к интернету :("
+                binding.optionPickupLocation.isClickable = false
             }
         })
     }

@@ -163,7 +163,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             }
         })
 
-        profileViewModel.tryLoadClient(object : CoroutinesErrorHandler {
+        profileViewModel.tryLoadClientFromLocalStorage(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }

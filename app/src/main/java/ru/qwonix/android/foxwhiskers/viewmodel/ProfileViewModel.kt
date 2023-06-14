@@ -38,13 +38,22 @@ class ProfileViewModel @Inject constructor(
         clientRepository.update(updateClientDTO)
     }
 
-    fun tryLoadClient(
+    fun tryLoadClientFromLocalStorage(
         coroutinesErrorHandler: CoroutinesErrorHandler
     ) = baseRequest(
         _clientAuthenticationResponse,
         coroutinesErrorHandler
     ) {
         authenticationRepository.loadClientFromLocalStorage()
+    }
+
+    fun tryLoadClientAndAuthenticate(
+        coroutinesErrorHandler: CoroutinesErrorHandler
+    ) = baseRequest(
+        _clientAuthenticationResponse,
+        coroutinesErrorHandler
+    ) {
+        authenticationRepository.loadClient()
     }
 
 
