@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import ru.qwonix.android.foxwhiskers.R
@@ -46,12 +48,17 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                 if (imageUrl.isNotBlank()) {
                     Picasso.get()
                         .load(imageUrl)
-//                        .placeholder(R.drawable.placeholder)
-//                        .error(R.drawable.error)
-                        .into(view)
+                        .into(view, object : Callback {
+                            override fun onSuccess() {
+                                view.rootView.findViewById<ProgressBar>(R.id.dish_image_progress_bar).visibility =
+                                    View.GONE
+                            }
+
+                            override fun onError(e: Exception?) {
+
+                            }
+                        })
                 }
-            } else {
-//                view.setImageDrawable(R.drawable.placeholder)
             }
         }
     }

@@ -133,8 +133,11 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
                                 PaymentMethod.INAPP_ONLINE_CARD,
                                 object : CoroutinesErrorHandler {
                                     override fun onError(message: String) {
-                                        withDemoBottomSheet { dismiss() }
-                                        Toast.makeText(context, "Нет подключения к интернету :(", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Нет подключения к интернету :(",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 }
                             )
