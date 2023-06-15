@@ -14,6 +14,7 @@ import androidx.annotation.ColorRes
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -68,6 +69,10 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.client = args.client
+
+        binding.goBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_orderReceiptFragment_to_profileNavigation)
+        }
 
         val orderReceiptAdapter = OrderReceiptAdapter()
         orderReceiptAdapter.qrCodeClickListener =

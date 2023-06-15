@@ -90,5 +90,8 @@
             android:name="client"
             app:argType="ru.qwonix.android.foxwhiskers.entity.Client"
             app:nullable="false" />
+        <action
+            android:id="@+id/action_orderReceiptFragment_to_profileNavigation"
+            app:destination="@id/profileNavigation" />
     </fragment>
 </navigation>

@@ -23,15 +23,33 @@
         android:background="@color/gray_300"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="15dp"
         android:transitionName="@string/transition_name">
 
-        <TextView
-            style="@style/Title.Background"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Заказы" />
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/go_back_button"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/rectangle_corners13_background"
+                android:backgroundTint="@color/yellow_300"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:src="@drawable/ic_back_arrow" />
+
+            <TextView
+                style="@style/Title.Background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Заказы" />
+        </FrameLayout>
+
 
         <ProgressBar
             style="@style/LoadingProgressBar"
@@ -59,7 +77,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:clipToPadding="true"
-            android:paddingTop="10dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
             tools:itemCount="3"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_order_receipt"
