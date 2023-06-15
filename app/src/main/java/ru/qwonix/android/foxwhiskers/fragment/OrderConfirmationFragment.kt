@@ -61,7 +61,11 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             when (it) {
                 is ApiResponse.Failure -> {
                     Log.e(TAG, "fail to load: ${it.code} – ${it.errorMessage}")
-
+                    paymentMethodViewModel.setPaymentMethod(PaymentMethod.CASH,  object : CoroutinesErrorHandler {
+                        override fun onError(message: String) {
+                            TODO("Not yet implemented")
+                        }
+                    })
                 }
 
                 is ApiResponse.Loading -> Log.i(TAG, "loading")
@@ -199,7 +203,7 @@ class OrderConfirmationFragment : Fragment(R.layout.fragment_order_confirmation)
             }
         }
 
-        profileViewModel.tryLoadClientFromLocalStorage(object : CoroutinesErrorHandler {
+        profileViewModel.tryLoadClientAndAuthenticate(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }
