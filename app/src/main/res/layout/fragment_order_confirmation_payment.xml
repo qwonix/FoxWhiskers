@@ -40,7 +40,7 @@
             android:src="@drawable/peek_drag" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -95,8 +95,7 @@
 
                             <ImageView
                                 android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:adjustViewBounds="true"
+                                android:layout_height="wrap_content"
                                 android:src="@{PaymentMethod.GOOGLE_PAY.drawableId}"
                                 tools:src="@drawable/ic_google_pay_payment" />
 
@@ -139,14 +138,9 @@
                             android:gravity="center_vertical">
 
                             <ImageView
-                                android:layout_width="45dp"
+                                style="@style/PaymentIcon"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:background="@drawable/rectangle_corners13_background"
-                                android:backgroundTint="@color/yellow_300"
-                                android:paddingHorizontal="5dp"
-                                android:paddingTop="4dp"
-                                android:paddingBottom="3dp"
                                 android:src="@{PaymentMethod.INAPP_ONLINE_CARD.drawableId}"
                                 tools:src="@drawable/ic_online_card_payment" />
 
@@ -200,13 +194,9 @@
                             android:gravity="center_vertical">
 
                             <ImageView
-                                android:layout_width="45dp"
+                                style="@style/PaymentIcon"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:background="@drawable/rectangle_corners13_background"
-                                android:backgroundTint="@color/yellow_300"
-                                android:paddingHorizontal="10dp"
-                                android:paddingVertical="8dp"
                                 android:src="@{PaymentMethod.OFFLINE_CARD.drawableId}"
                                 tools:src="@drawable/ic_offline_card_payment" />
 
@@ -252,13 +242,9 @@
                             android:gravity="center_vertical">
 
                             <ImageView
-                                android:layout_width="45dp"
+                                style="@style/PaymentIcon"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:background="@drawable/rectangle_corners13_background"
-                                android:backgroundTint="@color/yellow_300"
-                                android:paddingHorizontal="12dp"
-                                android:paddingVertical="5dp"
                                 android:src="@{PaymentMethod.CASH.drawableId}"
                                 tools:src="@drawable/ic_cash_payment" />
 
@@ -284,7 +270,7 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -294,8 +280,9 @@
                 android:paddingVertical="15dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -318,11 +305,12 @@
 
                 <ImageView
                     android:id="@+id/payment_icon"
+                    style="@style/PaymentIcon"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
                     android:src="@drawable/ic_mail" />
-            </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

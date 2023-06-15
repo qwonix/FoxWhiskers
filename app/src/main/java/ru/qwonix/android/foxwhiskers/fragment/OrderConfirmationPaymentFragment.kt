@@ -47,6 +47,7 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
         binding = FragmentOrderConfirmationPaymentBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            mail = "Не указана"
             paymentMethodChangeListener = object : PaymentMethodChangeListener {
                 override fun onSelectedPaymentMethodChange(paymentMethod: PaymentMethod) {
                     paymentMethodViewModel.setPaymentMethod(paymentMethod,

@@ -98,6 +98,7 @@
     </style>
 
     <style name="Title.Background" parent="Title">
+        <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">20sp</item>
         <item name="android:paddingStart">30dp</item>
         <item name="android:paddingEnd">30dp</item>
@@ -109,7 +110,7 @@
 
 
     <style name="PinCodeDigit">
-        <item name="android:minWidth">65dp</item>
+        <item name="android:minWidth">60dp</item>
         <item name="android:textSize">32sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/gray_900</item>
@@ -159,6 +160,15 @@
     <style name="LoadingProgressBar">
         <item name="android:indeterminate">true</item>
         <item name="android:indeterminateTint">@color/yellow_300</item>
+    </style>
+
+    <style name="PaymentIcon">
+        <item name="android:backgroundTint">@color/yellow_300</item>
+        <item name="android:background">@drawable/rectangle_corners13_background</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
     </style>
 
 </resources>

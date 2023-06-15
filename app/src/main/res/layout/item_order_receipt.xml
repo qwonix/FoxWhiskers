@@ -26,49 +26,50 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangle_corners15_background"
         android:backgroundTint="@color/white"
         android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
             android:paddingHorizontal="15dp"
             android:paddingVertical="10dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="Ваш заказ №"
-                    android:textColor="@color/gray_900"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:fontFamily="@font/rubik_medium"
-                    android:text="@{String.valueOf(order.id)}"
-                    android:textColor="@color/gray_900"
-                    android:textSize="20sp"
-                    tools:text="123-4567" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Заказ №"
+                        android:textColor="@color/gray_900"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="@{String.valueOf(order.id)}"
+                        android:textColor="@color/gray_900"
+                        android:textSize="20sp"
+                        tools:text="123-4567" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/orderStatusTextView"
@@ -76,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/rectangle_corners15_background"
                     android:fontFamily="@font/rubik_regular"
                     android:paddingHorizontal="15dp"
@@ -115,60 +116,55 @@
                         tools:text="3 543 ₽" />
                 </LinearLayout>
 
-
             </LinearLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/rectangle_corners15_background"
                 android:backgroundTint="@color/yellow_300"
                 android:onClick="@{() -> qrCodeClickListener.onQrClick(order)}"
-                android:paddingHorizontal="15dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="5dp">
 
-                <LinearLayout
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_qr" />
+
+                <TextView
+                    style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_qr" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/rubik_light"
-                        android:text="Открыть QR-код"
-                        android:textColor="@color/gray_700"
-                        android:textSize="10sp" />
-                </LinearLayout>
-            </FrameLayout>
-        </FrameLayout>
+                    android:text="Открыть QR-код" />
+            </LinearLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/gray_300" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginVertical="10dp"
-            android:background="@color/white">
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -203,20 +199,18 @@
                 </LinearLayout>
 
                 <TextView
+                    style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/rubik_light"
                     android:text='@{order.pickUpLocation.title + "\n" + order.pickUpLocation.streetName + ", " + order.pickUpLocation.houseData + ", " + order.pickUpLocation.cityName}'
-                    android:textColor="@color/gray_700"
-                    android:textSize="10sp"
                     tools:text="ТРК Лиговъ\nСанкт-Петербург, Лиговский проспект, 153" />
 
             </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_gravity="center_vertical|end"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:background="@drawable/rectangle_corners13_background"
                 android:backgroundTint="@color/yellow_300"
@@ -224,8 +218,7 @@
                 android:onClick="@{() -> pickUpLocationClickListener.onPickUpLocationClick(order.pickUpLocation)}"
                 android:padding="10dp"
                 android:src="@drawable/ic_map_point" />
-
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </layout>

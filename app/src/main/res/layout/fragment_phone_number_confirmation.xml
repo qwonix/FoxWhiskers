@@ -116,8 +116,9 @@
                     style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="3dp"
+                    android:ems="3"
                     android:fontFamily="@font/rubik_medium"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/gray_700"
                     android:textSize="12sp"
                     tools:text="1:42" />
@@ -126,7 +127,7 @@
                     style="@style/Description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="сек." />
+                    android:text="секунд" />
             </LinearLayout>
 
             <TextView
