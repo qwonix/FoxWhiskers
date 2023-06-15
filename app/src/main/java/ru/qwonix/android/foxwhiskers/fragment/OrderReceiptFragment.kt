@@ -79,7 +79,7 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
             object : QrCodeClickListener {
                 override fun onQrClick(order: Order) {
                     if (order.status == OrderStatus.READY_FOR_PICKUP) {
-                        QrBottomSheetDialogFragment(order.id).show(
+                        QrBottomSheetDialogFragment(order.qrCodeData).show(
                             parentFragmentManager,
                             "tag"
                         )

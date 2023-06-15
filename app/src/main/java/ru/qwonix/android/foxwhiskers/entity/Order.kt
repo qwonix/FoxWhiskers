@@ -8,6 +8,7 @@ data class Order(
     val orderItems: List<OrderItem>,
     val status: OrderStatus,
     val pickUpLocation: PickUpLocation,
+    val qrCodeData: String,
     val paymentMethod: PaymentMethod,
     val totalPrice: Double,
     val expectedReceiptTime: String,
