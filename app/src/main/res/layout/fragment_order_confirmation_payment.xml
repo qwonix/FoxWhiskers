@@ -10,7 +10,7 @@
         <import type="ru.qwonix.android.foxwhiskers.entity.PaymentMethod" />
 
         <variable
-            name="mail"
+            name="email"
             type="String" />
 
         <variable
@@ -298,7 +298,7 @@
                         style="@style/Description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{mail}"
+                        android:text="@{email}"
                         tools:text="example@mail.com" />
 
                 </LinearLayout>

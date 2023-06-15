@@ -17,6 +17,7 @@ import ru.qwonix.android.foxwhiskers.repository.ApiResponse
 import ru.qwonix.android.foxwhiskers.util.withDemoBottomSheet
 import ru.qwonix.android.foxwhiskers.viewmodel.CoroutinesErrorHandler
 import ru.qwonix.android.foxwhiskers.viewmodel.PaymentMethodViewModel
+import ru.qwonix.android.foxwhiskers.viewmodel.ProfileViewModel
 
 
 @AndroidEntryPoint
@@ -39,6 +40,7 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
     }
 
     private val paymentMethodViewModel: PaymentMethodViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentOrderConfirmationPaymentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +49,7 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
         binding = FragmentOrderConfirmationPaymentBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            mail = "Не указана"
+            email = "Не указана"
             paymentMethodChangeListener = object : PaymentMethodChangeListener {
                 override fun onSelectedPaymentMethodChange(paymentMethod: PaymentMethod) {
                     paymentMethodViewModel.setPaymentMethod(paymentMethod,
@@ -80,11 +82,30 @@ class OrderConfirmationPaymentFragment : Fragment(R.layout.fragment_order_confir
             }
         }
 
+        profileViewModel.clientAuthenticationResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "fail to load profile code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    binding.email = it.data?.email ?: "Не указана"
+                }
+            }
+        }
+
         binding.goBackButton.setOnClickListener {
             withDemoBottomSheet { goBack() }
         }
 
         paymentMethodViewModel.tryLoadSelectedPaymentMethod(object : CoroutinesErrorHandler {
+            override fun onError(message: String) {
+                TODO("Not yet implemented")
+            }
+        })
+        profileViewModel.tryLoadClientFromLocalStorage(object : CoroutinesErrorHandler {
             override fun onError(message: String) {
                 TODO("Not yet implemented")
             }
