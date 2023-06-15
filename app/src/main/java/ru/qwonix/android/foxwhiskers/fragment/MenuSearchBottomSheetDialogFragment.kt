@@ -94,6 +94,26 @@ class MenuSearchBottomSheetDialogFragment :
             }
         })
 
+        menuViewModel.menu.observe(viewLifecycleOwner) {
+            when (it) {
+                is ApiResponse.Failure -> {
+                    Log.e(TAG, "fail to load profile code: ${it.code} – ${it.errorMessage}")
+                }
+
+                is ApiResponse.Loading -> Log.i(TAG, "loading")
+
+                is ApiResponse.Success -> {
+                    binding.isLoading = false
+                    val foundDishes =
+                        it.data
+                            .map { menuItem -> menuItem.items }
+                            .flatten()
+
+                    orderDishAdapter.setFoundedDishes(foundDishes)
+                }
+            }
+        }
+
         binding.recyclerSearchedDishes.apply {
             adapter = orderDishAdapter
             val manager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
