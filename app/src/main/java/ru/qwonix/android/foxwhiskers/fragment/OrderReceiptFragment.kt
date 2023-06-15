@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import ru.qwonix.android.foxwhiskers.R
 import ru.qwonix.android.foxwhiskers.databinding.FragmentOrderReceiptBinding
 import ru.qwonix.android.foxwhiskers.entity.Client
 import ru.qwonix.android.foxwhiskers.entity.Order
+import ru.qwonix.android.foxwhiskers.entity.OrderStatus
 import ru.qwonix.android.foxwhiskers.entity.PickUpLocation
 import ru.qwonix.android.foxwhiskers.fragment.adapter.OrderReceiptAdapter
 import ru.qwonix.android.foxwhiskers.fragment.adapter.PickUpLocationClickListener
@@ -71,10 +73,19 @@ class OrderReceiptFragment : Fragment(R.layout.fragment_order_receipt) {
         orderReceiptAdapter.qrCodeClickListener =
             object : QrCodeClickListener {
                 override fun onQrClick(order: Order) {
-                    QrBottomSheetDialogFragment(order.id).show(
-                        parentFragmentManager,
-                        "tag"
-                    )
+                    if (order.status == OrderStatus.READY_FOR_PICKUP) {
+                        QrBottomSheetDialogFragment(order.id).show(
+                            parentFragmentManager,
+                            "tag"
+                        )
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Заказ ещё не готов к выдаче!",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
                 }
             }
 
