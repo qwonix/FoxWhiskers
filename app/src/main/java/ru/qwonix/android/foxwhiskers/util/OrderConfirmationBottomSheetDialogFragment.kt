@@ -56,6 +56,7 @@ class OrderConfirmationBottomSheetDialogFragment(
     private fun setupBehavior(bottomSheetBehavior: BottomSheetBehavior<View>) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior.isHideable = true
+        bottomSheetBehavior.isDraggable = false
         bottomSheetBehavior.skipCollapsed = true
     }
 
