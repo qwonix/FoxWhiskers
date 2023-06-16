@@ -1,7 +1,5 @@
 package ru.qwonix.android.foxwhiskers.entity
 
-import java.time.LocalDateTime
-
 data class Order(
     val id: String,
     val client: Client,
@@ -11,8 +9,7 @@ data class Order(
     val qrCodeData: String,
     val paymentMethod: PaymentMethod,
     val totalPrice: Double,
-    val expectedReceiptTime: String,
-    val created: LocalDateTime
+    val expectedReceiptTime: String
 )
 
 
