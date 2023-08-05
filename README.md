@@ -6,12 +6,15 @@
 ![Preview gif](docs/preview.gif "Пример работы")
 
 ## Технологии
-* [Android Studio](https://developer.android.com/studio)
 * [Yandex MapKit](https://yandex.ru/dev/maps/mapkit)
 * [Dagger Hilt](https://dagger.dev/hilt/)
 * [Retrofit](https://square.github.io/retrofit/)
 * [Picasso](https://square.github.io/picasso/)
 * [ZXing](https://github.com/journeyapps/zxing-android-embedded)
+* [Tinkoff Decoro](https://github.com/tinkoff-mobile-tech/decoro)
+
+## Требования
+Android версии 5 (Lollipop) и более. 50МБ свободного места в памяти устройства.
 
 ## Загрузка приложения
 
